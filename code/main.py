@@ -44,4 +44,5 @@ NO a good thing to do I know, need to change that from the code if I find the ti
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])
+git log --oneline    : display previous commit and state of master and origin
 """

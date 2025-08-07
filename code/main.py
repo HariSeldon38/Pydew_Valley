@@ -52,6 +52,11 @@ peut fabriquer un bonnet nlsqps et l'offrir
 
 un jeu n'arrative d'une heure, première choise a faire assez basique histoire à la con mais reviens à la fin et surprend un peu en montrant que c'était pas si con
 
+better animation for destroying trees or no anim to exacerber feeling of hand made
+
+BUGS:
+- glitch through invisible barrier when finish cutting two tree at once from down (I think) in the right side of map
+- animation when tool continuous : WILL NOT DO
 
 
 ANKI:

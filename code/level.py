@@ -44,8 +44,7 @@ class Level:
 
 		#trees
 		for obj in tmx_data.get_layer_by_name('Trees'):
-			tree = Tree((obj.x,obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name)
-			tree.create_fruit(self.all_sprites)
+			tree = Tree((obj.x,obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name, self.all_sprites)
 
 		#collision tiles
 		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():

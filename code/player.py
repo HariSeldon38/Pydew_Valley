@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
 
         #timers
         self.timers = {
-            'tool use': Timer(350, self.use_tool),
+            'tool use': Timer(400, self.use_tool),
             'tool switch': Timer(500),
             'seed use': Timer(350, self.use_seed),
             'seed switch': Timer(500)

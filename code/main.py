@@ -37,10 +37,22 @@ about dt : we need to store position into pos and not inside the rect.
 
 I want the whole game to be in french
 
-spy on Math to see exactly what input she is used to
+spy on keys used default in stardew to see exactly what input she is used to
 
 I did duplicate some frame in idle animation in order to have a slower animation for idling
 NO a good thing to do I know, need to change that from the code if I find the time
+
+NOt Happy with collision for left side house walls especcially :
+need to create different sprite class to handle their hit box indep and put them in multiple layers in tiles.
+See that in the end
+
+add a zone unreachable, to give player the envy to reach it and when it does there is a big monster guarding something but the ^player does not have attack and he discover that he have a health bar and can die
+
+peut fabriquer un bonnet nlsqps et l'offrir
+
+un jeu n'arrative d'une heure, première choise a faire assez basique histoire à la con mais reviens à la fin et surprend un peu en montrant que c'était pas si con
+
+
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

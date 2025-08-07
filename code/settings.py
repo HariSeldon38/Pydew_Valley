@@ -4,16 +4,30 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
 
+PLAYER_SPEED = 500 #can't go below 177 !
+PLAYER_LOW_SPEED = 178 #explained in player.move
+
 # overlay positions 
 OVERLAY_POSITIONS = {
 	'tool' : (40, SCREEN_HEIGHT - 15), 
 	'seed': (70, SCREEN_HEIGHT - 5)}
 
 PLAYER_TOOL_OFFSET = {
-	'left': Vector2(-50,40),
-	'right': Vector2(50,40),
-	'up': Vector2(0,-10),
-	'down': Vector2(0,50)
+	'hoe' : {
+		'left': Vector2(-51,37),
+		'right': Vector2(51,37),
+		'up': Vector2(12,-32),
+		'down': Vector2(-12,50)},
+	'axe' : {
+		'left': Vector2(-56,37),
+		'right': Vector2(56,37),
+		'up': Vector2(14,-41),
+		'down': Vector2(-12,50)},
+	'water' : {
+		'left': Vector2(-95,25),
+		'right': Vector2(95,25),
+		'up': Vector2(23,-44),
+		'down': Vector2(-23,60)}
 }
 
 LAYERS = {

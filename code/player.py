@@ -5,11 +5,12 @@ from timer import Timer
 from debug import debug
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites):
+    def __init__(self, pos, group, collision_sprites, tree_sprites):
         super().__init__(group)
 
         self.import_assets()
         self.status = 'up'
+        self.lock_status = False
         self.frame_index = 0
         self.animation_speed = 6
 
@@ -20,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         #movement
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 500 #200
+        self.speed = PLAYER_SPEED
         self.hitbox = self.rect.copy().inflate((-126,-70))
         self.collision_sprites = collision_sprites
 
@@ -42,11 +43,24 @@ class Player(pygame.sprite.Sprite):
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
 
+        #interactions
+        self.tree_sprites = tree_sprites
+
     def use_tool(self):
-        pass
+        if self.selected_tool == 'hoe':
+            pass
+        elif self.selected_tool == 'axe':
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_position):
+                    tree.damage()
+        elif self.selected_tool == 'water':
+            pass
 
     def use_seed(self):
         pass
+
+    def get_target_position(self):
+        self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
 
     def import_assets(self):
         self.animations = {'up': [], 'down': [], 'right': [], 'left': [],
@@ -70,22 +84,32 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
+        if keys[pygame.K_LSHIFT]:
+            self.speed = PLAYER_LOW_SPEED
+            self.lock_status = True
+        else:
+            self.speed = PLAYER_SPEED
+            self.lock_status = False
 
         if not self.timers['tool use'].active:
             if keys[pygame.K_UP] or keys[pygame.K_z]:
                 self.direction.y = -1
-                self.status = 'up'
+                if not self.lock_status:
+                    self.status = 'up'
             elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 self.direction.y = 1
-                self.status = 'down'
+                if not self.lock_status:
+                    self.status = 'down'
             else:
                 self.direction.y = 0
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 self.direction.x = 1
-                self.status = 'right'
+                if not self.lock_status:
+                    self.status = 'right'
             elif keys[pygame.K_LEFT] or keys[pygame.K_q]:
                 self.direction.x = -1
-                self.status = 'left'
+                if not self.lock_status:
+                    self.status = 'left'
             else:
                 self.direction.x = 0
 
@@ -142,6 +166,9 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.top = sprite.hitbox.bottom
 
     def move(self, dt):
+        """due to last line, can't move at lower speed that 1 px/ frame (177 speed)
+        because we lose the float advantage the pos vector offers
+        also I'm feeling diagonal movement slow, while high speed for dev"""
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
 
@@ -152,6 +179,7 @@ class Player(pygame.sprite.Sprite):
         self.pos.y += self.direction.y * self.speed * dt #vertical movement
         self.hitbox.centery = round(self.pos.y)
         self.collision('vertical')
+
         self.rect.center = self.hitbox.center
         self.pos.x,self.pos.y = self.hitbox.centerx,self.hitbox.centery
 
@@ -159,6 +187,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.move(dt)
         self.update_timers()
+        self.get_target_position() #I'm thinking about running that only in case of using tool, will see if need some optim
         self.get_status()
         self.animate(dt)
 

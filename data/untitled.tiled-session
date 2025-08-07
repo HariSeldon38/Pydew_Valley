@@ -1,0 +1,56 @@
+{
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Tilesets/Fences.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Grass.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/Hills.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/House Decoration.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/House.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Objects.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "Tilesets/Paths.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Tilesets/Plant Decoration.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/Water.tsx": {
+            "scaleInDock": 1
+        },
+        "Tilesets/interaction.tsx": {
+            "scaleInDock": 1
+        },
+        "map.tmx": {
+            "scale": 0.15734374999999998,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1601.5888778550152,
+                "y": 1277.4577954319761
+            }
+        }
+    },
+    "openFiles": [
+        "map.tmx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "map.tmx"
+    ]
+}

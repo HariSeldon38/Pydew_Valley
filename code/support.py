@@ -20,3 +20,8 @@ def import_folder(path):
             surface_list.append(image_surf)
 
     return surface_list
+
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((100, 100))
+    print(import_folder('../graphics/water'))

@@ -5,7 +5,7 @@ from timer import Timer
 from debug import debug
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction):
         super().__init__(group)
 
         self.import_assets()
@@ -53,6 +53,8 @@ class Player(pygame.sprite.Sprite):
 
         #interactions
         self.tree_sprites = tree_sprites
+        self.interaction = interaction
+        self.sleep = False
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
@@ -99,7 +101,7 @@ class Player(pygame.sprite.Sprite):
             self.speed = PLAYER_SPEED
             self.lock_status = False
 
-        if not self.timers['tool use'].active:
+        if not self.timers['tool use'].active and not self.sleep:
             if keys[pygame.K_UP] or keys[pygame.K_z]:
                 self.direction.y = -1
                 if not self.lock_status:
@@ -144,6 +146,15 @@ class Player(pygame.sprite.Sprite):
                     self.seed_index += 1
                 else: self.seed_index = 0
                 self.selected_seed = self.seeds[self.seed_index]
+
+        if keys[pygame.K_RETURN] and not self.sleep:
+            collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, dokill=False)
+            if collided_interaction_sprite:
+                if collided_interaction_sprite[0].name == 'Trader':
+                    pass
+                elif collided_interaction_sprite[0].name == 'Bed':
+                    self.status = 'left_idle'
+                    self.sleep = True
 
     def get_status(self):
         if self.direction.magnitude() == 0:

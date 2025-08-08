@@ -11,6 +11,12 @@ class Generic(pygame.sprite.Sprite):
         self.z = z
         self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
 
+class Interaction(Generic):
+    def __init__(self, pos, size, groups, name):
+        surf = pygame.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.name = name
+
 class Water(Generic):
     def __init__(self, pos, frames, groups):
 
@@ -65,15 +71,15 @@ class Tree(Generic):
         #apples
         self.apple_surf = pygame.image.load('../graphics/fruit/apple.png').convert_alpha()
         self.apple_pos = APPLE_POS[name] #name refers to type of tree
-        self.apple_sprite = pygame.sprite.Group()
+        self.apple_sprites = pygame.sprite.Group()
         self.create_fruit()
 
         self.player_add = player_add
 
     def damage(self):
         self.health -= 1
-        if len(self.apple_sprite.sprites()) > 0:
-            random_apple = choice(self.apple_sprite.sprites())
+        if len(self.apple_sprites.sprites()) > 0:
+            random_apple = choice(self.apple_sprites.sprites())
             Particle(
                 pos = random_apple.rect.topleft,
                 surf = random_apple.image,
@@ -100,7 +106,7 @@ class Tree(Generic):
                 Generic(
                     pos = (x,y),
                     surface = self.apple_surf,
-                    groups = [self.apple_sprite, self.all_sprites], #self.groups() return list grp of the tree instance
+                    groups = [self.apple_sprites , self.all_sprites], #self.groups() return list grp of the tree instance
                     z = 9)
 
     def update(self, dt):

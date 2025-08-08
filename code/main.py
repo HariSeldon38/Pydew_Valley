@@ -57,7 +57,7 @@ better animation for destroying trees or no anim to exacerber feeling of hand ma
 BUGS:
 - glitch through invisible barrier when finish cutting two tree at once from down (I think) in the right side of map
 - animation when tool continuous : WILL NOT DO
-
+- lack a little bit of logic for the tiling system, WILL DO BEFORE RELEASE (ie Mathilde is the release)
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

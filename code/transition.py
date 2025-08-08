@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 
-class Transition():
+class Transition:
     def __init__(self, reset, player):
         self.display_surface = pygame.display.get_surface()
         self.reset = reset

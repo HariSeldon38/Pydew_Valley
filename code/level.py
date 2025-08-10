@@ -1,5 +1,6 @@
 import pygame
 from pytmx.util_pygame import load_pygame
+from random import randint
 from settings import *
 from support import *
 from player import Player
@@ -7,6 +8,8 @@ from overlay import Overlay
 from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction
 from transition import Transition
 from soil import SoilLayer
+from sky import Rain
+from debug import debug
 
 class Level:
 	def __init__(self):
@@ -17,6 +20,9 @@ class Level:
 		self.collision_sprites = pygame.sprite.Group()
 		self.tree_sprites = pygame.sprite.Group()
 		self.interaction_sprites = pygame.sprite.Group()
+
+		#sky
+		self.rain = Rain(self.all_sprites, rain_level=1)
 
 		self.soil_layer = SoilLayer(self.all_sprites)
 		self.setup()
@@ -70,7 +76,8 @@ class Level:
 					self.collision_sprites,
 					self.tree_sprites,
 					interaction = self.interaction_sprites,
-					soil_layer = self.soil_layer)
+					soil_layer = self.soil_layer,
+					rain = self.rain) #-------------------------------------------------------------maybe delete rain here
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
@@ -90,6 +97,9 @@ class Level:
 					apple.kill()
 				tree.create_fruit()
 
+		#soil
+		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
+
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
 
@@ -99,6 +109,11 @@ class Level:
 		self.all_sprites.update(dt)
 		self.overlay.display()
 
+		self.rain.random_update_rain_status()
+		if self.rain.rain_level:
+			self.rain.update()
+			self.soil_layer.water_all(rain_level=self.rain.rain_level) #for now rain level not implemented
+		debug(self.rain.rain_level)
 		if self.player.sleep:
 			self.transition.play()
 

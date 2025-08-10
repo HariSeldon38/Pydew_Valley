@@ -1,5 +1,6 @@
 import pygame
 from pytmx.util_pygame import load_pygame
+from random import choice, randint
 from settings import *
 from support import *
 
@@ -10,15 +11,25 @@ class SoilTile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.z = LAYERS['soil']
 
+class WaterTile(pygame.sprite.Sprite):
+    def __init__(self, pos, surf, groups):
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_rect(topleft = pos)
+        self.z = LAYERS['soil water']
+
+
 class SoilLayer:
     def __init__(self, all_sprites):
 
         #sprite groups
         self.all_sprites = all_sprites
         self.soil_sprites = pygame.sprite.Group()
+        self.water_sprites = pygame.sprite.Group()
 
         #graphics
         self.soil_surfs = import_folder_with_names('../graphics/soil')
+        self.soil_water = import_folder('../graphics/soil_water')
 
         self.create_soil_grid()
         self.create_hit_rects()
@@ -50,6 +61,37 @@ class SoilLayer:
                 if 'F' in self.grid[y][x] and not 'X' in self.grid[y][x]:
                     self.grid[y][x].append('X')
                     self.create_soil_tiles()
+                #if self.raining:
+                    #self.get_watered(point)
+
+    def get_watered(self, target_pos):
+        """for now it is possible to water crops thrice but the sprite added is random each time
+        so sometime we don't see a different after watering more than once, that is because of that randomness"""
+        for soil_sprite in self.soil_sprites.sprites():
+            if soil_sprite.rect.collidepoint(target_pos):
+                x = soil_sprite.rect.x // TILE_SIZE
+                y = soil_sprite.rect.y // TILE_SIZE
+                if self.grid[y][x].count("W") < 3:
+                    self.grid[y][x].append("W")
+                    WaterTile((soil_sprite.rect.x,soil_sprite.rect.y),choice(self.soil_water), [self.water_sprites, self.all_sprites])
+
+    def water_all(self, rain_level):
+        for index_row, row in enumerate(self.grid):
+            for index_col, cell in enumerate(row):
+                if 'X' in cell and cell.count('W') < 3:
+                    if randint(1,1500//rain_level) == 1:
+                        cell.append('W')
+                        x = index_col * TILE_SIZE
+                        y = index_row * TILE_SIZE
+                        WaterTile((x,y), choice(self.soil_water), [self.all_sprites, self.water_sprites])
+
+    def remove_water(self):
+        for sprite in self.water_sprites.sprites():
+            sprite.kill()
+        for row in self.grid:
+            for cell in row:
+                if 'W' in cell:
+                    cell.remove('W')
 
     def create_soil_tiles(self):
         self.soil_sprites.empty()

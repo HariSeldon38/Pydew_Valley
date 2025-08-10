@@ -2,11 +2,12 @@ import pygame, sys
 from settings import *
 from support import *
 from timer import Timer
-from debug import debug
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
+
+        self.rain = rain #--------------------------------------------------------------------------------same here
 
         self.import_assets()
         self.status = 'up'
@@ -30,7 +31,8 @@ class Player(pygame.sprite.Sprite):
             'tool use': Timer(400, self.use_tool),
             'tool switch': Timer(500),
             'seed use': Timer(350, self.use_seed),
-            'seed switch': Timer(500)
+            'seed switch': Timer(500),
+            'rain switch': Timer(500) #----------------------------------------------------to delete before release
         }
 
         #tools
@@ -65,7 +67,7 @@ class Player(pygame.sprite.Sprite):
                 if tree.rect.collidepoint(self.target_position):
                     tree.damage()
         elif self.selected_tool == 'water':
-            pass
+            self.soil_layer.get_watered(self.target_position)
 
     def use_seed(self):
         pass
@@ -92,9 +94,16 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_ESCAPE]:
+        if keys[pygame.K_ESCAPE]: #-------------------------------------------------------------to delete before release
             pygame.quit()
             sys.exit()
+        if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
+            self.timers['rain switch'].activate()
+            self.rain.rain_level += 1
+        if keys[pygame.K_t] and not self.timers['rain switch'].active:
+            self.timers['rain switch'].activate()
+            self.rain.rain_level -= 1
+
         if keys[pygame.K_LSHIFT]:
             self.speed = PLAYER_LOW_SPEED
             self.lock_status = True
@@ -210,5 +219,3 @@ class Player(pygame.sprite.Sprite):
         self.get_target_position() #I'm thinking about running that only in case of using tool, will see if need some optim
         self.get_status()
         self.animate(dt)
-
-        debug(self.status)

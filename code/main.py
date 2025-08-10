@@ -60,10 +60,18 @@ IDk about the reset way for now, strange to reset when we want
 
 
 change water sprite generation, need to keep randomness but create more png with different levels of water
-
 darken the whole game in function of rain level,
 add random flashes if rain level>2
 add rain noise
+
+growing plants :
+	will change that so that during the day the plan can grow but when reset the time passes even more, 
+	will figure it out in the end because need to know beforehand what to do with rst
+	need also to take into acount nb of time watered : once is ok, twice is best, thrice is slower than once
+
+I changed the player hitbox but now it revealed that the tree hitboxes are not right and I can glitch through corner of the house...
+need to recal all the hitboxes of the game in the end, by displaying it
+ALso another bug, with that new collision if press enter while moving, continue to move...
 
 Idée de base du jeu:
 1ère partie, introduction/tutoriel. Doit durer 1h max
@@ -74,11 +82,14 @@ Idée de base du jeu:
 		on peut leur donner des cadeau et si on trouve le cadeau qu'ils veulent (les kdo s'achètent au trader) ils deviennent nos amis.
 		à force, au bout d'un certain nombre d'amis, ils viennent tous en même temps un jour pour nous aider à partir d'ici
 		
+		un des cadeau est un baton pour controler la pluie (qui marche) mais faut le donner à un pnj en réalité
+		
 2ème partie, on a le doirt de choisir entre 3 différents maisons:
 	on se retrouve dans un monde plus vaste avec tout les pnj du jeux. des magasins plus de sortes de fruit, de graines etc etc
 
 BUGS:
 - glitch through invisible barrier when finish cutting two tree at once from down (I think) in the right side of map
+		caused by hitbox of stump tinier than hitbox of trees
 - animation when tool continuous : WILL NOT DO
 - lack a little bit of logic for the tiling system, WILL DO BEFORE RELEASE (ie Mathilde is the release)
 

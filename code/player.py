@@ -23,13 +23,15 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = PLAYER_SPEED
-        self.hitbox = self.rect.copy().inflate((-126,-70))
+        self.down_offset_hitbox = 23
+        self.hitbox = self.rect.copy().inflate((-126,-90))
+        self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
 
         #timers
         self.timers = {
             'tool use': Timer(400, self.use_tool),
-            'tool switch': Timer(500),
+            'tool switch': Timer(350),
             'seed use': Timer(350, self.use_seed),
             'seed switch': Timer(500),
             'rain switch': Timer(500) #----------------------------------------------------to delete before release
@@ -70,7 +72,7 @@ class Player(pygame.sprite.Sprite):
             self.soil_layer.get_watered(self.target_position)
 
     def use_seed(self):
-        pass
+        self.soil_layer.plant_seed(self.target_position, self.selected_seed)
 
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
@@ -206,11 +208,12 @@ class Player(pygame.sprite.Sprite):
         self.collision('horizontal')
 
         self.pos.y += self.direction.y * self.speed * dt #vertical movement
-        self.hitbox.centery = round(self.pos.y)
+        self.hitbox.centery = round(self.pos.y) + self.down_offset_hitbox
         self.collision('vertical')
 
-        self.rect.center = self.hitbox.center
-        self.pos.x,self.pos.y = self.hitbox.centerx,self.hitbox.centery
+        self.rect.centerx = self.hitbox.centerx
+        self.rect.centery = self.hitbox.centery - self.down_offset_hitbox
+        self.pos.x,self.pos.y = self.rect.centerx,self.rect.centery
 
     def update(self, dt):
         self.input()

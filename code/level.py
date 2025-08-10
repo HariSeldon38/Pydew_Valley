@@ -5,7 +5,7 @@ from settings import *
 from support import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction
+from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain
@@ -22,9 +22,9 @@ class Level:
 		self.interaction_sprites = pygame.sprite.Group()
 
 		#sky
-		self.rain = Rain(self.all_sprites, rain_level=1)
+		self.rain = Rain(self.all_sprites, rain_level=0)
 
-		self.soil_layer = SoilLayer(self.all_sprites)
+		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
 		self.setup()
 		self.overlay = Overlay(self.player)
 		self.transition = Transition(self.reset, self.player)
@@ -89,7 +89,8 @@ class Level:
 			)
 
 	def reset(self):
-
+		#plants
+		self.soil_layer.update_plants() #will change that so that during the day the plan can grow (see main comment)
 		#apples on the trees
 		for tree in self.tree_sprites.sprites():
 			if tree.alive:
@@ -99,14 +100,25 @@ class Level:
 
 		#soil
 		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
+		self.rain.rain_level = 0 #for now just make it imposible to rain in the beginning of the day
 
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
+
+	def plant_collision(self):
+		if self.soil_layer.plant_sprites:
+			for plant in self.soil_layer.plant_sprites.sprites():
+				if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
+					self.player_add(plant.plant_type)
+					plant.kill()
+					Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
+					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')
 
 	def run(self,dt):
 		self.display_surface.fill('black')
 		self.all_sprites.custom_draw(self.player)
 		self.all_sprites.update(dt)
+		self.plant_collision()
 		self.overlay.display()
 
 		self.rain.random_update_rain_status()
@@ -137,7 +149,7 @@ class CameraGroup(pygame.sprite.Group):
 					if sprite == player:
 						pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
 						hitbox_rect = player.hitbox.copy()
-						hitbox_rect.center = offseted_rect.center
+						hitbox_rect.topleft -= self.offset
 						pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 5)
 						target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
 						pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)

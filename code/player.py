@@ -102,9 +102,11 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
             self.timers['rain switch'].activate()
             self.rain.rain_level += 1
+            self.rain.update_rain_color(self.rain.rain_level)
         if keys[pygame.K_t] and not self.timers['rain switch'].active:
             self.timers['rain switch'].activate()
             self.rain.rain_level -= 1
+            self.rain.update_rain_color(self.rain.rain_level)
 
         if keys[pygame.K_LSHIFT]:
             self.speed = PLAYER_LOW_SPEED

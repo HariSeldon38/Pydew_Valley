@@ -92,6 +92,9 @@ BUGS:
 		caused by hitbox of stump tinier than hitbox of trees
 - animation when tool continuous : WILL NOT DO
 - lack a little bit of logic for the tiling system, WILL DO BEFORE RELEASE (ie Mathilde is the release)
+- night is over everything, even UI, not very good
+
+peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

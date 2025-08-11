@@ -8,7 +8,7 @@ from overlay import Overlay
 from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle
 from transition import Transition
 from soil import SoilLayer
-from sky import Rain
+from sky import Rain, Sky
 from debug import debug
 
 class Level:
@@ -22,7 +22,8 @@ class Level:
 		self.interaction_sprites = pygame.sprite.Group()
 
 		#sky
-		self.rain = Rain(self.all_sprites, rain_level=0)
+		self.sky = Sky()
+		self.rain = Rain(self.all_sprites, rain_level=0, sky=self.sky)
 
 		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
 		self.setup()
@@ -91,6 +92,7 @@ class Level:
 	def reset(self):
 		#plants
 		self.soil_layer.update_plants() #will change that so that during the day the plan can grow (see main comment)
+
 		#apples on the trees
 		for tree in self.tree_sprites.sprites():
 			if tree.alive:
@@ -100,7 +102,11 @@ class Level:
 
 		#soil
 		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
-		self.rain.rain_level = 0 #for now just make it imposible to rain in the beginning of the day
+		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
+		self.sky.update_rain_color(0)
+
+		#sky
+		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
 
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
@@ -124,8 +130,13 @@ class Level:
 		self.rain.random_update_rain_status()
 		if self.rain.rain_level:
 			self.rain.update()
-			self.soil_layer.water_all(rain_level=self.rain.rain_level) #for now rain level not implemented
+			self.soil_layer.water_all(rain_level=self.rain.rain_level)
+		self.sky.display_weather(dt, self.rain.rain_level)
 		debug(self.rain.rain_level)
+
+		#daytime
+		self.sky.display_night(dt)
+
 		if self.player.sleep:
 			self.transition.play()
 

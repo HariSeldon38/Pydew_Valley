@@ -87,6 +87,8 @@ Idée de base du jeu:
 2ème partie, on a le doirt de choisir entre 3 différents maisons:
 	on se retrouve dans un monde plus vaste avec tout les pnj du jeux. des magasins plus de sortes de fruit, de graines etc etc
 
+collect, destroy wildflower, need a way like for harvest crops because hitxox too little
+
 BUGS:
 - glitch through invisible barrier when finish cutting two tree at once from down (I think) in the right side of map
 		caused by hitbox of stump tinier than hitbox of trees
@@ -95,6 +97,8 @@ BUGS:
 - night is over everything, even UI, not very good
 
 peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
+
+ajouter pêche
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

@@ -5,7 +5,7 @@ from settings import *
 from support import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle
+from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle, CollisionShift
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
@@ -67,6 +67,12 @@ class Level:
 		#collision tiles
 		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
 			Generic((x*TILE_SIZE,y*TILE_SIZE), pygame.Surface((TILE_SIZE,TILE_SIZE)), self.collision_sprites)
+		for x, y, surf in tmx_data.get_layer_by_name('CollisionShiftLeft').tiles():
+			CollisionShift((x*TILE_SIZE,y*TILE_SIZE), pygame.Surface((TILE_SIZE,TILE_SIZE)), self.collision_sprites,(-15,0),(-14,0))
+		for x, y, surf in tmx_data.get_layer_by_name('CollisionShiftRight').tiles():
+			CollisionShift((x*TILE_SIZE,y*TILE_SIZE), pygame.Surface((TILE_SIZE,TILE_SIZE)), self.collision_sprites,(15,0),(-14,0))
+		for x, y, surf in tmx_data.get_layer_by_name('CollisionShiftDown').tiles():
+			CollisionShift((x*TILE_SIZE,y*TILE_SIZE), pygame.Surface((TILE_SIZE,TILE_SIZE)), self.collision_sprites,(0,40),(0,0))
 
 		#player
 		for obj in tmx_data.get_layer_by_name('Player'):
@@ -103,7 +109,7 @@ class Level:
 		#soil
 		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
 		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
-		self.sky.update_rain_color(0)
+		self.rain.update_rain_color(0)
 
 		#sky
 		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
@@ -158,10 +164,15 @@ class CameraGroup(pygame.sprite.Group):
 
 					#analytics
 					if sprite == player:
-						pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
+						#pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
 						hitbox_rect = player.hitbox.copy()
 						hitbox_rect.topleft -= self.offset
-						pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 5)
+						pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
 						target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
 						pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)
+			for sprite in player.collision_sprites.sprites():
+				if hasattr(sprite, 'hitbox'):
+					hitbox_rect = sprite.hitbox.copy()
+					hitbox_rect.topleft -= self.offset
+					pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
 

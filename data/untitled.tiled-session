@@ -35,14 +35,15 @@
             "scaleInDock": 1
         },
         "Tilesets/interaction.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "map.tmx": {
-            "scale": 0.15734374999999998,
-            "selectedLayer": 3,
+            "scale": 0.5,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 1601.5888778550152,
-                "y": 1277.4577954319761
+                "x": 2794,
+                "y": 2090
             }
         }
     },

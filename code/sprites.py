@@ -9,7 +9,14 @@ class Generic(pygame.sprite.Sprite):
         self.image = surface
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
-        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
+        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.35, -self.rect.height * 0.35)
+
+class CollisionShift(Generic):
+    def __init__(self, pos, surface, groups, shift, inflate, z=LAYERS['main']):
+        super().__init__(pos, surface, groups)
+        self.hitbox = self.hitbox.inflate(inflate[0],inflate[1])
+        self.hitbox.centery += shift[1]
+        self.hitbox.centerx += shift[0]
 
 class Interaction(Generic):
     def __init__(self, pos, size, groups, name):
@@ -39,6 +46,8 @@ class WildFlower(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
         self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.9)
+        self.down_offset_hitbox = 15
+        self.hitbox.centery += self.down_offset_hitbox
 
 class Particle(Generic):
     def __init__(self, pos, surf, groups, z, duration = 200):
@@ -59,7 +68,9 @@ class Particle(Generic):
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name, all_sprites, player_add):
         super().__init__(pos, surf, groups)
-
+        self.hitbox = self.hitbox.inflate(0, -20)
+        self.down_offset_hitbox = 23
+        self.hitbox.centery += self.down_offset_hitbox
         self.all_sprites = all_sprites
 
         #tree attributes
@@ -116,4 +127,4 @@ class Tree(Generic):
 class Fence(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
-        self.hitbox = self.rect.copy().inflate(-40, -50)
+        self.hitbox = self.rect.copy().inflate(-20, -30)

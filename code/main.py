@@ -99,9 +99,55 @@ BUGS:
 peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
 
 ajouter pêche
+un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
+
+trouver un moyen rapide pr faire comprendre qu'il faut beacoup discuter avec les personnages mais en même temps mettre un cooldown aléatoire
+pour éviter d' exploit ça
+
+bug : rain shade can trigger durring menu not paused but rain is
+should not call random rain at all during pauses (but day night ok maybe)
+
+add inventory to open
+check if correct for planting seeds
+
+nom de la monaie est l'étincelle
+
+next to do with merchant menu : add the item purchased from the special shop.
+easiest may be add another tab when initiaize shop if player.special_item not empty with only the non empty fields
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])
 git log --oneline    : display previous commit and state of master and origin
 pour parcourir un group : for sprite in self.collision_sprites.sprites(): pas oublier .sprites() (demander à gpt pk)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IA prompt :
+I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.
+All the project is following OOP concepts.
+Here is are the different files I got for now : 
+
+main.py : Game class with init and run method containing the while True loop. This file is just the entry point, I rarely touch it.
+
+level.py : The "hub" of my code where all the necessary class are imported and declared.
+it is composed of a init method, setup method that instanciate all the classes I need, reset method used to start a new day, toggle_shop method that open the shop menu, and run where everything is called.
+
+player.py define all the player character need, it is a Sprite class that contain the following methods : use_tool, use_seed, get_target_position, import_assets, animate, inpu, get_status (direction and action the player is currently doing) update_timers, collision, move, update : the main function to update the sprites.
+
+
+
 """

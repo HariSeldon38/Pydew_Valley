@@ -9,6 +9,7 @@ from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Partic
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
+from menu import Shop
 from debug import debug
 
 class Level:
@@ -29,6 +30,10 @@ class Level:
 		self.setup()
 		self.overlay = Overlay(self.player)
 		self.transition = Transition(self.reset, self.player)
+
+		#shop
+		self.shop_menu = Shop(self.player, self.toggle_shop)
+		self.shop_active = False
 
 	def setup(self):
 		tmx_data = load_pygame('../data/map.tmx')
@@ -84,8 +89,11 @@ class Level:
 					self.tree_sprites,
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
-					rain = self.rain) #-------------------------------------------------------------maybe delete rain here
+					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
+					toggle_shop = self.toggle_shop)
 			if obj.name == 'Bed':
+				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
+			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
 		Generic(
@@ -117,6 +125,9 @@ class Level:
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
 
+	def toggle_shop(self):
+		self.shop_active = not self.shop_active
+
 	def plant_collision(self):
 		if self.soil_layer.plant_sprites:
 			for plant in self.soil_layer.plant_sprites.sprites():
@@ -127,18 +138,26 @@ class Level:
 					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')
 
 	def run(self,dt):
+
+		#drawing logic
 		self.display_surface.fill('black')
 		self.all_sprites.custom_draw(self.player)
-		self.all_sprites.update(dt)
-		self.plant_collision()
 		self.overlay.display()
 
-		self.rain.random_update_rain_status()
-		if self.rain.rain_level:
-			self.rain.update()
-			self.soil_layer.water_all(rain_level=self.rain.rain_level)
-		self.sky.display_weather(dt, self.rain.rain_level)
-		debug(self.rain.rain_level)
+		#update
+		if self.shop_active:
+			self.shop_menu.update()
+		else:
+			self.all_sprites.update(dt)
+			self.plant_collision()
+
+			#weather
+			self.rain.random_update_rain_status()
+			if self.rain.rain_level:
+				self.rain.update()
+				self.soil_layer.water_all(rain_level=self.rain.rain_level)
+			self.sky.display_weather(dt, self.rain.rain_level)
+			debug(self.rain.rain_level)
 
 		#daytime
 		self.sky.display_night(dt)
@@ -162,7 +181,7 @@ class CameraGroup(pygame.sprite.Group):
 					offseted_rect.center -= self.offset
 					self.display_surface.blit(sprite.image, offseted_rect)
 
-					#analytics
+					"""#analytics
 					if sprite == player:
 						#pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
 						hitbox_rect = player.hitbox.copy()
@@ -174,5 +193,5 @@ class CameraGroup(pygame.sprite.Group):
 				if hasattr(sprite, 'hitbox'):
 					hitbox_rect = sprite.hitbox.copy()
 					hitbox_rect.topleft -= self.offset
-					pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
+					pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)"""
 

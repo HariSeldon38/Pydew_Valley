@@ -36,7 +36,6 @@ PLAYER_TOOL_OFFSET = {
 		'up': Vector2(23,-44),
 		'down': Vector2(-23,60)}
 }
-
 LAYERS = {
 	'water': 0,
 	'ground': 1,
@@ -50,24 +49,25 @@ LAYERS = {
 	'fruit': 9,
 	'rain drops': 10
 }
-
 APPLE_POS = {
 	'Small': [(18,17), (30,37), (12,50), (30,45), (20,30), (30,10)],
 	'Large': [(30,24), (60,65), (50,50), (16,40),(45,50), (42,70)]
 }
-
 GROW_SPEED = {
-	'corn': 1,
-	'tomato': 0.7
+	'Maïs': 1,
+	'Tomate': 0.7
 }
-
 SALE_PRICES = {
-	'wood': 4,
-	'apple': 2,
-	'corn': 10,
-	'tomato': 20
+	'Bois': 4,
+	'Pomme': 2,
+	'Maïs': 10,
+	'Tomate': 20
 }
 PURCHASE_PRICES = {
-	'corn': 4,
-	'tomato': 5
+	'Graines de maïs': 4,
+	'Graines de tomate': 5,
+	'Bonnet noir': 500,
+	'canne à pêche': 500,
+	'Kit de broderie': 1000,
+	'Fil blanc': 50
 }

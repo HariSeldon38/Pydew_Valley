@@ -4,7 +4,7 @@ from support import *
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, toggle_shop): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -28,13 +28,15 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
 
+
         #timers
         self.timers = {
             'tool use': Timer(400, self.use_tool),
             'tool switch': Timer(350),
             'seed use': Timer(350, self.use_seed),
-            'seed switch': Timer(500),
-            'rain switch': Timer(500) #----------------------------------------------------to delete before release
+            'seed switch': Timer(350),
+            'rain switch': Timer(350), #----------------------------------------------------to delete before release
+            'menu toggle': Timer(350),
         }
 
         #tools
@@ -49,17 +51,29 @@ class Player(pygame.sprite.Sprite):
 
         #inventory
         self.item_inventory = {
-            'wood': 0,
-            'apple': 0,
-            'corn': 0,
-            'tomato': 0,
+            'Bois': 5,
+            'Pomme': 6,
+            'Maïs': 7,
+            'Tomate': 8,
         }
+        self.seed_inventory = {
+            'Graines de maïs': 3,
+            'Graines de tomate': 2,
+        }
+        self.special_inventory = {
+            'Bonnet noir': 0,
+            'canne à pêche': 0,
+            'Kit de broderie': 0,
+            'Fil blanc': 0,
+        }
+        self.money = 20000
 
         #interactions
         self.tree_sprites = tree_sprites
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
+        self.toggle_shop = toggle_shop
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
@@ -72,7 +86,9 @@ class Player(pygame.sprite.Sprite):
             self.soil_layer.get_watered(self.target_position)
 
     def use_seed(self):
-        self.soil_layer.plant_seed(self.target_position, self.selected_seed)
+        if self.seed_inventory[self.selected_seed] > 0:
+            self.soil_layer.plant_seed(self.target_position, self.selected_seed)
+            self.seed_inventory[self.selected_seed] -= 1
 
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
@@ -164,8 +180,9 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_RETURN] and not self.sleep:
             collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, dokill=False)
             if collided_interaction_sprite:
-                if collided_interaction_sprite[0].name == 'Trader':
-                    pass
+                if collided_interaction_sprite[0].name == 'Trader' and not self.timers['menu toggle'].active:
+                    self.toggle_shop()
+                    self.timers['menu toggle'].activate()
                 elif collided_interaction_sprite[0].name == 'Bed':
                     self.status = 'left_idle'
                     self.sleep = True

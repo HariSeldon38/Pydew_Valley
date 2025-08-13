@@ -10,11 +10,16 @@ from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
 from menu import Shop
+from sound import SoundManager
 from debug import debug
 
 class Level:
 	def __init__(self):
 		self.display_surface = pygame.display.get_surface()
+
+		#sound
+		self.sound_manager = SoundManager()
+		self.sound_manager.play("music", loops=-1)
 
 		# sprite groups
 		self.all_sprites = CameraGroup()
@@ -26,7 +31,7 @@ class Level:
 		self.sky = Sky()
 		self.rain = Rain(self.all_sprites, rain_level=0, sky=self.sky)
 
-		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
+		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites, sound_manager=self.sound_manager)
 		self.setup()
 		self.overlay = Overlay(self.player)
 		self.transition = Transition(self.reset, self.player)
@@ -67,7 +72,8 @@ class Level:
 				groups = [self.all_sprites, self.collision_sprites, self.tree_sprites],
 				name = obj.name,
 				all_sprites = self.all_sprites,
-				player_add = self.player_add)
+				player_add = self.player_add,
+				sound_manager = self.sound_manager)
 
 		#collision tiles
 		for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
@@ -90,7 +96,8 @@ class Level:
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
 					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
-					toggle_shop = self.toggle_shop)
+					toggle_shop = self.toggle_shop,
+					sound_manager = self.sound_manager)
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 			if obj.name == 'Trader':
@@ -124,6 +131,7 @@ class Level:
 
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
+		self.sound_manager.play("pickup")
 
 	def toggle_shop(self):
 		self.shop_active = not self.shop_active
@@ -132,7 +140,10 @@ class Level:
 		if self.soil_layer.plant_sprites:
 			for plant in self.soil_layer.plant_sprites.sprites():
 				if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
-					self.player_add(plant.plant_type)
+					if plant.plant_type == 'corn': name = 'Maïs'
+					if plant.plant_type == 'tomato': name = 'Tomate'
+					print(plant.plant_type)
+					self.player_add(name)
 					plant.kill()
 					Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
 					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')

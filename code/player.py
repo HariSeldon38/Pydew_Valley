@@ -4,7 +4,7 @@ from support import *
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, toggle_shop): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, toggle_shop, sound_manager): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -75,6 +75,8 @@ class Player(pygame.sprite.Sprite):
         self.soil_layer = soil_layer
         self.toggle_shop = toggle_shop
 
+        self.sound_manager = sound_manager
+
     def use_tool(self):
         if self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_position)
@@ -84,11 +86,13 @@ class Player(pygame.sprite.Sprite):
                     tree.damage()
         elif self.selected_tool == 'water':
             self.soil_layer.get_watered(self.target_position)
+            self.sound_manager.play('watering')
 
     def use_seed(self):
-        if self.seed_inventory[self.selected_seed] > 0:
+        FR_name = TRANSLATE_EN_FR[self.selected_seed]
+        if self.seed_inventory[FR_name] > 0:
             self.soil_layer.plant_seed(self.target_position, self.selected_seed)
-            self.seed_inventory[self.selected_seed] -= 1
+            self.seed_inventory[FR_name] -= 1
 
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]

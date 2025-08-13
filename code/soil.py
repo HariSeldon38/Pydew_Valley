@@ -52,7 +52,7 @@ class Plant(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom = self.soil.rect.midbottom + self.y_offset)
 
 class SoilLayer:
-    def __init__(self, all_sprites, collision_sprites):
+    def __init__(self, all_sprites, collision_sprites, sound_manager):
 
         #sprite groups
         self.all_sprites = all_sprites
@@ -67,6 +67,8 @@ class SoilLayer:
 
         self.create_soil_grid()
         self.create_hit_rects()
+
+        self.sound_manager = sound_manager
 
     def create_soil_grid(self):
         ground = pygame.image.load('../graphics/world/ground.png')
@@ -131,6 +133,7 @@ class SoilLayer:
                     self.create_soil_tiles()
                 #if self.raining:
                     #self.get_watered(point)
+        self.sound_manager.play('hoe')
 
     def get_watered(self, target_pos):
         """for now it is possible to water crops thrice but the sprite added is random each time
@@ -176,6 +179,7 @@ class SoilLayer:
                 if 'P' not in self.grid[y][x]:
                     self.grid[y][x].append('P')
                     Plant(seed, [self.all_sprites, self.plant_sprites, self.collision_sprites], soil_sprite, self.check_watered)
+                self.sound_manager.play('plant')
 
     def update_plants(self):
         for plant in self.plant_sprites.sprites():

@@ -40,7 +40,10 @@ class Sky:
                     self.current_weather_color[index] -= 26 * dt
                 elif self.current_weather_color[index] < value:
                     self.current_weather_color[index] += 26 * dt
-            self.full_surf_weather.fill(self.current_weather_color)
+            try:
+                self.full_surf_weather.fill(self.current_weather_color)
+            except ValueError:
+                print(f"Invalid color argument: {self.current_weather_color}")
             self.display_surface.blit(self.full_surf_weather, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
         #random lightning effects

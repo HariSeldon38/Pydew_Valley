@@ -4,6 +4,7 @@ from level import Level
 
 class Game:
 	def __init__(self):
+		pygame.mixer.pre_init(44100, -16, 2, 512)
 		pygame.init()
 		self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 		pygame.display.set_caption('Vallée du Saumon')
@@ -95,6 +96,14 @@ BUGS:
 - animation when tool continuous : WILL NOT DO
 - lack a little bit of logic for the tiling system, WILL DO BEFORE RELEASE (ie Mathilde is the release)
 - night is over everything, even UI, not very good
+-   File "C:\work\VsCode\projects\source\Pydew_Valley\code\level.py", line 167, in run
+		self.sky.display_weather(dt, self.rain.rain_level)
+		~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+	 	File "C:\work\VsCode\projects\source\Pydew_Valley\code\sky.py", line 43, in display_weather
+		self.full_surf_weather.fill(self.current_weather_color)
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		ValueError: invalid color argument
+
 
 peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
 
@@ -114,6 +123,10 @@ nom de la monaie est l'étincelle
 
 next to do with merchant menu : add the item purchased from the special shop.
 easiest may be add another tab when initiaize shop if player.special_item not empty with only the non empty fields
+
+better day/ nigh : increase and then descrease
+
+maybe longer cooldown for hoe use
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

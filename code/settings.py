@@ -54,8 +54,8 @@ APPLE_POS = {
 	'Large': [(30,24), (60,65), (50,50), (16,40),(45,50), (42,70)]
 }
 GROW_SPEED = {
-	'Maïs': 1,
-	'Tomate': 0.7
+	'corn': 1,
+	'tomato': 0.7
 }
 SALE_PRICES = {
 	'Bois': 4,
@@ -70,4 +70,16 @@ PURCHASE_PRICES = {
 	'canne à pêche': 500,
 	'Kit de broderie': 1000,
 	'Fil blanc': 50
+}
+TRANSLATE_FR_EN = {
+	'Bois': 'wood',
+	'Pomme': 'apple',
+	'Graines de maïs': 'corn',
+	'Graines de tomate': 'tomato',
+}
+TRANSLATE_EN_FR = {
+	'wood':'Bois',
+	'apple':'Pomme',
+	'corn':'Graines de maïs',
+	'tomato':'Graines de tomate',
 }

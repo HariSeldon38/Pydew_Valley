@@ -4,12 +4,13 @@ from settings import *
 from timer import Timer
 
 class Generic(pygame.sprite.Sprite):
-    def __init__(self, pos, surface, groups, z=LAYERS['main']):
+    def __init__(self, pos, surface, groups, z=LAYERS['main'], sound_manager=None):
         super().__init__(groups)
         self.image = surface
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
         self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.35, -self.rect.height * 0.35)
+        self.sound_manager = sound_manager
 
 class CollisionShift(Generic):
     def __init__(self, pos, surface, groups, shift, inflate, z=LAYERS['main']):
@@ -66,8 +67,8 @@ class Particle(Generic):
             self.kill()
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name, all_sprites, player_add):
-        super().__init__(pos, surf, groups)
+    def __init__(self, pos, surf, groups, name, all_sprites, player_add, sound_manager):
+        super().__init__(pos, surf, groups, sound_manager=sound_manager)
         self.hitbox = self.hitbox.inflate(0, -20)
         self.down_offset_hitbox = 23
         self.hitbox.centery += self.down_offset_hitbox
@@ -77,7 +78,7 @@ class Tree(Generic):
         self.health = 5
         self.alive = True
         self.stump_surf = pygame.image.load(f'../graphics/stumps/{name.lower()}.png').convert_alpha()
-        self.invul_timer = Timer(200)
+        #self.invul_timer = Timer(200)
 
         #apples
         self.apple_surf = pygame.image.load('../graphics/fruit/apple.png').convert_alpha()
@@ -98,7 +99,8 @@ class Tree(Generic):
                 z = LAYERS['fruit'],
                 duration = 30)
             random_apple.kill()
-            self.player_add('apple')
+            self.player_add('Pomme')
+        self.sound_manager.play('axe')
 
     def check_death(self):
         if self.health <= 0:
@@ -107,7 +109,7 @@ class Tree(Generic):
             self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
-            self.player_add('wood')
+            self.player_add('Bois')
 
     def create_fruit(self):
         for pos in self.apple_pos:

@@ -1,5 +1,11 @@
 import pygame
 
+"""
+rain noise
+thunder
+
+"""
+
 class SoundManager:
     def __init__(self):
         self.sounds = {

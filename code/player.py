@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'up'
         self.lock_status = False
         self.frame_index = 0
-        self.animation_speed = 6
+        self.animation_speed = 12
 
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center = pos)
@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
         }
 
         #tools
-        self.tools = ['hoe','axe','water']
+        self.tools = ['hoe','axe','water', 'jump']
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
@@ -102,7 +102,9 @@ class Player(pygame.sprite.Sprite):
                            'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],
                            'up_hoe': [], 'down_hoe': [], 'right_hoe': [], 'left_hoe': [],
                            'up_axe': [], 'down_axe': [], 'right_axe': [], 'left_axe': [],
-                           'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],}
+                           'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],
+                           'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],}
+
         for animation in self.animations.keys():
             full_path = '../graphics/character/' + animation
             self.animations[animation] = import_folder(full_path)

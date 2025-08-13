@@ -34,7 +34,12 @@ PLAYER_TOOL_OFFSET = {
 		'left': Vector2(-95,25),
 		'right': Vector2(95,25),
 		'up': Vector2(23,-44),
-		'down': Vector2(-23,60)}
+		'down': Vector2(-23,60)},
+	'jump': {
+		'left': Vector2(-95, 25),
+		'right': Vector2(95, 25),
+		'up': Vector2(23, -44),
+		'down': Vector2(-23, 60)}
 }
 LAYERS = {
 	'water': 0,

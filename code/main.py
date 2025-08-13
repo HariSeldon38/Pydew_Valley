@@ -36,16 +36,8 @@ about dt : we need to store position into pos and not inside the rect.
 		move everything in framerate indep way we will have often float so --> error
 		so we move the pos vector and then we update the rect based on that
 
-I want the whole game to be in french
-
-spy on keys used default in stardew to see exactly what input she is used to
-
 I did duplicate some frame in idle animation in order to have a slower animation for idling
 NO a good thing to do I know, need to change that from the code if I find the time
-
-NOt Happy with collision for left side house walls especcially :
-need to create different sprite class to handle their hit box indep and put them in multiple layers in tiles.
-See that in the end
 
 add a zone unreachable, to give player the envy to reach it and when it does there is a big monster guarding something but the ^player does not have attack and he discover that he have a health bar and can die
 
@@ -55,15 +47,10 @@ un jeu n'arrative d'une heure, première choise a faire assez basique histoire �
 
 better animation for destroying trees or no anim to exacerber feeling of hand made
 
-different levels of rain
-
 IDk about the reset way for now, strange to reset when we want
 
 
-change water sprite generation, need to keep randomness but create more png with different levels of water
-darken the whole game in function of rain level,
-add random flashes if rain level>2
-add rain noise
+change watering sprite generation, need to keep randomness but create more png with different levels of water
 
 growing plants :
 	will change that so that during the day the plan can grow but when reset the time passes even more, 
@@ -91,18 +78,14 @@ Idée de base du jeu:
 collect, destroy wildflower, need a way like for harvest crops because hitxox too little
 
 BUGS:
-- glitch through invisible barrier when finish cutting two tree at once from down (I think) in the right side of map
-		caused by hitbox of stump tinier than hitbox of trees
-- animation when tool continuous : WILL NOT DO
-- lack a little bit of logic for the tiling system, WILL DO BEFORE RELEASE (ie Mathilde is the release)
-- night is over everything, even UI, not very good
--   File "C:\work\VsCode\projects\source\Pydew_Valley\code\level.py", line 167, in run
+- WND animation when tool continuous : WILL NOT DO
+- WND lack a little bit of logic for the tiling system, WILL NOT DO
+- WND night is over everything, even UI, not very good, WILL NOT DO
+- HUC File "C:\work\VsCode\projects\source\Pydew_Valley\code\level.py", line 167, in run
 		self.sky.display_weather(dt, self.rain.rain_level)
-		~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
 	 	File "C:\work\VsCode\projects\source\Pydew_Valley\code\sky.py", line 43, in display_weather
 		self.full_surf_weather.fill(self.current_weather_color)
-		~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		ValueError: invalid color argument
+		ValueError: invalid color argument  ---BUG HIDDEN UNDER CARPET WITH TRY/EXCEPT
 
 
 peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
@@ -127,6 +110,10 @@ easiest may be add another tab when initiaize shop if player.special_item not em
 better day/ nigh : increase and then descrease
 
 maybe longer cooldown for hoe use
+
+add images in the shop
+
+jump, create the feature properly
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])

@@ -3,52 +3,46 @@ from abc import ABC, abstractmethod
 from timer import Timer
 from settings import *
 
-class Shop:
+class ShopManager:
     """my solution involve certain attributes required when creating class (ShopLogic)
     but are not define as abstractmethod property, (except 'transaction') otherwise will be too heavy"""
     def __init__(self, player):
         self.player = player
 
-        self.input_timer = Timer(260) #for both Shop and ShopLogic classes
-
         #tab management
-        self.buy_shop = BuyShop(player, self.input_timer)
-        self.sell_shop = SellShop(player, self.input_timer)
-        self.special_shop = SpecialShop(player, self.input_timer)
-        self.shops = [self.buy_shop,self.sell_shop, self.special_shop]
+        self.shops = [
+            BuyShop(player),
+            SellShop(player),
+            SpecialShop(player)
+        ]
         self.shop_index = 0
 
-    def input(self):
-        """From here player can close the shop menu
-        or switch between the different tabs/shops"""
-        keys = pygame.key.get_pressed()
-        self.input_timer.update()
-
-        if keys[pygame.K_RETURN] and not self.player.timers['menu toggle'].active:
-            self.toggle_shop()
-            self.player.timers['menu toggle'].activate()
-        if not self.input_timer.active:
-            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                self.shop_index -= 1
-                self.input_timer.activate()
-            if keys[pygame.K_LEFT] or keys[pygame.K_q]:
-                self.shop_index += 1
-                self.input_timer.activate()
+    def handle_input(self, events):
+        """From here player can switch between the different tabs/shops"""
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key in [pygame.K_RIGHT, pygame.K_d]:
+                    self.shop_index -= 1
+                elif event.key in [pygame.K_LEFT, pygame.K_q]:
+                    self.shop_index += 1
         if self.shop_index < 0:
             self.shop_index = len(self.shops)-1
         if self.shop_index > len(self.shops)-1:
             self.shop_index = 0
 
-        return keys
+        #then we call input method of the current shop that handle item selection (vertical movement)
+        self.shops[self.shop_index].handle_input(events)
 
     def update(self):
-        keys = self.input() #we pass the keys here to not call get_pressed twice
-        self.shops[self.shop_index].update(keys)
+        self.shops[self.shop_index].update()
+
+    def draw(self, screen):
+        """for now separating update and drawing is not implemented"""
+        pass
 
 class ShopLogic(ABC):
-    def __init__(self, player, input_timer):
+    def __init__(self, player):
         self.player = player
-        self.input_timer = input_timer
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
         self.title_font = pygame.font.Font('../font/LycheeSoda.ttf', 35)
@@ -127,39 +121,36 @@ class ShopLogic(ABC):
             pos_rect = self.action_text.get_rect(center = (self.main_rect.centerx + 42, bg_rect.centery))
             self.display_surface.blit(self.action_text, pos_rect)
 
-    def input(self, keys):
-        # no need to update timer and get_pressed, Shop.input do it already
-        if not self.input_timer.active:
-            if keys[pygame.K_UP] or keys[pygame.K_z]:
-                self.index -= 1
-                self.input_timer.activate()
-            if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-                self.index += 1
-                self.input_timer.activate()
-            if keys[pygame.K_SPACE]:
-                self.input_timer.activate()
-                self.current_item = self.options[self.index]
-                self.transaction()
+    def handle_input(self, events):
+        """From here player can switch between the different items in the current shop
+        and interact with it (buy or sell)"""
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key in [pygame.K_UP, pygame.K_z]:
+                    self.index -= 1
+                if event.key in [pygame.K_DOWN, pygame.K_s]:
+                    self.index += 1
+                if event.key == pygame.K_SPACE:
+                    self.current_item = self.options[self.index]
+                    self.transaction()
         if self.index < 0:
             self.index = len(self.options) - 1
         if self.index > len(self.options) - 1:
             self.index = 0
         self.current_item = self.options[self.index]
 
-    def update(self,keys):
-        self.input(keys)
+    def update(self):
         self.display_money()
         self.display_arrow_boxes()
         self.display_shop_title()
-        self.player.timers['menu toggle'].update() #when on a menu nothing update, that concerns timers also
         for text_index, text_surf in enumerate(self.text_surfs):
             top = self.main_rect.top + text_index * (text_surf.get_height() + self.padding*2 + self.space)
             self.show_entry(text_surf, self.inventory[self.options[text_index]], top, self.index==text_index)
 
 class SellShop(ShopLogic):
-    def __init__(self, player, input_timer):
+    def __init__(self, player):
         self.inventory = player.item_inventory
-        super().__init__(player, input_timer)
+        super().__init__(player)
         self.current_item = self.options[self.index]
         self.title = 'comptoir des récoltes'
 
@@ -175,9 +166,9 @@ class SellShop(ShopLogic):
             self.player.money += SALE_PRICES[self.current_item]
 
 class BuyShop(ShopLogic):
-    def __init__(self, player, input_timer):
+    def __init__(self, player):
         self.inventory = player.seed_inventory
-        super().__init__(player, input_timer)
+        super().__init__(player)
         self.current_item = self.options[self.index]
         self.title = 'Marché aux graines'
 
@@ -195,8 +186,8 @@ class BuyShop(ShopLogic):
             self.player.money -= item_price
 
 class SpecialShop(BuyShop):
-    def __init__(self, player, input_timer):
-        super().__init__(player, input_timer)
+    def __init__(self, player):
+        super().__init__(player)
         self.inventory = player.special_inventory
         self.title = 'Trésors et reliques'
     @property

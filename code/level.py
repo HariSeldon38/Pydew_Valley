@@ -9,7 +9,6 @@ from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Partic
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
-from menu import Shop
 from sound import SoundManager
 from menu import StateManager
 from debug import debug

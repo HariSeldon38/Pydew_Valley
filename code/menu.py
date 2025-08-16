@@ -1,15 +1,29 @@
 import pygame
 #from abc import ABC, abstractmethod
-from shop import Shop
+from shop import ShopManager
 from transition import Transition
 
 class StateManager:
+    """This class allow to open/close all the menus of the game.
+
+    There is at most 4 levels of input handling :
+
+        event based handling :
+        main.py : Escape to close the game (will be changed later)
+            level.py: open/close menus
+                shop.py/TabManager: horizontaly switch tab in a shop menu
+                    shop.py.ShopLogic: vertically select item and interact
+
+        beside that there is another way to check inputs in the main state of the game:
+        input/timer based handling:
+        player.py: movement and environement interaction (except for interaction that triggers a menu)
+    """
     def __init__(self, player):
         self.player = player
 
         self.states = {
             "inventory": InventoryMenu(),
-            "shop": Shop(self.player),
+            "shop": ShopManager(self.player),
             "pause": PauseMenu(),
         }
         self.active_state_name = None  # e.g. "shop", "inventory", etc.

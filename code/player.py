@@ -35,7 +35,6 @@ class Player(pygame.sprite.Sprite):
             'seed use': Timer(350, self.use_seed),
             'seed switch': Timer(350),
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
-            'menu toggle': Timer(350),
         }
 
         #tools
@@ -50,14 +49,14 @@ class Player(pygame.sprite.Sprite):
 
         #inventory
         self.item_inventory = {
-            'Bois': 5,
-            'Pomme': 6,
-            'Maïs': 7,
-            'Tomate': 8,
+            'Bois': 0,
+            'Pomme': 0,
+            'Maïs': 0,
+            'Tomate': 0,
         }
         self.seed_inventory = {
-            'Graines de maïs': 3,
-            'Graines de tomate': 2,
+            'Graines de maïs': 0,
+            'Graines de tomate': 0,
         }
         self.special_inventory = {
             'Bonnet noir': 0,
@@ -115,6 +114,12 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         keys = pygame.key.get_pressed()
+
+
+        if keys[pygame.K_m]:
+            print(self.item_inventory)
+            print(self.seed_inventory)
+            print(self.special_inventory)
 
         if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
             self.timers['rain switch'].activate()

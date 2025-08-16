@@ -118,6 +118,15 @@ jump, create the feature properly
 
 add little dialogue box when trying to plant a seed we don't have
 
+close menu with same key that open it
+
+change color apple, mor bright in inventory (TOKEN)
+(when adding multi color tomatoes)
+
+more complex meteo, like day whith low proba of rain, and day with high proba
+
+bug apple flying after cut tree
+
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])
 git log --oneline    : display previous commit and state of master and origin

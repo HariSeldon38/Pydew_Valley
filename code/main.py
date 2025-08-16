@@ -13,13 +13,14 @@ class Game:
 
 	def run(self):
 		while True:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
+			events = pygame.event.get()
+			for event in events:
+				if event.type == pygame.QUIT:  # closing the window
 					pygame.quit()
 					sys.exit()
-  
-			dt = self.clock.tick() / 1000 #delta time
-			self.level.run(dt)
+
+			dt = self.clock.tick() / 1000  # delta time
+			self.level.run(events, dt)
 			pygame.display.update()
 
 if __name__ == '__main__':

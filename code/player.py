@@ -4,7 +4,7 @@ from support import *
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, toggle_shop, sound_manager): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, sound_manager): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -27,7 +27,6 @@ class Player(pygame.sprite.Sprite):
         self.hitbox = self.rect.copy().inflate((-126,-90))
         self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
-
 
         #timers
         self.timers = {
@@ -73,7 +72,6 @@ class Player(pygame.sprite.Sprite):
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
-        self.toggle_shop = toggle_shop
 
         self.sound_manager = sound_manager
 
@@ -118,9 +116,6 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_ESCAPE]: #-------------------------------------------------------------to delete before release
-            pygame.quit()
-            sys.exit()
         if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
             self.timers['rain switch'].activate()
             self.rain.rain_level += 1
@@ -186,10 +181,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_RETURN] and not self.sleep:
             collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, dokill=False)
             if collided_interaction_sprite:
-                if collided_interaction_sprite[0].name == 'Trader' and not self.timers['menu toggle'].active:
-                    self.toggle_shop()
-                    self.timers['menu toggle'].activate()
-                elif collided_interaction_sprite[0].name == 'Bed':
+                if collided_interaction_sprite[0].name == 'Bed':
                     self.status = 'left_idle'
                     self.sleep = True
 
@@ -220,6 +212,12 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.bottom = sprite.hitbox.top
                         if self.direction.y < 0: #moving up
                             self.hitbox.top = sprite.hitbox.bottom
+
+    def trader_nearby(self):
+        for sprite in pygame.sprite.spritecollide(self, self.interaction, dokill=False):
+            if getattr(sprite, 'name', None) == 'Trader':
+                return True
+        return False
 
     def move(self, dt):
         """due to last line, can't move at lower speed that 1 px/ frame (177 speed)

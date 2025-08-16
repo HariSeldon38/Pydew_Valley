@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from pytmx.util_pygame import load_pygame
 from random import randint
 from settings import *
@@ -11,6 +11,7 @@ from soil import SoilLayer
 from sky import Rain, Sky
 from menu import Shop
 from sound import SoundManager
+from menu import StateManager
 from debug import debug
 
 class Level:
@@ -36,9 +37,7 @@ class Level:
 		self.overlay = Overlay(self.player)
 		self.transition = Transition(self.reset, self.player)
 
-		#shop
-		self.shop_menu = Shop(self.player, self.toggle_shop)
-		self.shop_active = False
+		self.state_manager = StateManager(self.player)
 
 	def setup(self):
 		tmx_data = load_pygame('../data/map.tmx')
@@ -96,7 +95,6 @@ class Level:
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
 					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
-					toggle_shop = self.toggle_shop,
 					sound_manager = self.sound_manager)
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
@@ -123,18 +121,15 @@ class Level:
 
 		#soil
 		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
-		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
-		self.rain.update_rain_color(0)
 
 		#sky
+		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
+		self.rain.update_rain_color(0)
 		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
 
 	def player_add(self, item):
 		self.player.item_inventory[item] += 1
 		self.sound_manager.play("pickup")
-
-	def toggle_shop(self):
-		self.shop_active = not self.shop_active
 
 	def plant_collision(self):
 		if self.soil_layer.plant_sprites:
@@ -142,22 +137,45 @@ class Level:
 				if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
 					if plant.plant_type == 'corn': name = 'Maïs'
 					if plant.plant_type == 'tomato': name = 'Tomate'
-					print(plant.plant_type)
 					self.player_add(name)
 					plant.kill()
 					Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
 					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')
 
-	def run(self,dt):
+	def run(self, events, dt):
 
 		#drawing logic
 		self.display_surface.fill('black')
 		self.all_sprites.custom_draw(self.player)
-		self.overlay.display()
 
-		#update
-		if self.shop_active:
-			self.shop_menu.update()
+		#visual ambiance
+		self.sky.display_night(dt)
+		self.sky.display_weather(dt, self.rain.rain_level)
+		debug(self.rain.rain_level)
+
+		# manage states
+		for event in events:
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_i and not self.state_manager.active_state:
+					self.state_manager.open_state("inventory")
+				elif event.key == pygame.K_RETURN and self.player.trader_nearby() and not self.state_manager.active_state:
+					self.state_manager.open_state("shop")
+				elif event.key == pygame.K_p and not self.state_manager.active_state:  # before release change this to ESCAPE if not self.menu_manager.active_menu
+					self.state_manager.open_state(
+						"pause")  # here would need to be able to stack menu but for now I will not impement that
+				elif event.key == pygame.K_k:  # before release change this to ESCAPE
+					self.state_manager.close_state()
+				elif event.key == pygame.K_ESCAPE:
+					pygame.quit()
+					sys.exit()
+
+		# menu
+		if self.state_manager.active_state:
+			self.state_manager.handle_input(events)
+			self.state_manager.update()
+			self.state_manager.draw(self.display_surface)
+
+		#game
 		else:
 			self.all_sprites.update(dt)
 			self.plant_collision()
@@ -167,14 +185,11 @@ class Level:
 			if self.rain.rain_level:
 				self.rain.update()
 				self.soil_layer.water_all(rain_level=self.rain.rain_level)
-			self.sky.display_weather(dt, self.rain.rain_level)
-			debug(self.rain.rain_level)
-
-		#daytime
-		self.sky.display_night(dt)
 
 		if self.player.sleep:
 			self.transition.play()
+
+		self.overlay.display()
 
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):

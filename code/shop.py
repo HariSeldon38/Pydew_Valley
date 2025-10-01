@@ -3,49 +3,50 @@ from abc import ABC, abstractmethod
 from settings import *
 
 SALE_PRICES = {
-	'Bois': 4,
-	'Pomme': 2,
-	'Maïs': 10,
-	'Tomate': 20
+	'wood': 4,
+	'apple': 2,
+	'corn': 10,
+	'tomato': 20
 }
 PURCHASE_PRICES = {
-	'Graines de maïs': 4,
-	'Graines de tomate': 5,
-	'Bonnet noir': 500,
-	'canne à pêche': 500,
-	'Kit de broderie': 1000,
-	'Fil blanc': 50
+	'corn_seed': 4,
+	'tomato_seed': 5,
+	'black_beanie': 500,
+	'fishing_rod': 500,
+	'seewing_needle': 1000,
+	'white_thread': 50
 }
 SELL_SHOP_INVENTORY = {
-    'Bois': None,
-    'Pomme': None,
-    'Maïs': None,
-    'Tomate': None,
+    'wood': None,
+    'apple': None,
+    'corn': None,
+    'tomato': None,
 }
 BUY_SHOP_INVENTORY = {
-    'Graines de maïs': float('inf'),
-    'Graines de tomate': float('inf'),
+    'corn_seed': float('inf'),
+    'tomato_seed': float('inf'),
 }
 SPECIAL_SHOP_INVENTORY = {
-    'Bonnet noir': 1,
-    'canne à pêche': 0,
-    'Kit de broderie': 0,
-    'Fil blanc': 0,
+    'black_beanie': 1,
+    'fishing_rod': 1,
+    'seewing_needle': 1,
+    'white_thread': 1,
 }
 
 class ShopManager:
     """my solution involve certain attributes required when creating class (ShopLogic)
     but are not define as abstractmethod property, (except 'transaction') otherwise will be too heavy"""
-    def __init__(self, player):
+    def __init__(self, player, item_loader):
         self.player = player
 
         #tab management
         self.shops = [
-            BuyShop(player),
-            SellShop(player),
-            SpecialShop(player)
+            BuyShop(player, item_loader),
+            SellShop(player, item_loader),
+            SpecialShop(player, item_loader)
         ]
         self.shop_index = 0
+        self.item_loader = item_loader
 
     def handle_input(self, events):
         """From here player can switch between the different tabs/shops"""
@@ -71,11 +72,12 @@ class ShopManager:
         pass
 
 class ShopLogic(ABC):
-    def __init__(self, player):
+    def __init__(self, player, item_loader):
         self.player = player
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
         self.title_font = pygame.font.Font('../font/LycheeSoda.ttf', 35)
+        self.item_loader = item_loader
 
         #options
         self.width = 700
@@ -92,7 +94,7 @@ class ShopLogic(ABC):
         self.total_height = 0
         for item in self.inventory:
             if self.inventory[item] != 0:
-                text_surf = self.font.render(item, False, 'black')
+                text_surf = self.font.render(self.item_loader.get_name(item), False, 'black')
                 self.text_surfs.append(text_surf)
                 self.total_height += text_surf.get_height() + (self.padding * 2)
         if self.text_surfs:
@@ -215,33 +217,33 @@ class ShopLogic(ABC):
             self.show_empty_shop()
 
 class SellShop(ShopLogic):
-    def __init__(self, player):
+    def __init__(self, player, item_loader):
         self.title = 'comptoir des récoltes'
         self.mode = 'sell'
         self.inventory = SELL_SHOP_INVENTORY
-        super().__init__(player)
+        super().__init__(player, item_loader)
         self.current_item = self.options[self.index]
     @property
     def action_text(self):
         return self.font.render(f'prix de vente: {SALE_PRICES[self.current_item]}*', False, 'black')
 
 class BuyShop(ShopLogic):
-    def __init__(self, player):
+    def __init__(self, player, item_loader):
         self.title = 'Marché aux graines'
         self.mode = 'buy'
         self.inventory = BUY_SHOP_INVENTORY
-        super().__init__(player)
+        super().__init__(player, item_loader)
         self.current_item = self.options[self.index]
     @property
     def action_text(self):
         return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')
 
 class SpecialShop(ShopLogic):
-    def __init__(self, player):
+    def __init__(self, player, item_loader):
         self.title = 'Trésors et reliques'
         self.mode = 'buy'
         self.inventory = SPECIAL_SHOP_INVENTORY
-        super().__init__(player)
+        super().__init__(player, item_loader)
         self.current_item = self.options[self.index]
     @property
     def action_text(self):

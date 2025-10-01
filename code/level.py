@@ -10,12 +10,15 @@ from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
 from sound import SoundManager
-from menu import StateManager
+from state_manager import StateManager
+from loader import ItemCSVLoader
 from debug import debug
 
 class Level:
 	def __init__(self):
 		self.display_surface = pygame.display.get_surface()
+
+		self.item_loader = ItemCSVLoader('../data/items_fr.csv')
 
 		#sound
 		self.sound_manager = SoundManager()
@@ -36,7 +39,7 @@ class Level:
 		self.overlay = Overlay(self.player)
 		self.transition = Transition(self.reset, self.player)
 
-		self.state_manager = StateManager(self.player)
+		self.state_manager = StateManager(self.player, self.item_loader)
 
 	def setup(self):
 		tmx_data = load_pygame('../data/map.tmx')
@@ -94,7 +97,8 @@ class Level:
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
 					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
-					sound_manager = self.sound_manager)
+					sound_manager = self.sound_manager,
+					item_loader = self.item_loader)
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 			if obj.name == 'Trader':
@@ -135,9 +139,7 @@ class Level:
 		if self.soil_layer.plant_sprites:
 			for plant in self.soil_layer.plant_sprites.sprites():
 				if plant.harvestable and plant.rect.colliderect(self.player.hitbox):
-					if plant.plant_type == 'corn': name = 'Maïs'
-					if plant.plant_type == 'tomato': name = 'Tomate'
-					self.player_add(name)
+					self.player_add(plant.plant_type)
 					plant.kill()
 					Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
 					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')

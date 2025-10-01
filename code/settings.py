@@ -62,27 +62,3 @@ GROW_SPEED = {
 	'corn': 1,
 	'tomato': 0.7
 }
-TRANSLATE_FR_EN = {
-	'Bois': 'wood',
-	'Pomme': 'apple',
-	'Graines de maïs': 'corn',
-	'Graines de tomate': 'tomato',
-}
-TRANSLATE_EN_FR = {
-	'wood':'Bois',
-	'apple':'Pomme',
-	'corn':'Graines de maïs',
-	'tomato':'Graines de tomate',
-}
-ITEM_TOKEN = {
-	'Bois': '../graphics/token/wood.png',
-	'Pomme': '../graphics/token/apple.png',
-	'Maïs': '../graphics/token/corn.png',
-	'Tomate': '../graphics/token/tomato.png',
-	'Graines de maïs': '../graphics/token/corn_seed.png',
-	'Graines de tomate': '../graphics/token/tomato_seed.png',
-	'Bonnet noir': '../graphics/token/placeholder.png',
-	'canne à pêche': '../graphics/token/placeholder.png',
-	'Kit de broderie': '../graphics/token/placeholder.png',
-	'Fil blanc': '../graphics/token/placeholder.png',
-}

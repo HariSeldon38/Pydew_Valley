@@ -116,7 +116,6 @@ add images in the shop
 
 jump, create the feature properly
 
-add little dialogue box when trying to plant a seed we don't have
 
 close menu with same key that open it
 
@@ -141,11 +140,16 @@ important things to do :
 
 quality of life :
 	buy and sell different colors
-	text decriptif de ce qui se passe en bas de l'écran : inventory += pomme etc... obje obtenus
+	text decriptif de ce qui se passe en bas de l'écran : 
+		inventory += pomme etc... obje obtenus
+		add little dialogue box when trying to plant a seed we don't have
+	tomato and apple look too alike
+
 
 too complex/ ambitious
 	separate shop into multiple stands, unlockable (especially Trésor et reliques)
 
+could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
 
 
 

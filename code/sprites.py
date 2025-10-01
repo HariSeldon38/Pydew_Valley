@@ -98,7 +98,7 @@ class Tree(Generic):
                 z = LAYERS['fruit'],
                 duration = 30)
             random_apple.kill()
-            self.player_add('Pomme')
+            self.player_add('apple')
         self.sound_manager.play('axe')
 
     def check_death(self):
@@ -108,7 +108,7 @@ class Tree(Generic):
             self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate(-10, -self.rect.height * 0.6)
             self.alive = False
-            self.player_add('Bois')
+            self.player_add('wood')
 
     def create_fruit(self):
         for pos in self.apple_pos:

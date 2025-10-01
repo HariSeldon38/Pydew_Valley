@@ -4,7 +4,7 @@ from support import *
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, sound_manager): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, sound_manager, item_loader): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -48,7 +48,16 @@ class Player(pygame.sprite.Sprite):
         self.selected_seed = self.seeds[self.seed_index]
 
         #inventory
+        #self.item_inventory = {
+        #}
         self.item_inventory = {
+            'corn' : 1,
+            'tomato': 1,
+            'corn_seed': 1,
+            'tomato_seed': 1,
+            'apple': 1,
+            'wood': 1,
+
         }
         self.money = 20000
 
@@ -59,6 +68,7 @@ class Player(pygame.sprite.Sprite):
         self.soil_layer = soil_layer
 
         self.sound_manager = sound_manager
+        self.item_loader = item_loader
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
@@ -72,10 +82,9 @@ class Player(pygame.sprite.Sprite):
             self.sound_manager.play('watering')
 
     def use_seed(self):
-        FR_name = TRANSLATE_EN_FR[self.selected_seed]
-        if self.seed_inventory[FR_name] > 0:
+        if self.item_inventory.get(self.selected_seed+"_seed", 0) > 0:
             self.soil_layer.plant_seed(self.target_position, self.selected_seed)
-            self.seed_inventory[FR_name] -= 1
+            self.item_inventory[self.selected_seed+"_seed"] -= 1
 
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
@@ -100,7 +109,6 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         keys = pygame.key.get_pressed()
-
 
         if keys[pygame.K_m]:
             print(self.item_inventory)

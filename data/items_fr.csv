@@ -1,0 +1,12 @@
+id,name,image_path,desc
+wood,Bois,../graphics/token/wood.png,Une bûche en bois de chêne. Basique mais robuste
+apple,Pomme,../graphics/token/apple.png,Le roi des fruits. Un grand classique
+corn,Maïs,../graphics/token/corn.png,Rien qu'une valeur marchande pour certains... Chacun ses goûts
+tomato,Tomate,../graphics/token/tomato.png,Mozzarella non fournie
+corn_seed,Graines de maïs,../graphics/token/corn_seed.png,À planter dans la terre humide
+tomato_seed,Graines de tomate,../graphics/token/tomato_seed.png,De quelle couleur seront les fruits ? Affaire à suivre...
+black_beanie,Bonnet noir,../graphics/token/placeholder.png,"Un simple couvre chef d'hiver. Idéal pour l'extérieur, mais pas seulement"
+fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher de bons poissons, du saumon avec beaucoup de chance"
+seewing_needle,Aiguille de couture,../graphics/token/placeholder.png,Donne accès à un univers de créativité infini
+white_thread,Fil blanc,../graphics/token/placeholder.png,Saura se rendre utile...
+,Bonnet stylisé,,Pour un look de rockstar !

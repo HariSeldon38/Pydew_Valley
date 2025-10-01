@@ -127,13 +127,24 @@ more complex meteo, like day whith low proba of rain, and day with high proba
 
 bug apple flying after cut tree
 
+add mention "paused" in inventory
+
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])
 git log --oneline    : display previous commit and state of master and origin
 pour parcourir un group : for sprite in self.collision_sprites.sprites(): pas oublier .sprites() (demander à gpt pk)
 
+important things to do :
+	panel with description of object in inventory
+	PNJ
+	Music
 
+quality of life :
+	buy and sell different colors
+	text decriptif de ce qui se passe en bas de l'écran : inventory += pomme etc... obje obtenus
 
+too complex/ ambitious
+	separate shop into multiple stands, unlockable (especially Trésor et reliques)
 
 
 

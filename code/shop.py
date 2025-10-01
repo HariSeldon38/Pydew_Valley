@@ -1,7 +1,37 @@
 import pygame
 from abc import ABC, abstractmethod
-from timer import Timer
 from settings import *
+
+SALE_PRICES = {
+	'Bois': 4,
+	'Pomme': 2,
+	'Maïs': 10,
+	'Tomate': 20
+}
+PURCHASE_PRICES = {
+	'Graines de maïs': 4,
+	'Graines de tomate': 5,
+	'Bonnet noir': 500,
+	'canne à pêche': 500,
+	'Kit de broderie': 1000,
+	'Fil blanc': 50
+}
+SELL_SHOP_INVENTORY = {
+    'Bois': None,
+    'Pomme': None,
+    'Maïs': None,
+    'Tomate': None,
+}
+BUY_SHOP_INVENTORY = {
+    'Graines de maïs': float('inf'),
+    'Graines de tomate': float('inf'),
+}
+SPECIAL_SHOP_INVENTORY = {
+    'Bonnet noir': 1,
+    'canne à pêche': 0,
+    'Kit de broderie': 0,
+    'Fil blanc': 0,
+}
 
 class ShopManager:
     """my solution involve certain attributes required when creating class (ShopLogic)
@@ -60,11 +90,16 @@ class ShopLogic(ABC):
     def setup(self):
         self.text_surfs = []
         self.total_height = 0
-        for item in self.options:
-            text_surf = self.font.render(item, False, 'black')
-            self.text_surfs.append(text_surf)
-            self.total_height += text_surf.get_height() + (self.padding * 2)
-        self.total_height += (len(self.text_surfs) - 1) * self.space
+        for item in self.inventory:
+            if self.inventory[item] != 0:
+                text_surf = self.font.render(item, False, 'black')
+                self.text_surfs.append(text_surf)
+                self.total_height += text_surf.get_height() + (self.padding * 2)
+        if self.text_surfs:
+            self.total_height += (len(self.text_surfs) - 1) * self.space
+            self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
+        else:
+            self.total_height = 46
         self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
         self.main_rect = pygame.Rect(SCREEN_WIDTH / 2 - self.width / 2, self.menu_top, self.width, self.total_height)
 
@@ -93,14 +128,29 @@ class ShopLogic(ABC):
     def action_text(self):
         pass
 
-    @property
-    @abstractmethod
-    def options(self):
-        pass
+    def transaction(self, mode):
+        if self.mode == 'buy':
+            item_price = PURCHASE_PRICES[self.current_item]
+            if self.player.money >= item_price:
+                self.player.item_inventory.setdefault(self.current_item, 0)
+                self.player.item_inventory[self.current_item] += 1
+                self.player.money -= item_price
+                self.inventory[self.current_item] -= 1
+                self.setup()
+                print(self.inventory)
+                print(self.player.item_inventory)
+                if self.inventory[self.current_item] < 0:
+                    raise ValueError("An item has negative quantities")
+        if self.mode == 'sell':
+            if self.current_item in self.player.item_inventory.keys() and self.player.item_inventory[self.current_item] > 0:
+                self.player.item_inventory[self.current_item] -= 1
+                self.player.money += SALE_PRICES[self.current_item]
 
-    @abstractmethod
-    def transaction(self):
-        pass
+    @property
+    def options(self):
+        if all(value==0 for value in self.inventory.values()):
+            return [None]
+        return [item for item in self.inventory if self.inventory[item]!=0] #items depleted in shop are not an option
 
     def show_entry(self, text_surf, amount, top, selected):
         #background
@@ -121,6 +171,16 @@ class ShopLogic(ABC):
             pos_rect = self.action_text.get_rect(center = (self.main_rect.centerx + 42, bg_rect.centery))
             self.display_surface.blit(self.action_text, pos_rect)
 
+    def show_empty_shop(self):
+        # background
+        bg_rect = pygame.Rect(self.main_rect.centerx-300, 337, 600, 46)
+        pygame.draw.rect(self.display_surface, 'white', bg_rect, 0, 4)
+        
+        # text
+        text_surf = self.title_font.render("Désolé cet étal est vide pour le moment", False, 'black')
+        text_rect = text_surf.get_rect(center=bg_rect.center)
+        self.display_surface.blit(text_surf, text_rect)
+
     def handle_input(self, events):
         """From here player can switch between the different items in the current shop
         and interact with it (buy or sell)"""
@@ -132,7 +192,8 @@ class ShopLogic(ABC):
                     self.index += 1
                 if event.key == pygame.K_SPACE:
                     self.current_item = self.options[self.index]
-                    self.transaction()
+                    if self.current_item: #ie if shop not empty
+                        self.transaction(self.mode)
         if self.index < 0:
             self.index = len(self.options) - 1
         if self.index > len(self.options) - 1:
@@ -143,56 +204,46 @@ class ShopLogic(ABC):
         self.display_money()
         self.display_arrow_boxes()
         self.display_shop_title()
-        for text_index, text_surf in enumerate(self.text_surfs):
-            top = self.main_rect.top + text_index * (text_surf.get_height() + self.padding*2 + self.space)
-            self.show_entry(text_surf, self.inventory[self.options[text_index]], top, self.index==text_index)
+        if self.text_surfs:
+            for text_index, text_surf in enumerate(self.text_surfs):
+                top = self.main_rect.top + text_index * (text_surf.get_height() + self.padding*2 + self.space)
+                if self.options[text_index] in self.player.item_inventory.keys():
+                    amount = self.player.item_inventory[self.options[text_index]]
+                else : amount = 0
+                self.show_entry(text_surf, amount, top, self.index==text_index)
+        else:
+            self.show_empty_shop()
 
 class SellShop(ShopLogic):
     def __init__(self, player):
-        self.inventory = player.item_inventory
+        self.title = 'comptoir des récoltes'
+        self.mode = 'sell'
+        self.inventory = SELL_SHOP_INVENTORY
         super().__init__(player)
         self.current_item = self.options[self.index]
-        self.title = 'comptoir des récoltes'
-
     @property
     def action_text(self):
         return self.font.render(f'prix de vente: {SALE_PRICES[self.current_item]}*', False, 'black')
-    @property
-    def options(self):
-        return list(self.inventory.keys())
-    def transaction(self):
-        if self.inventory[self.current_item] > 0:
-            self.inventory[self.current_item] -= 1
-            self.player.money += SALE_PRICES[self.current_item]
 
 class BuyShop(ShopLogic):
     def __init__(self, player):
-        self.inventory = player.seed_inventory
+        self.title = 'Marché aux graines'
+        self.mode = 'buy'
+        self.inventory = BUY_SHOP_INVENTORY
         super().__init__(player)
         self.current_item = self.options[self.index]
-        self.title = 'Marché aux graines'
-
     @property
     def action_text(self):
         return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')
-    @property
-    def options(self):
-        return list(self.inventory.keys())
-    def transaction(self):
-        item_price = PURCHASE_PRICES[self.current_item]
-        if self.player.money >= item_price:
-            self.inventory.setdefault(self.current_item, 0)
-            self.inventory[self.current_item] += 1
-            self.player.money -= item_price
 
-class SpecialShop(BuyShop):
+class SpecialShop(ShopLogic):
     def __init__(self, player):
-        super().__init__(player)
-        self.inventory = player.special_inventory
         self.title = 'Trésors et reliques'
+        self.mode = 'buy'
+        self.inventory = SPECIAL_SHOP_INVENTORY
+        super().__init__(player)
+        self.current_item = self.options[self.index]
     @property
-    def options(self):
-        """cannot use inventory because it would be seed_inventory no matter what I do,
-        used before I redefine it in super()init and if super after, will redefine it itself."""
-        return list(self.player.special_inventory.keys())
+    def action_text(self):
+        return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')
 

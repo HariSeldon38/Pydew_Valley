@@ -1,7 +1,6 @@
 import pygame
 #from abc import ABC, abstractmethod
 from shop import ShopManager
-from transition import Transition
 from settings import *
 
 class StateManager:
@@ -85,14 +84,14 @@ class InventoryMenu(Menu):
         grid_heigth = rows*cell_size[1]+(rows-1)*margin
         grid_center = (grid_width//2, grid_heigth//2)
 
-        center_cells = []
+        center_cells = [[] for i in range(rows)]
         for i in range(cols):
             xoffset = i * (cell_size[1] + margin)
             for j in range(rows):
                 yoffset = j * (cell_size[0] + margin)
                 box_rect = surface.get_rect(topleft=(pos[0]+xoffset-grid_center[0],pos[1]+yoffset-grid_center[1]))
                 screen.blit(self.box, box_rect)
-                center_cells.append(box_rect.center)
+                center_cells[j].append(box_rect.center)
 
         return center_cells
 
@@ -111,19 +110,16 @@ class InventoryMenu(Menu):
         item_list = []
         for item_name, quantity in self.player.item_inventory.items():
             item_list.extend([item_name] * quantity)
-        for item_name, quantity in self.player.seed_inventory.items():
-            item_list.extend([item_name] * quantity)
-        for item_name, quantity in self.player.special_inventory.items():
-            item_list.extend([item_name] * quantity)
 
         # Draw each item into a cell
+        nb_cols = len(cell_centers[0])
         for idx, item_name in enumerate(item_list):
-            if idx >= len(cell_centers):
+            if idx >= len(cell_centers)*len(cell_centers[0]):
                 break  # Avoid overflow if too many items
 
             icon = item_images.get(item_name)
             if icon:
-                icon_rect = icon.get_rect(center=cell_centers[idx])
+                icon_rect = icon.get_rect(center=cell_centers[idx//nb_cols][idx%nb_cols])
                 screen.blit(icon, icon_rect)
 
     def display_money(self, screen):

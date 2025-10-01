@@ -62,20 +62,6 @@ GROW_SPEED = {
 	'corn': 1,
 	'tomato': 0.7
 }
-SALE_PRICES = {
-	'Bois': 4,
-	'Pomme': 2,
-	'Maïs': 10,
-	'Tomate': 20
-}
-PURCHASE_PRICES = {
-	'Graines de maïs': 4,
-	'Graines de tomate': 5,
-	'Bonnet noir': 500,
-	'canne à pêche': 500,
-	'Kit de broderie': 1000,
-	'Fil blanc': 50
-}
 TRANSLATE_FR_EN = {
 	'Bois': 'wood',
 	'Pomme': 'apple',

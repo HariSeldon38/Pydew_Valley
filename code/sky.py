@@ -20,26 +20,27 @@ class Sky:
         self.rain_color = []
         self.ongoing_flash = False
 
-    def display_night(self, dt):
-        for index, value in enumerate(self.night_color):
-            if self.current_color[index] > value:
-                self.current_color[index] -= 1 * dt
+    def display_daylight(self):
         self.full_surf.fill(self.current_color)
         self.display_surface.blit(self.full_surf, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
-    #def increment_color(self, dt, current_color, target_color, speed)
+    def update_daylight(self, dt):
+        for index, value in enumerate(self.night_color):
+            if self.current_color[index] > value:
+                self.current_color[index] -= 1 * dt
 
     def display_weather(self, dt, rain_level):
         """could be good to gather in a single function
-        increasing/decreasing current_color to reach target"""
+        increasing/decreasing current_color to reach target
+        #def increment_color(self, dt, current_color, target_color, speed)"""
 
         #luminosity change based on rain level
         if not self.ongoing_flash:
             for index, value in enumerate(self.rain_color):
                 if self.current_weather_color[index] > value:
-                    self.current_weather_color[index] -= 26 * dt
+                    self.current_weather_color[index] -= 17 * dt
                 elif self.current_weather_color[index] < value:
-                    self.current_weather_color[index] += 26 * dt
+                    self.current_weather_color[index] += 17 * dt
             try:
                 self.full_surf_weather.fill(self.current_weather_color)
             except ValueError:

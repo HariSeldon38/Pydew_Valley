@@ -78,7 +78,6 @@ class Tree(Generic):
         self.health = 5
         self.alive = True
         self.stump_surf = pygame.image.load(f'../graphics/stumps/{name.lower()}.png').convert_alpha()
-        #self.invul_timer = Timer(200)
 
         #apples
         self.apple_surf = pygame.image.load('../graphics/fruit/apple.png').convert_alpha()

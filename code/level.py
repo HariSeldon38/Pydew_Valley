@@ -127,6 +127,7 @@ class Level:
 		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
 
 	def player_add(self, item):
+		self.player.item_inventory.setdefault(item, 0)
 		self.player.item_inventory[item] += 1
 		self.sound_manager.play("pickup")
 
@@ -148,7 +149,7 @@ class Level:
 		self.all_sprites.custom_draw(self.player)
 
 		#visual ambiance
-		self.sky.display_night(dt)
+		self.sky.display_daylight()
 		self.sky.display_weather(dt, self.rain.rain_level)
 		debug(self.rain.rain_level)
 
@@ -176,6 +177,7 @@ class Level:
 
 		#game
 		else:
+			self.sky.update_daylight(dt)
 			self.all_sprites.update(dt)
 			self.plant_collision()
 

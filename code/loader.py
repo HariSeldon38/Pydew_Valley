@@ -4,6 +4,7 @@ import csv
 class ItemCSVLoader:
     def __init__(self, filepath):
         self.items = {}
+        self.image_cache = {}
         self._load(filepath)
 
     def _load(self, filepath):
@@ -23,7 +24,19 @@ class ItemCSVLoader:
         return self.items.get(item_id, {}).get("description", "No description available.")
 
     def get_image(self, item_id):
+        item_id = item_id.lower()
+        if item_id in self.image_cache:
+            return self.image_cache[item_id]
+
         path = self.items.get(item_id, {}).get("image_path")
         if path:
-            return pygame.image.load(path).convert_alpha()
+            try:
+                image = pygame.image.load(path).convert_alpha()
+                self.image_cache[item_id] = image
+                return image
+            except Exception as e:
+                print(f"[ItemCSVLoader] Failed to load image for '{item_id}': {e}")
         return None
+
+    def clear_cache(self):
+        self.image_cache = {}

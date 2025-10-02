@@ -164,7 +164,7 @@ class Level:
 					self.state_manager.open_state("shop")
 				elif event.key == pygame.K_p and not self.state_manager.active_state:  # before release change this to ESCAPE if not self.menu_manager.active_menu
 					self.state_manager.open_state(
-						"pause")  # here would need to be able to stack menu but for now I will not impement that
+						"pause")  # here would need to be able to stack menu but for now I will not implement that
 				elif event.key == pygame.K_k:  # before release change this to ESCAPE
 					self.state_manager.close_state()
 				elif event.key == pygame.K_ESCAPE:

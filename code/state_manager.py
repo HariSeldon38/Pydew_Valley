@@ -12,12 +12,12 @@ class StateManager:
         event based handling :
         main.py : Escape to close the game (will be changed later)
             level.py: open/close menus
-                shop.py/TabManager: horizontaly switch tab in a shop menu
+                shop.py/TabManager: horizontally switch tab in a shop menu
                     shop.py.ShopLogic: vertically select item and interact
 
         beside that there is another way to check inputs in the main state of the game:
         input/timer based handling:
-        player.py: movement and environement interaction (except for interaction that triggers a menu)
+        player.py: movement and environment interaction (except for interaction that triggers a menu)
     """
     def __init__(self, player, item_loader):
         self.player = player
@@ -37,9 +37,11 @@ class StateManager:
 
     def open_state(self, name):
         if name in self.states:
+            self.states[name].setUp()
             self.active_state_name = name
 
     def close_state(self):
+        self.states[self.active_state_name].tearDown()
         self.active_state_name = None
 
     def handle_input(self, events):
@@ -56,5 +58,9 @@ class StateManager:
 
 class PauseMenu(Menu):
 
+    def setUp(self):
+        pass
+    def tearDown(self):
+        pass
     def draw(self, surface):
         pass

@@ -48,6 +48,11 @@ class ShopManager:
         self.shop_index = 0
         self.item_loader = item_loader
 
+    def setUp(self):
+        pass
+    def tearDown(self):
+        pass
+
     def handle_input(self, events):
         """From here player can switch between the different tabs/shops"""
         for event in events:

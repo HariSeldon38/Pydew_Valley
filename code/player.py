@@ -52,11 +52,16 @@ class Player(pygame.sprite.Sprite):
         #}
         self.item_inventory = {
             'corn' : 1,
-            'tomato': 1,
+            'tomato': 10,
             'corn_seed': 1,
             'tomato_seed': 1,
-            'apple': 1,
-            'wood': 1,
+            'apple': 10,
+            'wood': 10,
+            'black_beanie': 1,
+            'fishing_rod': 1,
+            'seewing_needle': 1,
+            'white_thread': 1
+
 
         }
         self.money = 20000

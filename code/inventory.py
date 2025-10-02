@@ -1,6 +1,8 @@
 import pygame
+import time
 from state_manager import Menu
 from settings import *
+
 
 class InventoryMenu(Menu):
     def __init__(self, player, item_loader):
@@ -9,6 +11,14 @@ class InventoryMenu(Menu):
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
         self.title_font = pygame.font.Font('../font/LycheeSoda.ttf', 35)
         self.loader = item_loader
+
+    def setUp(self):
+        #load the icons in the inventory (multi-process/threading has been tested and is not relevant here)
+        for item_id in self.player.item_inventory:
+            self.loader.get_image(item_id)
+
+    def tearDown(self):
+        self.loader.clear_cache()
 
     def display_grid_box(self, pos, margin, rows, cols, surface, screen):
         """
@@ -55,15 +65,12 @@ class InventoryMenu(Menu):
                 break  # Avoid overflow if too many items
 
             icon = self.loader.get_image(item_name)
-            if icon is None:
-                print(f"[InventoryMenu] No image returned for item: {item_name}")
             if icon:
                 icon_rect = icon.get_rect(center=cell_centers[idx//nb_cols][idx%nb_cols])
                 screen.blit(icon, icon_rect)
 
     def display_money(self, screen):
         """same method than in Shop"""
-        print(self.player.item_inventory)
         text_surf = self.font.render(f"{self.player.money}*", False, 'black')
         text_rect = text_surf.get_rect(midbottom = (SCREEN_WIDTH / 2, SCREEN_HEIGHT - 20))
         pygame.draw.rect(screen, 'white', text_rect.inflate(10,10),0,4)

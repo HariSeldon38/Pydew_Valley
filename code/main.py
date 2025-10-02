@@ -139,21 +139,29 @@ important things to do :
 	Music
 
 quality of life :
-	buy and sell different colors
-	text decriptif de ce qui se passe en bas de l'écran : 
+	-buy and sell different colors
+	-text decriptif de ce qui se passe en bas de l'écran : 
 		inventory += pomme etc... obje obtenus
 		add little dialogue box when trying to plant a seed we don't have
-	tomato and apple look too alike
+	-tomato and apple look too alike
+	-hold arrow to navigate faster in inventory
 
+optim:
+	check if that could be a good idea to gather all the font in the same place (maybe not an issue)
 
 too complex/ ambitious
 	separate shop into multiple stands, unlockable (especially Trésor et reliques)
+
+centering detail :
+	in inventory line134:             image_rect = bigger_image_surf.get_rect(center=(126+offset,269))
+		# y pos is originally 267 but some items are not well centered so I settled for a middle value
 
 could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
 
 
 
-
+create a drwback to be outside with rain to renforcer le comportement de rentrer à l'abri s'occuper de trucs
+(mais du coup faut tj avoir un truc à faire à l'intérieur)
 
 
 

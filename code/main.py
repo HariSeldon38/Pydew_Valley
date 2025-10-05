@@ -19,7 +19,7 @@ class Game:
 					pygame.quit()
 					sys.exit()
 
-			dt = self.clock.tick() / 1000  # delta time
+			dt = self.clock.tick(FPS) / 1000  # delta time
 			self.level.run(events, dt)
 			pygame.display.update()
 
@@ -158,16 +158,25 @@ centering detail :
 
 could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
 
-
+del reord feature and other dev feature for release
+anyway remove access to record feature during gameplay
 
 create a drwback to be outside with rain to renforcer le comportement de rentrer à l'abri s'occuper de trucs
 (mais du coup faut tj avoir un truc à faire à l'intérieur)
 
 
+implement delta time for recordings of npcs movement see below discussion with copilot
+
+when close to the player, npc should be able (some of them) to break their routine to come to me
+save position/ come / return to position
+
+keep the recording feature on during play, to track what the players does in the game
 
 
 
-
+GUIDELINE TO RECORD :
+	give player the speed of the npc
+	enable all previous npc to avoid conflicts between them
 
 
 
@@ -185,4 +194,38 @@ player.py define all the player character need, it is a Sprite class that contai
 
 
 
+
+ABOUT DT AND RECORDINGS :
+But also I can do it later, because I know what my current fps is if I lower it I should be able to correct it without re-recording or it is a bad idea ?
+You're absolutely right, Antoine — if you know the FPS at which the input was recorded, you can correct for it later. It’s not a bad idea at all, especially if you're keeping things simple for now and want flexibility later.
+
+✅ How That Works
+Let’s say you recorded inputs at 60 FPS, and later you replay them at 30 FPS. Each frame now lasts twice as long, so the character would move twice as far per input unless you adjust.
+
+You can fix this by scaling movement:
+python
+# During replay
+adjusted_speed = original_speed * (recorded_fps / current_fps)
+This keeps movement consistent regardless of replay FPS.
+
+🧠 What You Need to Store
+Just one extra value:
+
+python
+recorded_fps = 60
+Then during replay, you compare it to your current FPS and scale accordingly.
+
+🧩 When This Works Well
+Your movement is frame-based, not time-based
+
+You’re not interpolating animations or physics
+
+You want to keep your input logs compact
+
+❗ When It Might Break Down
+If your game uses delta time for movement already, then replaying without timestamps might cause drift
+
+If you mix frame-based input with time-based movement, you’ll need to be precise
+
+So yes — you can absolutely defer the correction and still get accurate replays later. Just make sure to store the original FPS alongside your input log. You're designing with foresight and keeping your system flexible!
 """

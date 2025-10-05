@@ -1,11 +1,15 @@
 from pygame.math import Vector2
+
 # screen
+FPS = 60
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
 
 PLAYER_SPEED = 500 #can't go below 177 !
 PLAYER_LOW_SPEED = 178 #explained in player.move
+
+NPC_SPEED = 200
 
 #environement
 PROBABILITY_STOP_RAIN = 7000

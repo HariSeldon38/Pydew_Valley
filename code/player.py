@@ -27,6 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.hitbox = self.rect.copy().inflate((-126,-90))
         self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
+        self.record = False #developpement feature to record a path
 
         #timers
         self.timers = {
@@ -35,6 +36,7 @@ class Player(pygame.sprite.Sprite):
             'seed use': Timer(350, self.use_seed),
             'seed switch': Timer(350),
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
+            'record': Timer(500)
         }
 
         #tools
@@ -75,6 +77,18 @@ class Player(pygame.sprite.Sprite):
         self.sound_manager = sound_manager
         self.item_loader = item_loader
 
+    def import_assets(self):
+        self.animations = {'up': [], 'down': [], 'right': [], 'left': [],
+                           'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],
+                           'up_hoe': [], 'down_hoe': [], 'right_hoe': [], 'left_hoe': [],
+                           'up_axe': [], 'down_axe': [], 'right_axe': [], 'left_axe': [],
+                           'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],
+                           'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],}
+
+        for animation in self.animations.keys():
+            full_path = '../graphics/characters/player/' + animation
+            self.animations[animation] = import_folder(full_path)
+
     def use_tool(self):
         if self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_position)
@@ -94,24 +108,41 @@ class Player(pygame.sprite.Sprite):
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
 
-    def import_assets(self):
-        self.animations = {'up': [], 'down': [], 'right': [], 'left': [],
-                           'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],
-                           'up_hoe': [], 'down_hoe': [], 'right_hoe': [], 'left_hoe': [],
-                           'up_axe': [], 'down_axe': [], 'right_axe': [], 'left_axe': [],
-                           'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],
-                           'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],}
+    def update_timers(self):
+        for timer in self.timers.values():
+            timer.update()
 
-        for animation in self.animations.keys():
-            full_path = '../graphics/character/' + animation
-            self.animations[animation] = import_folder(full_path)
+    def trader_nearby(self):
+        for sprite in pygame.sprite.spritecollide(self, self.interaction, dokill=False):
+            if getattr(sprite, 'name', None) == 'Trader':
+                return True
+        return False
 
-    def animate(self, dt):
-        self.frame_index += self.animation_speed * dt
-        if self.frame_index >= len(self.animations[self.status]):
-            self.frame_index = 0
-        self.image = self.animations[self.status][int(self.frame_index)]
+    def start_record_input(self):
+        self.record = True
+        self.recorded_inputs = [self.rect.center] #store the starting position
 
+    def stop_record_input(self):
+        from datetime import datetime
+
+        self.recorded_inputs.append(self.rect.center) #store the final_position to test drift when replayed
+        self.record = False
+        timestamp = datetime.now().strftime("%Y_%m_%d__%H-%M-%S")
+        filename = f"recording_{PLAYER_SPEED}speed_{FPS}fps_{timestamp}.txt"
+        with open(f'../recordings/{filename}', 'w') as file:
+            for x, y in self.recorded_inputs:
+                file.write(f"{x},{y}\n")
+        self.recorded_inputs = []
+
+    def record_input(func):
+        def wrapper(self, *args, **kwargs):
+            func(self, *args, **kwargs)  # Call the original input logic
+            if self.record:
+                self.recorded_inputs.append((int(self.direction.x), int(self.direction.y)))
+            return None
+        return wrapper
+
+    @record_input
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -158,6 +189,15 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.x = 0
 
+            #toggle record feature
+            if not self.timers['record'].active and not self.sleep:
+                if keys[pygame.K_o]:
+                    self.timers['record'].activate()
+                    if not self.record:
+                        self.start_record_input()
+                    else:
+                        self.stop_record_input()
+
             #tools
             if keys[pygame.K_SPACE]:
                 self.timers['tool use'].activate()
@@ -189,40 +229,6 @@ class Player(pygame.sprite.Sprite):
                     self.status = 'left_idle'
                     self.sleep = True
 
-    def get_status(self):
-        if self.direction.magnitude() == 0:
-            self.status = self.status.split('_')[0] + '_idle'
-
-        #tool use
-        if self.timers['tool use'].active:
-            self.status = self.status.split('_')[0] + '_' + self.selected_tool
-
-    def update_timers(self):
-        for timer in self.timers.values():
-            timer.update()
-
-    def collision(self, direction):
-        for sprite in self.collision_sprites.sprites():
-            if hasattr(sprite, 'hitbox'):
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if direction == 'horizontal':
-                        if self.direction.x > 0: #moving right
-                            self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0: #moving right
-                            self.hitbox.left = sprite.hitbox.right
-
-                    if direction == 'vertical':
-                        if self.direction.y > 0: #moving down
-                            self.hitbox.bottom = sprite.hitbox.top
-                        if self.direction.y < 0: #moving up
-                            self.hitbox.top = sprite.hitbox.bottom
-
-    def trader_nearby(self):
-        for sprite in pygame.sprite.spritecollide(self, self.interaction, dokill=False):
-            if getattr(sprite, 'name', None) == 'Trader':
-                return True
-        return False
-
     def move(self, dt):
         """due to last line, can't move at lower speed that 1 px/ frame (177 speed)
         because we lose the float advantage the pos vector offers
@@ -241,6 +247,36 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.hitbox.centerx
         self.rect.centery = self.hitbox.centery - self.down_offset_hitbox
         self.pos.x,self.pos.y = self.rect.centerx,self.rect.centery
+
+    def collision(self, direction):
+        for sprite in self.collision_sprites.sprites():
+            if hasattr(sprite, 'hitbox'):
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if direction == 'horizontal':
+                        if self.direction.x > 0: #moving right
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0: #moving right
+                            self.hitbox.left = sprite.hitbox.right
+
+                    if direction == 'vertical':
+                        if self.direction.y > 0: #moving down
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0: #moving up
+                            self.hitbox.top = sprite.hitbox.bottom
+
+    def get_status(self):
+        if self.direction.magnitude() == 0:
+            self.status = self.status.split('_')[0] + '_idle'
+
+        #tool use
+        if self.timers['tool use'].active:
+            self.status = self.status.split('_')[0] + '_' + self.selected_tool
+
+    def animate(self, dt):
+        self.frame_index += self.animation_speed * dt
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+        self.image = self.animations[self.status][int(self.frame_index)]
 
     def update(self, dt):
         self.input()

@@ -4,6 +4,7 @@ from random import randint
 from settings import *
 from support import *
 from player import Player
+from npcs import NPC
 from overlay import Overlay
 from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle, CollisionShift
 from transition import Transition
@@ -29,6 +30,7 @@ class Level:
 		self.collision_sprites = pygame.sprite.Group()
 		self.tree_sprites = pygame.sprite.Group()
 		self.interaction_sprites = pygame.sprite.Group()
+		self.npc_sprites = []
 
 		#sky
 		self.sky = Sky()
@@ -104,6 +106,24 @@ class Level:
 			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
+		# NPC
+		list_record = [
+			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-22-38.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-24-32.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-26-21.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-28-38.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-30-36.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-33-23.txt',
+		]
+
+		for i in range(len(list_record)):
+			self.npc_sprites.append(NPC(
+				list_record[i],
+				self.all_sprites,
+				self.collision_sprites))
+
 		Generic(
 			pos=(0,0),
 			surface=pygame.image.load('../graphics/world/ground.png').convert_alpha(),
@@ -148,12 +168,13 @@ class Level:
 
 		#drawing logic
 		self.display_surface.fill('black')
-		self.all_sprites.custom_draw(self.player)
+		self.all_sprites.custom_draw(self.player, self.npc_sprites )
 
 		#visual ambiance
 		self.sky.display_daylight()
 		self.sky.display_weather(dt, self.rain.rain_level)
 		debug(self.rain.rain_level)
+		debug(self.player.record, y=50, x=10)
 
 		# manage states
 		for event in events:
@@ -200,7 +221,7 @@ class CameraGroup(pygame.sprite.Group):
 		self.display_surface = pygame.display.get_surface()
 		self.offset = pygame.math.Vector2()
 
-	def custom_draw(self, player):
+	def custom_draw(self, player, npc_sprites):
 		self.offset.x = player.rect.centerx - SCREEN_WIDTH/2
 		self.offset.y = player.rect.centery - SCREEN_HEIGHT/2
 		for layer in LAYERS.values():
@@ -211,13 +232,13 @@ class CameraGroup(pygame.sprite.Group):
 					self.display_surface.blit(sprite.image, offseted_rect)
 
 					"""#analytics
-					if sprite == player:
-						#pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
-						hitbox_rect = player.hitbox.copy()
+					if sprite in npc_sprites or sprite == player:
+						pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
+						hitbox_rect = sprite.hitbox.copy()
 						hitbox_rect.topleft -= self.offset
 						pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
-						target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
-						pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)
+						#target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
+						#pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)
 			for sprite in player.collision_sprites.sprites():
 				if hasattr(sprite, 'hitbox'):
 					hitbox_rect = sprite.hitbox.copy()

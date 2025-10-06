@@ -14,6 +14,7 @@ class NPC(pygame.sprite.Sprite):
 
     def __init__(self,route_file, group, collision_sprites):
         super().__init__(group)
+        self.sprite_type = 'npc'
 
         list_npc = os.listdir('../graphics/characters/npcs')
         self.npc_id = random.choice(list_npc)
@@ -27,6 +28,8 @@ class NPC(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.start_pos)
         self.z = LAYERS['main']
 
+        self.distance_with_player = None
+
         #movement
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
@@ -35,6 +38,7 @@ class NPC(pygame.sprite.Sprite):
         self.hitbox = self.rect.copy().inflate((-14,-30))
         self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
+        self.blocked = False
 
     def load_route(self, file_path):
         with open(file_path, 'r') as record:
@@ -51,9 +55,13 @@ class NPC(pygame.sprite.Sprite):
 
     def replay_input(self):
         if len(self.route) > 1:
-            tuple_direction = self.route.pop(0)
-            self.direction.x = tuple_direction[0]
-            self.direction.y = tuple_direction[1]
+            if not self.blocked:
+                tuple_direction = self.route.pop(0)
+                self.direction.x = tuple_direction[0]
+                self.direction.y = tuple_direction[1]
+            else:
+                self.direction.x = 0
+                self.direction.y = 0
 
         elif self.route: #testing drift
             expected_ending_pos = self.route.pop(0)

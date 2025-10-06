@@ -30,7 +30,7 @@ class Level:
 		self.collision_sprites = pygame.sprite.Group()
 		self.tree_sprites = pygame.sprite.Group()
 		self.interaction_sprites = pygame.sprite.Group()
-		self.npc_sprites = []
+		self.npc_sprites = pygame.sprite.Group()
 
 		#sky
 		self.sky = Sky()
@@ -95,6 +95,7 @@ class Level:
 					(obj.x,obj.y),
 					self.all_sprites,
 					self.collision_sprites,
+					self.npc_sprites,
 					self.tree_sprites,
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
@@ -108,21 +109,16 @@ class Level:
 
 		# NPC
 		list_record = [
-			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-22-38.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-24-32.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-26-21.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-28-38.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-30-36.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-33-23.txt',
+			'../recordings/recording_200speed_60fps_2025_10_06__10-03-14.txt',
+			'../recordings/recording_200speed_60fps_2025_10_06__10-08-05.txt',
+			'../recordings/recording_200speed_60fps_2025_10_06__12-42-50.txt',
 		]
 
 		for i in range(len(list_record)):
-			self.npc_sprites.append(NPC(
+			NPC(
 				list_record[i],
-				self.all_sprites,
-				self.collision_sprites))
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites)
 
 		Generic(
 			pos=(0,0),
@@ -168,7 +164,7 @@ class Level:
 
 		#drawing logic
 		self.display_surface.fill('black')
-		self.all_sprites.custom_draw(self.player, self.npc_sprites )
+		self.all_sprites.custom_draw(self.player, self.npc_sprites) #passing npc here is just to debug the hitbox
 
 		#visual ambiance
 		self.sky.display_daylight()

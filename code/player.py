@@ -4,7 +4,7 @@ from support import *
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, rain, sound_manager, item_loader): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, npc, tree_sprites, interaction, soil_layer, rain, sound_manager, item_loader): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -28,6 +28,9 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.centery += self.down_offset_hitbox
         self.collision_sprites = collision_sprites
         self.record = False #developpement feature to record a path
+
+        self.npc_sprites = npc
+        self.talkable_npcs = set()
 
         #timers
         self.timers = {
@@ -118,6 +121,26 @@ class Player(pygame.sprite.Sprite):
                 return True
         return False
 
+    def compute_dist_npcs(self):
+        """update the distance_with_player attribute of each npc sprite"""
+        for sprite in self.npc_sprites.sprites():
+            dx = self.hitbox.centerx - sprite.hitbox.centerx
+            dy = self.hitbox.centery - sprite.hitbox.centery
+            sprite.distance_with_player = (dx**2 + dy**2) ** 0.5
+
+    def npcs_nearby(self, blocking_radius, talkable_radius):
+        """update blocked attribute of each npcs
+        return the sprite of the npc close enough to talk to them"""
+        for sprite in self.npc_sprites.sprites():
+            if sprite.distance_with_player < blocking_radius:
+                sprite.blocked = True
+            else: sprite.blocked = False
+
+            if sprite.distance_with_player < talkable_radius:
+                self.talkable_npcs.add(sprite)
+            else:
+                self.talkable_npcs.discard(sprite)
+
     def start_record_input(self):
         self.record = True
         self.recorded_inputs = [self.rect.center] #store the starting position
@@ -141,7 +164,6 @@ class Player(pygame.sprite.Sprite):
                 self.recorded_inputs.append((int(self.direction.x), int(self.direction.y)))
             return None
         return wrapper
-
     @record_input
     def input(self):
         keys = pygame.key.get_pressed()
@@ -249,9 +271,11 @@ class Player(pygame.sprite.Sprite):
         self.pos.x,self.pos.y = self.rect.centerx,self.rect.centery
 
     def collision(self, direction):
-        for sprite in self.collision_sprites.sprites():
+        for sprite in self.collision_sprites.sprites() + self.npc_sprites.sprites():
             if hasattr(sprite, 'hitbox'):
                 if sprite.hitbox.colliderect(self.hitbox):
+                    if sprite in self.npc_sprites.sprites():
+                        sprite.blocked = True
                     if direction == 'horizontal':
                         if self.direction.x > 0: #moving right
                             self.hitbox.right = sprite.hitbox.left
@@ -263,6 +287,9 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.bottom = sprite.hitbox.top
                         if self.direction.y < 0: #moving up
                             self.hitbox.top = sprite.hitbox.bottom
+                else:
+                    if sprite in self.npc_sprites.sprites():
+                        sprite.blocked = False
 
     def get_status(self):
         if self.direction.magnitude() == 0:
@@ -281,6 +308,8 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt):
         self.input()
         self.move(dt)
+        self.compute_dist_npcs()
+        self.npcs_nearby(blocking_radius=90, talkable_radius=200)
         self.update_timers()
         self.get_target_position() #I'm thinking about running that only in case of using tool, will see if need some optim
         self.get_status()

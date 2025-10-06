@@ -122,7 +122,7 @@ close menu with same key that open it
 change color apple, mor bright in inventory (TOKEN)
 (when adding multi color tomatoes)
 
-more complex meteo, like day whith low proba of rain, and day with high proba
+more complex meteo, like day with low proba of rain, and day with high proba
 
 bug apple flying after cut tree
 
@@ -177,6 +177,7 @@ keep the recording feature on during play, to track what the players does in the
 GUIDELINE TO RECORD :
 	give player the speed of the npc
 	enable all previous npc to avoid conflicts between them
+	watch out player could not be stuck by a npc
 
 
 

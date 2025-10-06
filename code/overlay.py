@@ -6,6 +6,10 @@ class Overlay:
         self.display_surface = pygame.display.get_surface()
         self.player = player
 
+        #dialogue button
+        self.dialogue_button_surf = pygame.Surface((300,30))
+        self.dialogue_button_rect = self.dialogue_button_surf.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT-20))
+
         #imports
         overlay_path = '../graphics/overlay/'
         self.tools_surf = {tool:pygame.image.load(f'{overlay_path}{tool}.png').convert_alpha() for tool in player.tools}
@@ -22,3 +26,7 @@ class Overlay:
         tool_surf = self.tools_surf[self.player.selected_tool]
         tool_rect = tool_surf.get_rect(midbottom=OVERLAY_POSITIONS['tool'])
         self.display_surface.blit(tool_surf, tool_rect)
+
+        # dialogue button
+        if self.player.talkable_npcs:
+            self.display_surface.blit(self.dialogue_button_surf, self.dialogue_button_rect)

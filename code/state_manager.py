@@ -24,7 +24,7 @@ class StateManager:
         self.states = {
             "inventory": InventoryMenu(self.player, item_loader=item_loader),
             "shop": ShopManager(self.player, item_loader=item_loader),
-            "dialogue": Dialogue(self.player),
+            "dialogue": Dialogue(self.player, state_manager=self),
             "pause": PauseMenu(),
         }
         self.active_state_name = None  # e.g. "shop", "inventory", etc.

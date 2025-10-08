@@ -177,13 +177,13 @@ class Level:
 		debug(self.player.record, y=50, x=10)
 
 		# manage states
-		for event in events:                            #watch out, open dialogue input is managed inside player.input conversely to the other menus
+		for event in events:
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_i and not self.state_manager.active_state:
 					self.state_manager.open_state("inventory")
 				elif event.key == pygame.K_RETURN and self.player.trader_nearby() and not self.state_manager.active_state:
 					self.state_manager.open_state("shop")
-				elif event.key == pygame.K_RETURN and self.player.talkable_npcs and not self.state_manager.active_state:
+				elif event.key == pygame.K_RETURN and self.player.talkable_npcs and not self.state_manager.active_state and not self.player.timers['tool use'].active and not self.player.sleep:
 					self.state_manager.open_state("dialogue")
 					self.player.talking = True
 				elif event.key == pygame.K_p and not self.state_manager.active_state:  # before release change this to ESCAPE if not self.menu_manager.active_menu

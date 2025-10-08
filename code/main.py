@@ -79,18 +79,39 @@ Idée de base du jeu:
 collect, destroy wildflower, need a way like for harvest crops because hitxox too little
 
 BUGS:
+- HIGH if a npc is beside my bed and dont move --> game broken
+- MED inventory size reached
 - WND animation when tool continuous : WILL NOT DO
 - WND lack a little bit of logic for the tiling system, WILL NOT DO
 - WND night is over everything, even UI, not very good, WILL NOT DO
-- HUC File "C:\work\VsCode\projects\source\Pydew_Valley\code\level.py", line 167, in run
+-     HUC File "C:\work\VsCode\projects\source\Pydew_Valley\code\level.py", line 167, in run
 		self.sky.display_weather(dt, self.rain.rain_level)
 	 	File "C:\work\VsCode\projects\source\Pydew_Valley\code\sky.py", line 43, in display_weather
 		self.full_surf_weather.fill(self.current_weather_color)
 		ValueError: invalid color argument  ---BUG HIDDEN UNDER CARPET WITH TRY/EXCEPT
-- see in the future : "k" wih no menu crashes
+- see in the future : "k" wih no menu opened, scrashes
+- When rapidly decreasing rain level : 
+		Traceback (most recent call last):
+		  File "C:gaia3\AppData\Local\Programs\Python\PythonProjects\Pydew_Valley\code\main.py", line 28, in <module>
+			game.run()
+		  File "C:gaia3\AppData\Local\Programs\Python\PythonProjects\Pydew_Valley\code\main.py", line 23, in run
+			self.level.run(events, dt)
+		  File "C\gaia3\AppData\Local\Programs\Python\PythonProjects\Pydew_Valley\code\level.py", line 214, in run
+			self.soil_layer.water_all(rain_level=self.rain.rain_level)
+		  File "C:aia3\AppData\Local\Programs\Python\PythonProjects\Pydew_Valley\code\soil.py", line 153, in water_all
+			if randint(1,3600//rain_level) == 1:
+		  File "Cgaia3\AppData\Local\Programs\Python\Python39\libandom.py", line 338, in randint
+			return self.randrange(a, b+1)
+		  File "C\gaia3\AppData\Local\Programs\Python\Python39\libndom.py", line 316, in randrange
+			raise ValueError("empty range for randrange() (%d, %d, %d)" % (istart, istop, width))
+		ValueError: empty range for randrange() (1, -3599, -3600)
+		
+		Process finished with exit code 1
 
 
-peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
+
+peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
+
 
 ajouter pêche
 un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
@@ -182,8 +203,19 @@ GUIDELINE TO RECORD :
 	give player the speed of the npc
 	enable all previous npc to avoid conflicts between them
 	watch out player could not be stuck by a npc
+GUIDELINE TO DIALOGUE:
+	two way to exit : trigger: close_dialogue (so you will need a next and also need to be inside of choices)
+						no next (dont forget that)
+	for now the last text is the one repeating if the player go again could be use to sumerize elegantly the dicussion
+		think about that when writting the last line of a yaml
 
 
+test all the different text of a npc : ask copilot to review all the yaml
+	list the different valid trigger keywords
+	explain the rule : next mandatory after a trigger: close dialogue
+	
+
+implement a notebook ingame to track all the conversation in case something is happening too fast
 
 IA prompt :
 I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.

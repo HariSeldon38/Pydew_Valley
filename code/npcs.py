@@ -43,7 +43,10 @@ class NPC(pygame.sprite.Sprite):
         self.blocked = False
 
         #dialogue
-        with open("../data/dialogues/Euridyce.yaml", "r", encoding="utf-8") as f:
+        self.encounter = 0
+        self.next = 'start'
+        #self.dialogue_status = 'start' #possible values : 'start', 'unfinished', 'done'
+        with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
             self.dialogue = yaml.safe_load(f)
 
     def load_route(self, file_path):
@@ -132,9 +135,12 @@ class NPC(pygame.sprite.Sprite):
 
 class Dialogue(Menu):
 
-    def __init__(self, player):
+    def __init__(self, player, state_manager):
 
         self.player = player
+        self.state_manager = state_manager
+
+        self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
 
         self.background_surf = pygame.image.load('../graphics/UI/black_long_button_1200x150.png')
 
@@ -155,7 +161,6 @@ class Dialogue(Menu):
 
         #movement
         self.index = 0
-        self.index_test = 0
 
     def setUp(self):
         """method that exe when opening the menu, that is not the same as when initialise the menu"""
@@ -165,46 +170,100 @@ class Dialogue(Menu):
         self.face = pygame.transform.scale(self.face, (100, 100))
         self.face_rect = self.face.get_rect(bottomleft=(65, SCREEN_HEIGHT - 65))
 
-        self.next = "start" #here something that take into account where we are in the discution for now just start
+        self.dialogue = self.npc.dialogue
+
+        self.next = self.npc.next #here something that take into account where we are in the discution for now just start
+        self.nb_choices = 0 #all discusion will begin with the npc talking
+        self.listen = True
 
     def tearDown(self):
         """method that exe when closing the menu"""
         self.player.talking = False
+        self.npc.next = self.next
 
     def handle_input(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    self.index_test += 1
+                    if not self.listen:
+                        if 'next' in self.dialogue[self.next]['choices'][self.index]:
+                            self.next = self.dialogue[self.next]['choices'][self.index]['next']
+                        else: self.state_manager.close_state()
+
+                        if 'trigger' in self.choices[self.index]:
+                            if self.choices[self.index]['trigger'] == 'close_dialogue':
+                                self.state_manager.close_state()
+
+                    elif not self.choices: #mean the dialogue is over after that
+                        self.state_manager.close_state()
+                    self.listen = not self.listen
+                    self.index = 0
                 elif event.key in [pygame.K_DOWN, pygame.K_s]:
                     self.index += 1
                 elif event.key in [pygame.K_UP, pygame.K_z]:
                     self.index -= 1
-                if self.index_test > 2:
-                    self.index_test = 0
-                if self.index > self.index_test:
+                if self.index > self.nb_choices-1:
                     self.index = 0
                 if self.index < 0:
-                    self.index = self.index_test
+                    self.index = self.nb_choices-1
 
     def update(self):
         """maybe could use that to change the selected surface"""
+        self.text = self.dialogue[self.next]['text']
+        if 'choices' in self.dialogue[self.next]:
+            self.choices = self.dialogue[self.next]['choices']
+        else:
+            self.choices = []
+        if self.listen: self.nb_choices = 1
+        else: self.nb_choices = len(self.choices)
 
-        pass
-
-    def display_text_background(self, surface, nb_entries):
-        if nb_entries == 1:
+    def display_text_background(self, surface):
+        if self.nb_choices == 1:
             surface.blit(self.text_background_surf1, (200, SCREEN_HEIGHT - 170))
-        if nb_entries == 2:
+        if self.nb_choices == 2:
             surface.blit(self.text_background_surf2[0+self.index], (200, SCREEN_HEIGHT - 170))
             surface.blit(self.text_background_surf2[(1+self.index)%2], (200, SCREEN_HEIGHT - 105))
-        if nb_entries == 3:
+        if self.nb_choices == 3:
             surface.blit(self.text_background_surf3[0+self.index], (200, SCREEN_HEIGHT - 170))
             surface.blit(self.text_background_surf3[(2+self.index)%3], (200, SCREEN_HEIGHT - 130))
             surface.blit(self.text_background_surf3[(1+self.index)%3], (200, SCREEN_HEIGHT - 90))
 
+    def display_text(self, surface):
+        if self.listen:
+            # Render and display the main dialogue line
+            text_render = self.font.render(self.text, False, 'black')
+            surface.blit(text_render, (220, SCREEN_HEIGHT - 160))  # Adjust position as needed
+        else:
+            # Render and display all choices
+            for i, choice in enumerate(self.choices):
+                text = choice['text']
+                text_render = self.font.render(text, False, 'black')
+
+                if self.listen:
+                    # Render and display the main dialogue line
+                    text_render = self.font.render(self.text, False, 'black')
+                    surface.blit(text_render, (215, SCREEN_HEIGHT - 160))
+                else:
+                    for i, choice in enumerate(self.choices):
+                        text_render = self.font.render(choice['text'], False, 'black')
+
+                        # Fixed vertical positions based on number of choices
+                        if self.nb_choices == 1:
+                            y = SCREEN_HEIGHT - 160
+                        elif self.nb_choices == 2:
+                            y = SCREEN_HEIGHT - 164 if i == 0 else SCREEN_HEIGHT - 99
+                        elif self.nb_choices == 3:
+                            y_positions = [SCREEN_HEIGHT - 171, SCREEN_HEIGHT - 131, SCREEN_HEIGHT - 91]
+                            if i < 3:
+                                y = y_positions[i]
+                            else:
+                                continue  # Ignore extra choices
+
+                        surface.blit(text_render, (215, y))
+
     def draw(self, surface):
         surface.blit(self.background_surf, (40, SCREEN_HEIGHT - 190))
-        self.display_text_background(surface, self.index_test+1)
         surface.blit(self.frame_surf, self.frame_rect)
         surface.blit(self.face, self.face_rect)
+        self.display_text_background(surface)
+        self.display_text(surface)

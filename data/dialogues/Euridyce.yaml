@@ -1,0 +1,24 @@
+start:
+  text: "Welcome, traveler. What brings you here?"
+  choices:
+    - text: "I'm just passing through."
+      next: passing_through
+    - text: "I seek wisdom."
+      next: seek_wisdom
+
+passing_through:
+  text: "Then may the forest guide your steps."
+
+seek_wisdom:
+  text: "Wisdom is earned, not given. Are you ready?"
+  choices:
+    - text: "Yes, I am."
+      next: ready
+    - text: "No, I need time."
+      next: not_ready
+
+ready:
+  text: "Then listen closely..."
+
+not_ready:
+  text: "Return when your heart is steady."

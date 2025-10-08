@@ -38,10 +38,9 @@ class Level:
 
 		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites, sound_manager=self.sound_manager)
 		self.setup()
-		self.overlay = Overlay(self.player)
-		self.transition = Transition(self.reset, self.player)
-
 		self.state_manager = StateManager(self.player, self.item_loader)
+		self.overlay = Overlay(self.player, self.state_manager)
+		self.transition = Transition(self.reset, self.player)
 
 	def setup(self):
 		tmx_data = load_pygame('../data/map.tmx')
@@ -109,9 +108,14 @@ class Level:
 
 		# NPC
 		list_record = [
-			'../recordings/recording_200speed_60fps_2025_10_06__10-03-14.txt',
-			'../recordings/recording_200speed_60fps_2025_10_06__10-08-05.txt',
-			'../recordings/recording_200speed_60fps_2025_10_06__12-42-50.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-22-38.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-24-32.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-26-21.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-28-38.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-30-36.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-33-23.txt',
 		]
 
 		for i in range(len(list_record)):
@@ -173,12 +177,15 @@ class Level:
 		debug(self.player.record, y=50, x=10)
 
 		# manage states
-		for event in events:
+		for event in events:                            #watch out, open dialogue input is managed inside player.input conversely to the other menus
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_i and not self.state_manager.active_state:
 					self.state_manager.open_state("inventory")
 				elif event.key == pygame.K_RETURN and self.player.trader_nearby() and not self.state_manager.active_state:
 					self.state_manager.open_state("shop")
+				elif event.key == pygame.K_RETURN and self.player.talkable_npcs and not self.state_manager.active_state:
+					self.state_manager.open_state("dialogue")
+					self.player.talking = True
 				elif event.key == pygame.K_p and not self.state_manager.active_state:  # before release change this to ESCAPE if not self.menu_manager.active_menu
 					self.state_manager.open_state(
 						"pause")  # here would need to be able to stack menu but for now I will not implement that

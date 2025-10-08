@@ -87,6 +87,7 @@ BUGS:
 	 	File "C:\work\VsCode\projects\source\Pydew_Valley\code\sky.py", line 43, in display_weather
 		self.full_surf_weather.fill(self.current_weather_color)
 		ValueError: invalid color argument  ---BUG HIDDEN UNDER CARPET WITH TRY/EXCEPT
+- see in the future : "k" wih no menu crashes
 
 
 peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices
@@ -172,7 +173,10 @@ save position/ come / return to position
 
 keep the recording feature on during play, to track what the players does in the game
 
+there is two place with input in main loop : player.input and level.run could gathered
 
+after the 1st release I will need to take a moment to automate all the cropping and redimentionnement shit I do
+to generate surface in the project with size I want and corner i want based on sprout land assets
 
 GUIDELINE TO RECORD :
 	give player the speed of the npc

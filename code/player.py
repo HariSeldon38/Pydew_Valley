@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from settings import *
 from support import *
 from timer import Timer
@@ -29,9 +29,6 @@ class Player(pygame.sprite.Sprite):
         self.collision_sprites = collision_sprites
         self.record = False #developpement feature to record a path
 
-        self.npc_sprites = npc
-        self.talkable_npcs = set()
-
         #timers
         self.timers = {
             'tool use': Timer(400, self.use_tool),
@@ -52,9 +49,6 @@ class Player(pygame.sprite.Sprite):
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
 
-        #inventory
-        #self.item_inventory = {
-        #}
         self.item_inventory = {
             'corn' : 1,
             'tomato': 10,
@@ -66,8 +60,6 @@ class Player(pygame.sprite.Sprite):
             'fishing_rod': 1,
             'seewing_needle': 1,
             'white_thread': 1
-
-
         }
         self.money = 20000
 
@@ -76,6 +68,9 @@ class Player(pygame.sprite.Sprite):
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
+        self.npc_sprites = npc
+        self.talkable_npcs = set()
+        self.talking = False
 
         self.sound_manager = sound_manager
         self.item_loader = item_loader
@@ -168,11 +163,6 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_m]:
-            print(self.item_inventory)
-            print(self.seed_inventory)
-            print(self.special_inventory)
-
         if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
             self.timers['rain switch'].activate()
             self.rain.rain_level += 1
@@ -244,6 +234,7 @@ class Player(pygame.sprite.Sprite):
                 else: self.seed_index = 0
                 self.selected_seed = self.seeds[self.seed_index]
 
+        # sleep and dialogue
         if keys[pygame.K_RETURN] and not self.sleep:
             collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, dokill=False)
             if collided_interaction_sprite:

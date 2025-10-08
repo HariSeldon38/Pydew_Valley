@@ -1,8 +1,7 @@
-import pygame
 from menu import Menu
 from shop import ShopManager
 from inventory import InventoryMenu
-from settings import *
+from npcs import Dialogue
 
 class StateManager:
     """This class allow to open/close all the menus of the game.
@@ -25,6 +24,7 @@ class StateManager:
         self.states = {
             "inventory": InventoryMenu(self.player, item_loader=item_loader),
             "shop": ShopManager(self.player, item_loader=item_loader),
+            "dialogue": Dialogue(self.player),
             "pause": PauseMenu(),
         }
         self.active_state_name = None  # e.g. "shop", "inventory", etc.

@@ -1,6 +1,8 @@
 import pygame
 import random
 import os
+import yaml
+from menu import Menu
 from support import import_folder
 from settings import *
 
@@ -17,7 +19,7 @@ class NPC(pygame.sprite.Sprite):
         self.sprite_type = 'npc'
 
         list_npc = os.listdir('../graphics/characters/npcs')
-        self.npc_id = random.choice(list_npc)
+        self.name = random.choice(list_npc)
 
         self.import_assets()
         self.status = 'up'
@@ -40,6 +42,10 @@ class NPC(pygame.sprite.Sprite):
         self.collision_sprites = collision_sprites
         self.blocked = False
 
+        #dialogue
+        with open("../data/dialogues/Euridyce.yaml", "r", encoding="utf-8") as f:
+            self.dialogue = yaml.safe_load(f)
+
     def load_route(self, file_path):
         with open(file_path, 'r') as record:
             self.start_pos = tuple(map(int, record.readline().strip().split(',')))
@@ -50,7 +56,7 @@ class NPC(pygame.sprite.Sprite):
                            'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],}
 
         for animation in self.animations.keys():
-            full_path = '../graphics/characters/npcs/' + self.npc_id + '/' + animation
+            full_path = '../graphics/characters/npcs/' + self.name + '/' + animation
             self.animations[animation] = import_folder(full_path)
 
     def replay_input(self):
@@ -124,3 +130,81 @@ class NPC(pygame.sprite.Sprite):
         self.get_status()
         self.animate(dt)
 
+class Dialogue(Menu):
+
+    def __init__(self, player):
+
+        self.player = player
+
+        self.background_surf = pygame.image.load('../graphics/UI/black_long_button_1200x150.png')
+
+        self.text_background_surf1 = pygame.image.load('../graphics/UI/clear_less_box_1020x110.png')
+        self.text_background_surf1_selected = pygame.image.load('../graphics/UI/clear_box_1020x110.png')
+        self.text_background_surf1_selected.fill((255, 255, 200))
+
+        image = pygame.image.load('../graphics/UI/clear_less_box_1020x45.png')
+        image_clear = pygame.image.load('../graphics/UI/clear_box_1020x45.png')
+        self.text_background_surf2 = [image_clear, image]
+
+        image = pygame.image.load('../graphics/UI/clear_less_box_1020x30.png')
+        image_clear = pygame.image.load('../graphics/UI/clear_box_1020x30.png')
+        self.text_background_surf3 = [image_clear, image, image]
+
+        self.frame_surf = pygame.image.load('../graphics/UI/light_edges_upscaled3_140x140.png')
+        self.frame_rect = self.frame_surf.get_rect(bottomleft=(45, SCREEN_HEIGHT - 45))
+
+        #movement
+        self.index = 0
+        self.index_test = 0
+
+    def setUp(self):
+        """method that exe when opening the menu, that is not the same as when initialise the menu"""
+        self.npc = list(self.player.talkable_npcs)[0] #for now only choosing one npc if several
+
+        self.face = pygame.image.load('../graphics/characters/npcs/' + self.npc.name + '/Faceset.png').convert_alpha()
+        self.face = pygame.transform.scale(self.face, (100, 100))
+        self.face_rect = self.face.get_rect(bottomleft=(65, SCREEN_HEIGHT - 65))
+
+        self.next = "start" #here something that take into account where we are in the discution for now just start
+
+    def tearDown(self):
+        """method that exe when closing the menu"""
+        self.player.talking = False
+
+    def handle_input(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.index_test += 1
+                elif event.key in [pygame.K_DOWN, pygame.K_s]:
+                    self.index += 1
+                elif event.key in [pygame.K_UP, pygame.K_z]:
+                    self.index -= 1
+                if self.index_test > 2:
+                    self.index_test = 0
+                if self.index > self.index_test:
+                    self.index = 0
+                if self.index < 0:
+                    self.index = self.index_test
+
+    def update(self):
+        """maybe could use that to change the selected surface"""
+
+        pass
+
+    def display_text_background(self, surface, nb_entries):
+        if nb_entries == 1:
+            surface.blit(self.text_background_surf1, (200, SCREEN_HEIGHT - 170))
+        if nb_entries == 2:
+            surface.blit(self.text_background_surf2[0+self.index], (200, SCREEN_HEIGHT - 170))
+            surface.blit(self.text_background_surf2[(1+self.index)%2], (200, SCREEN_HEIGHT - 105))
+        if nb_entries == 3:
+            surface.blit(self.text_background_surf3[0+self.index], (200, SCREEN_HEIGHT - 170))
+            surface.blit(self.text_background_surf3[(2+self.index)%3], (200, SCREEN_HEIGHT - 130))
+            surface.blit(self.text_background_surf3[(1+self.index)%3], (200, SCREEN_HEIGHT - 90))
+
+    def draw(self, surface):
+        surface.blit(self.background_surf, (40, SCREEN_HEIGHT - 190))
+        self.display_text_background(surface, self.index_test+1)
+        surface.blit(self.frame_surf, self.frame_rect)
+        surface.blit(self.face, self.face_rect)

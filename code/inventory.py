@@ -8,10 +8,10 @@ class InventoryMenu(Menu):
     def __init__(self, player, item_loader):
         self.nb_rows = 5
         self.nb_cols = 10
-        self.box = pygame.image.load("../graphics/UI/clear_box_48x48.png").convert_alpha()
-        self.cursor_box = pygame.image.load("../graphics/UI/clear_less_box_48x48.png").convert_alpha()
-        self.box_selected = pygame.image.load("../graphics/UI/clear_box_48x48_selected.png").convert_alpha()
-        self.cursor_box_selected = pygame.image.load("../graphics/UI/clear_less_box_48x48_selected.png").convert_alpha()
+        self.box = pygame.image.load("../graphics/UI/clear_less_box_48x48.png").convert_alpha()
+        self.cursor_box = pygame.image.load("../graphics/UI/clear_box_48x48.png").convert_alpha()
+        self.box_selected = pygame.image.load("../graphics/UI/clear_less_box_48x48_selected.png").convert_alpha()
+        self.cursor_box_selected = pygame.image.load("../graphics/UI/clear_box_48x48_selected.png").convert_alpha()
         self.player = player
         self.mini_font = pygame.font.Font('../font/LycheeSoda.ttf', 20)
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)

@@ -6,7 +6,7 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
 
-PLAYER_SPEED = 200 #can't go below 177 !
+PLAYER_SPEED = 500 #can't go below 177 !
 PLAYER_LOW_SPEED = 178 #explained in player.move
 
 NPC_SPEED = 200

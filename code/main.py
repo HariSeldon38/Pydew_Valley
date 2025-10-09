@@ -205,9 +205,12 @@ GUIDELINE TO RECORD :
 	watch out player could not be stuck by a npc
 GUIDELINE TO DIALOGUE:
 	two way to exit : trigger: close_dialogue (so you will need a next and also need to be inside of choices)
-						no next (dont forget that)
+						no choices (dont forget that if next, will only happen if open dialoge again))
 	for now the last text is the one repeating if the player go again could be use to sumerize elegantly the dicussion
 		think about that when writting the last line of a yaml
+		
+	if you think about chaining multiple line of monologue with next don't forget that for now listen is switching every time so need to change the code a little
+		(but can be no so hard just condition the self.listen to choice or not choice)
 
 
 test all the different text of a npc : ask copilot to review all the yaml

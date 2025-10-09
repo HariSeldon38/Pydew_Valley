@@ -7,11 +7,13 @@ start:
       next: seek_wisdom
     - text: "I'm sorry I'm not interested"
       trigger: close_dialogue
-      next: whatever
+      next: start
 
 passing_through:
   text: "Then may the forest guide your steps."
+  next: start
 
+#NEXT_DAY branches (lines that allow to pass to the next dialogue)
 seek_wisdom:
   text: "Wisdom is earned, not given. Are you ready?"
   choices:
@@ -22,9 +24,8 @@ seek_wisdom:
 
 ready:
   text: "Then listen closely..."
+  set_flag: next_day
 
 not_ready:
   text: "Return when your heart is steady."
-
-whatever:
-  text: "coucou"
+  set_flag: next_day

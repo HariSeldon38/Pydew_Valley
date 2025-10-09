@@ -14,12 +14,12 @@ cause already collision collision_sprite vs NPC so NPC cannot be into collision 
 
 class NPC(pygame.sprite.Sprite):
 
-    def __init__(self,route_file, group, collision_sprites):
+    def __init__(self,route_file, group, collision_sprites, next='start', encounter=0):
         super().__init__(group)
         self.sprite_type = 'npc'
 
         list_npc = os.listdir('../graphics/characters/npcs')
-        self.name = random.choice(list_npc)
+        self.name = list_npc[1]
 
         self.import_assets()
         self.status = 'up'
@@ -43,8 +43,8 @@ class NPC(pygame.sprite.Sprite):
         self.blocked = False
 
         #dialogue
-        self.encounter = 0
-        self.next = 'start'
+        self.encounter = encounter
+        self.next = next
         #self.dialogue_status = 'start' #possible values : 'start', 'unfinished', 'done'
         with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
             self.dialogue = yaml.safe_load(f)
@@ -195,6 +195,8 @@ class Dialogue(Menu):
                                 self.state_manager.close_state()
 
                     elif not self.choices: #mean the dialogue is over after that
+                        if 'next' in self.dialogue[self.next]:
+                            self.next = self.dialogue[self.next]['next']
                         self.state_manager.close_state()
                     self.listen = not self.listen
                     self.index = 0
@@ -209,13 +211,16 @@ class Dialogue(Menu):
 
     def update(self):
         """maybe could use that to change the selected surface"""
-        self.text = self.dialogue[self.next]['text']
-        if 'choices' in self.dialogue[self.next]:
-            self.choices = self.dialogue[self.next]['choices']
+        current = self.dialogue[self.next]
+        self.text = current['text']
+        if 'choices' in current:
+            self.choices = current['choices']
         else:
             self.choices = []
         if self.listen: self.nb_choices = 1
         else: self.nb_choices = len(self.choices)
+        if 'set_flag' in current:
+            setattr(self.npc, current['set_flag'], True)
 
     def display_text_background(self, surface):
         if self.nb_choices == 1:

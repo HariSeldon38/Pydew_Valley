@@ -1,0 +1,37 @@
+ready:
+  text: "Oh salut, encore toi ?"
+  choices:
+    - text: "Ma tête te reviens pas ?"
+      next: excuses
+    - text: "J'ai toujours pas trouvé la sagesse"
+      next: cherche
+    - text: "Pardon je dois y aller"
+      trigger: close_dialogue
+      next: start
+
+not_ready:
+  text: "Oh salut, tu n'est pas encore prêt"
+  choices:
+    - text: "Ma tête te reviens pas ?"
+      next: excuses
+    - text: "J'ai toujours pas trouvé la sagesse"
+      next: cherche
+
+excuses:
+  text: "Oh si pardon. C'est pas ce que je voulais dire"
+
+cherche:
+  text: "As tu cherché dans le placard"
+  choices:
+    - text: "Je savais pas qu'on pouvait trouver ce genre de chose là-dedans."
+      next: end1
+      set_flag: next_day
+    - text: "Oui, c'était vide"
+      next: end2
+      set_flag: next_day
+
+end1:
+  text: "Eh bien pense à regarder la prochaine fois"
+
+end2:
+  text: "Ah c'est bien triste ça... c'est bien triste"

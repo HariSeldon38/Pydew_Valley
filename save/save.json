@@ -1,0 +1,10 @@
+{
+    "Spirit": {
+        "next": "passing_through",
+        "encounter": 1
+    },
+    "Statue": {
+        "next": "start",
+        "encounter": 0
+    }
+}

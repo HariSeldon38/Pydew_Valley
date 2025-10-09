@@ -1,4 +1,5 @@
 import pygame, sys
+import json
 from pytmx.util_pygame import load_pygame
 from random import randint
 from settings import *
@@ -106,18 +107,10 @@ class Level:
 			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-		# NPC
+		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
 		list_record = [
 			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-22-38.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-24-32.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-26-21.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-28-38.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-30-36.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-33-23.txt',
 		]
-
 		for i in range(len(list_record)):
 			NPC(
 				list_record[i],
@@ -149,6 +142,39 @@ class Level:
 		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
 		self.rain.update_rain_color(0)
 		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
+
+		#saving npc dialogue state
+		with open('../save/save.json', "r") as saving_file:
+			data = json.load(saving_file)
+		for npc in self.npc_sprites:
+			if getattr(npc, 'next_day', False):
+				npc.encounter += 1
+			data[npc.name] = {'next': npc.next,
+							  'encounter': npc.encounter}
+		with open('../save/save.json', "w") as saving_file:
+			json.dump(data, saving_file, indent=4)
+
+		#clearing the npc
+		for npc in self.npc_sprites:
+			npc.kill()
+		self.npc_sprites.empty()
+
+		#loading the npc data
+		with open('../save/save.json', "r") as saving_file:
+			data = json.load(saving_file)
+
+		#creating new npc: that will be updated later
+		list_record = [
+			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
+		]
+		for i in range(len(list_record)):
+			NPC(
+				list_record[i],
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				next = data['Statue']['next'],
+				encounter = data['Statue']['encounter']
+			)
 
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)

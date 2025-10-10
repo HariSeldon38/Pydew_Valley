@@ -7,6 +7,7 @@ class Timer:
         self.func = func
         self.start_time = 0
         self.active = False
+        self.complete = False
 
     def activate(self):
         self.active = True
@@ -15,6 +16,7 @@ class Timer:
     def deactivate(self):
         self.active = False
         self.start_time = 0
+        self.complete = True
 
     def update(self):
         if self.active:

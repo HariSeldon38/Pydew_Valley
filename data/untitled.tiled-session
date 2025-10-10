@@ -39,11 +39,11 @@
             "scaleInDock": 1
         },
         "map.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 17,
+            "scale": 0.25,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 2794,
-                "y": 2090
+                "x": 1984,
+                "y": 1620
             }
         }
     },

@@ -2,9 +2,11 @@ import pygame
 from settings import *
 from support import *
 from timer import Timer
+from fishing import Fishing
+from debug import debug
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, npc, tree_sprites, interaction, soil_layer, rain, sound_manager, item_loader): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, npc, tree_sprites, water_sprites, interaction, soil_layer, rain, sound_manager, item_loader, player_add): #--------maybe delete rain here , only need control rain from game when dev
         super().__init__(group)
 
         self.rain = rain #--------------------------------------------------------------------------------same here
@@ -36,11 +38,12 @@ class Player(pygame.sprite.Sprite):
             'seed use': Timer(350, self.use_seed),
             'seed switch': Timer(350),
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
+            'fishing timer': Timer(450),
             'record': Timer(500)
         }
 
         #tools
-        self.tools = ['hoe','axe','water','jump']
+        self.tools = ['hoe','axe','water','jump', 'fishing']
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
@@ -48,6 +51,10 @@ class Player(pygame.sprite.Sprite):
         self.seeds = ['corn', 'tomato']
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
+
+        #fishing
+        self.player_add = player_add
+        self.fishing = Fishing(self.player_add, False)
 
         self.item_inventory = {
             'corn' : 1,
@@ -65,6 +72,7 @@ class Player(pygame.sprite.Sprite):
 
         #interactions
         self.tree_sprites = tree_sprites
+        self.water_sprites = water_sprites
         self.interaction = interaction
         self.sleep = False
         self.soil_layer = soil_layer
@@ -82,7 +90,8 @@ class Player(pygame.sprite.Sprite):
                            'up_hoe': [], 'down_hoe': [], 'right_hoe': [], 'left_hoe': [],
                            'up_axe': [], 'down_axe': [], 'right_axe': [], 'left_axe': [],
                            'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],
-                           'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],}
+                           'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],
+                           'up_fishing': [], 'down_fishing': [], 'right_fishing': [], 'left_fishing': []}
 
         for animation in self.animations.keys():
             full_path = '../graphics/characters/player/' + animation
@@ -98,6 +107,13 @@ class Player(pygame.sprite.Sprite):
         elif self.selected_tool == 'water':
             self.soil_layer.get_watered(self.target_position)
             self.sound_manager.play('watering')
+        elif self.selected_tool == 'fishing':
+            for water in self.water_sprites:
+                if water.rect.collidepoint(self.target_position):
+                    #need to offset target position like the hitbox debug display in the end of level
+                    x = self.target_position.x - self.rect.centerx + SCREEN_WIDTH / 2 +10
+                    y = self.target_position.y - self.rect.centery + SCREEN_HEIGHT / 2 +10
+                    self.fishing.fishing_start((x,y))
 
     def use_seed(self):
         if self.item_inventory.get(self.selected_seed+"_seed", 0) > 0:
@@ -284,21 +300,28 @@ class Player(pygame.sprite.Sprite):
                         sprite.blocked = False
 
     def get_status(self):
-        if self.direction.magnitude() == 0:
+        if self.direction.magnitude() == 0 and not self.fishing.fishing_status:
             self.status = self.status.split('_')[0] + '_idle'
 
-        #tool use
+        if self.fishing.fishing_status:
+            self.image = self.animations[self.status][int(self.frame_index)]
+
         if self.timers['tool use'].active:
             self.status = self.status.split('_')[0] + '_' + self.selected_tool
 
     def animate(self, dt):
         self.frame_index += self.animation_speed * dt
         if self.frame_index >= len(self.animations[self.status]):
-            self.frame_index = 0
+            if self.fishing.fishing_status:
+                self.frame_index = len(self.animations[self.status]) - 1
+            else: self.frame_index = 0
         self.image = self.animations[self.status][int(self.frame_index)]
 
     def update(self, dt):
-        self.input()
+        if self.fishing.fishing_status:
+            self.fishing.update(dt)
+        else:
+            self.input()
         self.move(dt)
         self.compute_dist_npcs()
         self.npcs_nearby(blocking_radius=90, talkable_radius=200)
@@ -306,3 +329,4 @@ class Player(pygame.sprite.Sprite):
         self.get_target_position() #I'm thinking about running that only in case of using tool, will see if need some optim
         self.get_status()
         self.animate(dt)
+        debug(f'Fishing = {self.fishing.fishing_status}', y=30,x=10)

@@ -30,6 +30,7 @@ class Level:
 		self.all_sprites = CameraGroup()
 		self.collision_sprites = pygame.sprite.Group()
 		self.tree_sprites = pygame.sprite.Group()
+		self.water_sprites = pygame.sprite.Group()
 		self.interaction_sprites = pygame.sprite.Group()
 		self.npc_sprites = pygame.sprite.Group()
 
@@ -61,7 +62,7 @@ class Level:
 		#water
 		water_frames = import_folder('../graphics/water')
 		for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
-			Water((x*TILE_SIZE,y*TILE_SIZE), water_frames, self.all_sprites)
+			Water((x*TILE_SIZE,y*TILE_SIZE), water_frames, [self.all_sprites, self.water_sprites])
 
 		#widflowers
 		for obj in tmx_data.get_layer_by_name('Decoration'):
@@ -97,11 +98,14 @@ class Level:
 					self.collision_sprites,
 					self.npc_sprites,
 					self.tree_sprites,
+					self.water_sprites,
 					interaction = self.interaction_sprites,
 					soil_layer = self.soil_layer,
 					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
 					sound_manager = self.sound_manager,
-					item_loader = self.item_loader)
+					item_loader = self.item_loader,
+					player_add = self.player_add
+				)
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 			if obj.name == 'Trader':
@@ -223,7 +227,7 @@ class Level:
 		self.sky.display_daylight()
 		self.sky.display_weather(dt, self.rain.rain_level)
 		debug(self.rain.rain_level)
-		debug(self.player.record, y=50, x=10)
+		debug(f'Recording = {self.player.record}', y=50, x=10)
 
 		# manage states
 		for event in events:

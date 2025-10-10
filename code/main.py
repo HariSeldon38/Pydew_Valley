@@ -129,6 +129,8 @@ check if correct for planting seeds
 
 nom de la monaie est l'étincelle
 
+change colors of overlay/fishing.png
+
 next to do with merchant menu : add the item purchased from the special shop.
 easiest may be add another tab when initiaize shop if player.special_item not empty with only the non empty fields
 

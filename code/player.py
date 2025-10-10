@@ -71,6 +71,7 @@ class Player(pygame.sprite.Sprite):
         self.npc_sprites = npc
         self.talkable_npcs = set()
         self.talking = False
+        self.flags = {} #will contains a dict 'flag_name': boolean to track keypoints in the stories of the npcs, NEED TO BE INSTANCIATE THOUGH LOAD_SAVE
 
         self.sound_manager = sound_manager
         self.item_loader = item_loader

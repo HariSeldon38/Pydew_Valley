@@ -1,0 +1,54 @@
+start:
+  all_condition: [meet_spirit, brother, secret]
+  text: "test all 3 conditions"
+  fallback: test_2_conditions
+  next: test_3choices
+
+test_2_conditions:
+  all_condition: [meet_spirit, brother]
+  text: "test all 2 conditions"
+  fallback: test_1_condition
+  next: test_3choices
+
+test_1_condition:
+  condition: meet_spirit
+  text: "test 1 condition"
+  fallback: test_3choices
+  next: test_3choices
+
+test_3choices:
+  text: "test 3 choix"
+  choices:
+    - text: "choix1"
+      next: test_1choix
+    - text: "choix2"
+      next: test_2choix
+    - text: "choix3 *next_day*"
+      set_flag: next_day
+      next: fin
+
+test_2choix:
+  text: "test 2 choix"
+  choices:
+    - text: "choix 1"
+      next: fin
+    - text: "choix 2 *next_day on following line"
+      next: fin2
+
+test_1choix:
+  text: "test 1 choix"
+  choices:
+    - text: "seul et unique choix"
+      next: fin
+
+fin2:
+  text: "*next_day_granted*"
+  set_flag: next_day
+  next: fin2_return
+
+fin2_return:
+  text: "C'est bon tu peux passer au jour suivant je t'ai dit"
+
+fin:
+  text: "Ceci est la fin peut etre a tu réussi ou pas"
+  next: start

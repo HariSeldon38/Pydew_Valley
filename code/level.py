@@ -107,15 +107,23 @@ class Level:
 			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
+		"""		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
 		list_record = [
 			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
+			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
 		]
-		for i in range(len(list_record)):
-			NPC(
-				list_record[i],
-				[self.all_sprites, self.npc_sprites],
-				self.collision_sprites)
+		NPC(
+			list_record[0],
+			[self.all_sprites, self.npc_sprites],
+			self.collision_sprites,
+			name = 'Statue'
+		)
+		NPC(
+			list_record[1],
+			[self.all_sprites, self.npc_sprites],
+			self.collision_sprites,
+			name = 'Spirit'
+		)"""
 
 		Generic(
 			pos=(0,0),
@@ -144,13 +152,19 @@ class Level:
 		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
 
 		#saving npc dialogue state
-		with open('../save/save.json', "r") as saving_file:
-			data = json.load(saving_file)
+		try:
+			with open('../save/save.json', "r") as saving_file:
+				data = json.load(saving_file)
+		except json.JSONDecodeError:
+			print("Warning: save.json is empty or invalid. Starting fresh.")
+			data = {}
 		for npc in self.npc_sprites:
 			if getattr(npc, 'next_day', False):
 				npc.encounter += 1
+				npc.next = 'start'
 			data[npc.name] = {'next': npc.next,
 							  'encounter': npc.encounter}
+		data['PLAYER'] = self.player.flags
 		with open('../save/save.json', "w") as saving_file:
 			json.dump(data, saving_file, indent=4)
 
@@ -163,18 +177,27 @@ class Level:
 		with open('../save/save.json', "r") as saving_file:
 			data = json.load(saving_file)
 
-		#creating new npc: that will be updated later
+		"""		#creating new npc: that will be updated later
 		list_record = [
+			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
 			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
 		]
-		for i in range(len(list_record)):
-			NPC(
-				list_record[i],
-				[self.all_sprites, self.npc_sprites],
-				self.collision_sprites,
-				next = data['Statue']['next'],
-				encounter = data['Statue']['encounter']
-			)
+		NPC(
+			list_record[0],
+			[self.all_sprites, self.npc_sprites],
+			self.collision_sprites,
+			name = 'Statue',
+			next = data['Statue']['next'],
+			encounter = data['Statue']['encounter']
+		)
+		NPC(
+			list_record[1],
+			[self.all_sprites, self.npc_sprites],
+			self.collision_sprites,
+			name = 'Spirit',
+			next=data['Spirit']['next'],
+			encounter=data['Spirit']['encounter']
+		)"""
 
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)

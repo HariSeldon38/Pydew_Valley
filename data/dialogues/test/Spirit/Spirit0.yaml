@@ -1,0 +1,39 @@
+start:
+  text: "Salut gros. *meet_spirit*"
+  set_flag:
+    name: meet_spirit
+    scope: player
+  choices:
+    - text: "Wesh jsuis pas gros"
+      next: pas_gros
+    - text: "Salut frère *brother*"
+      set_flag:
+        name: brother
+        scope: player
+      next: frere
+
+pas_gros:
+  text: "Asy du m'a saoulé dégage"
+  next: start
+
+frere:
+  text: "Veut tu le secret de la vie éternelle"
+  choices:
+    - text: "Oui"
+      next: vie_eternelle
+    - text: "Non"
+      next: dommage
+
+vie_eternelle:
+  text: "Voici le secret que tout le monde cherche *secret* should close after"
+  set_flag:
+    name: secret
+    scope: player
+  next: vie_eternelle_return
+
+vie_eternelle_return:
+  text: "Je viens de te donner le secret je n'ai plus rien à te dire"
+
+dommage:
+  text: "Dmg (should close after cause no choice, also start again)"
+  next: start

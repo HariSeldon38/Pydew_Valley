@@ -1,24 +1,18 @@
-ready:
+start:
   text: "Oh salut, encore toi ?"
   choices:
     - text: "Ma tête te reviens pas ?"
       next: excuses
     - text: "J'ai toujours pas trouvé la sagesse"
       next: cherche
-    - text: "Pardon je dois y aller"
+    - text: "J'ai rencontré Spirit"
+      condition: meet_spirit
       trigger: close_dialogue
       next: start
 
-not_ready:
-  text: "Oh salut, tu n'est pas encore prêt"
-  choices:
-    - text: "Ma tête te reviens pas ?"
-      next: excuses
-    - text: "J'ai toujours pas trouvé la sagesse"
-      next: cherche
-
 excuses:
   text: "Oh si pardon. C'est pas ce que je voulais dire"
+  next: start
 
 cherche:
   text: "As tu cherché dans le placard"

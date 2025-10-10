@@ -79,6 +79,8 @@ Idée de base du jeu:
 collect, destroy wildflower, need a way like for harvest crops because hitxox too little
 
 BUGS:
+- LOW condition not reach seem to be displayed for a split sec (Statue0.yaml to test without speaking to Spirit)
+- HIGH next day with two different npc the 2 dialogues where the same. I don't know why
 - HIGH if a npc is beside my bed and dont move --> game broken
 - MED inventory size reached
 - WND animation when tool continuous : WILL NOT DO
@@ -211,6 +213,11 @@ GUIDELINE TO DIALOGUE:
 		
 	if you think about chaining multiple line of monologue with next don't forget that for now listen is switching every time so need to change the code a little
 		(but can be no so hard just condition the self.listen to choice or not choice)
+	set_flag in listening as well as in choice OK
+		make sure to use flag next_day only like that "set_flag: next_day" DO NOT SPECIFY SCOPE IN THIS CASE
+	do not use next_day if it's the final dialogue file obvioulsy
+	all file must begin with start (and condition if necessary)
+	
 
 
 test all the different text of a npc : ask copilot to review all the yaml
@@ -219,6 +226,33 @@ test all the different text of a npc : ask copilot to review all the yaml
 	
 
 implement a notebook ingame to track all the conversation in case something is happening too fast
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 IA prompt :
 I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.

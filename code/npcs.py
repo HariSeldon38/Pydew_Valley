@@ -14,12 +14,10 @@ cause already collision collision_sprite vs NPC so NPC cannot be into collision 
 
 class NPC(pygame.sprite.Sprite):
 
-    def __init__(self,route_file, group, collision_sprites, next='start', encounter=0):
+    def __init__(self, route_file, group, collision_sprites, name, next='start', encounter=0):
         super().__init__(group)
         self.sprite_type = 'npc'
-
-        list_npc = os.listdir('../graphics/characters/npcs')
-        self.name = list_npc[1]
+        self.name = name
 
         self.import_assets()
         self.status = 'up'
@@ -48,6 +46,7 @@ class NPC(pygame.sprite.Sprite):
         #self.dialogue_status = 'start' #possible values : 'start', 'unfinished', 'done'
         with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
             self.dialogue = yaml.safe_load(f)
+            print(f'{self.name}{self.encounter}.yaml')
 
     def load_route(self, file_path):
         with open(file_path, 'r') as record:
@@ -146,7 +145,6 @@ class Dialogue(Menu):
 
         self.text_background_surf1 = pygame.image.load('../graphics/UI/clear_less_box_1020x110.png')
         self.text_background_surf1_selected = pygame.image.load('../graphics/UI/clear_box_1020x110.png')
-        self.text_background_surf1_selected.fill((255, 255, 200))
 
         image = pygame.image.load('../graphics/UI/clear_less_box_1020x45.png')
         image_clear = pygame.image.load('../graphics/UI/clear_box_1020x45.png')
@@ -194,6 +192,17 @@ class Dialogue(Menu):
                             if self.choices[self.index]['trigger'] == 'close_dialogue':
                                 self.state_manager.close_state()
 
+                        # Handle set_flag from specific choice
+                        selected = self.choices[self.index]
+                        flag = selected.get('set_flag')
+                        if isinstance(flag, dict):
+                            name = flag['name']
+                            scope = flag.get('scope', 'npc')
+                            target = self.player.flags if scope == 'player' else self.npc
+                            target[name] = True
+                        elif isinstance(flag, str):
+                            setattr(self.npc, flag, True)
+
                     elif not self.choices: #mean the dialogue is over after that
                         if 'next' in self.dialogue[self.next]:
                             self.next = self.dialogue[self.next]['next']
@@ -212,19 +221,55 @@ class Dialogue(Menu):
     def update(self):
         """maybe could use that to change the selected surface"""
         current = self.dialogue[self.next]
+
+        # Handle node-level condition
+        cond = current.get('condition')
+        all_cond = current.get('all_condition')
+        if cond:
+            name = cond['name'] if isinstance(cond, dict) else cond
+            if not self.player.flags.get(name, False):
+                self.next = current.get('fallback', 'start')
+                current = self.dialogue[self.next]
+        elif all_cond:
+            if not all(self.player.flags.get(name, False) for name in all_cond):
+                self.next = current.get('fallback', 'start')
+                current = self.dialogue[self.next]
+
         self.text = current['text']
         if 'choices' in current:
-            self.choices = current['choices']
+            self.choices = []
+            for choice in current.get('choices', []):
+                cond = choice.get('condition')
+                if cond:
+                    name = cond['name'] if isinstance(cond, dict) else cond
+                    if not self.player.flags.get(name, False):
+                        continue  # skip this choice
+
+                elif all_cond:
+                    if not all(self.player.flags.get(name, False) for name in all_cond):
+                        continue  # skip this choice
+
+                self.choices.append(choice)
+
         else:
             self.choices = []
-        if self.listen: self.nb_choices = 1
+        if self.listen: self.nb_choices = 0
         else: self.nb_choices = len(self.choices)
-        if 'set_flag' in current:
-            setattr(self.npc, current['set_flag'], True)
+
+        flag = current.get('set_flag')
+        if isinstance(flag, dict):
+            name = flag['name']
+            scope = flag.get('scope', 'npc')  # default to npc
+            target = self.player.flags if scope == 'player' else self.npc
+            self.player.flags[name] = True
+        elif isinstance(flag, str):
+            setattr(self.npc, flag, True)
 
     def display_text_background(self, surface):
-        if self.nb_choices == 1:
+        if self.nb_choices == 0:
             surface.blit(self.text_background_surf1, (200, SCREEN_HEIGHT - 170))
+        if self.nb_choices == 1:
+            surface.blit(self.text_background_surf1_selected, (200, SCREEN_HEIGHT - 170))
         if self.nb_choices == 2:
             surface.blit(self.text_background_surf2[0+self.index], (200, SCREEN_HEIGHT - 170))
             surface.blit(self.text_background_surf2[(1+self.index)%2], (200, SCREEN_HEIGHT - 105))

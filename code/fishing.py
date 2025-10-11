@@ -2,12 +2,13 @@ from os import path
 from typing import Callable
 import pygame.key
 from timer import Timer
-from random import randint
+from random import randint, choices
 from support import import_folder
 
 class Fishing:
     """
     This class is used to handle the fishing activity by the player
+    Possible enhancement : choose possible fish from start and random timing based on that
     """
 
     def __init__(self, player_add: Callable, fishing_status: bool):
@@ -26,6 +27,26 @@ class Fishing:
         # extra timer that reels for me
         self.extra_time = Timer(500)
 
+        # water type (for now just y_position threshold to decide wether pond or sea
+        self.water_type = None
+        self.y_threshold = 350
+        self.fishes = {'salted':   {'salmon': 2,
+                                    'crab': 8,
+                                    'pufferfish': 10,
+                                    'surgeonfish': 10,
+                                    'clownfish': 20,
+                                    'anchovy': 30,
+                                    'can': 20},
+
+                       'fresh':    {'baby_salmon': 8,
+                                    'angelfish': 12,
+                                    'catfish': 15,
+                                    'goldfish': 15, #not so rare but worth a lot, hence the name
+                                    'rainbow_trout': 20,
+                                    'bass': 20,
+                                    'rock': 10}
+                       }
+
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -34,8 +55,19 @@ class Fishing:
 
             # pulled reel on time or not
             if self.fishing_timer.complete and self.reel_on_time.active:
-                self.player_add('fish')
-                print('FISH')
+                if not self.worm:
+                    fish = choices(
+                        population=list(self.fishes[self.water_type].keys()),
+                        weights=list(self.fishes[self.water_type].values()),
+                        k=1)[0]
+                else:
+                    fish_dict = self.fishes[self.water_type]
+                    # Exclude one key, e.g. "can"
+                    filtered_items = [(k, v) for k, v in fish_dict.items() if k != 'can' and k!='rock']
+                    population, weights = zip(*filtered_items)
+                    fish = choices(population=population, weights=weights, k=1)[0]
+
+                self.player_add(fish)
                 # cancel the reel timer and complete it
                 self.end_fishing()
 
@@ -46,11 +78,14 @@ class Fishing:
                 keys[pygame.K_d]:  # to cancel fishing
             self.end_fishing()
 
-    def fishing_start(self, target_position):
+    def fishing_start(self, target_position, water_type, worm=False):
         """
         Begins the fishing activity
         :return: None
         """
+        self.worm = worm
+        self.water_type = water_type
+        self.frame_index = 0
         self.target_position = target_position
         self.fishing_timer.activate()
         self.fishing_status = True
@@ -65,7 +100,7 @@ class Fishing:
         self.fishing_status = False
 
     def animate_ripple(self, dt):
-        self.frame_index += 12 * dt
+        self.frame_index += 10 * dt
         if self.frame_index >= len(self.ripple_frames):
             self.frame_index = 0
         frame = self.ripple_frames[int(self.frame_index)]

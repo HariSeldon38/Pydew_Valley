@@ -6,11 +6,14 @@ SALE_PRICES = {
 	'wood': 4,
 	'apple': 2,
 	'corn': 10,
-	'tomato': 20
+	'tomato': 20,
+    'rock': 1,
+    'can': 1
 }
 PURCHASE_PRICES = {
 	'corn_seed': 4,
 	'tomato_seed': 5,
+    'worm': 5,
 	'black_beanie': 500,
 	'fishing_rod': 500,
 	'seewing_needle': 1000,
@@ -21,6 +24,8 @@ SELL_SHOP_INVENTORY = {
     'apple': None,
     'corn': None,
     'tomato': None,
+    'rock': None,
+    'can': None,
 }
 BUY_SHOP_INVENTORY = {
     'corn_seed': float('inf'),
@@ -29,6 +34,7 @@ BUY_SHOP_INVENTORY = {
 SPECIAL_SHOP_INVENTORY = {
     'black_beanie': 1,
     'fishing_rod': 1,
+    'worm': 0,
     'seewing_needle': 1,
     'white_thread': 1,
 }
@@ -140,12 +146,12 @@ class ShopLogic(ABC):
             item_price = PURCHASE_PRICES[self.current_item]
             if self.player.money >= item_price:
                 self.player.item_inventory.setdefault(self.current_item, 0)
-                self.player.item_inventory[self.current_item] += 1
+                self.player.item_inventory[self.current_item] += 1 #why not use player add ?
+                if self.current_item == 'fishing_rod':
+                    self.inventory['worm'] = float('inf')
                 self.player.money -= item_price
                 self.inventory[self.current_item] -= 1
                 self.setup()
-                print(self.inventory)
-                print(self.player.item_inventory)
                 if self.inventory[self.current_item] < 0:
                     raise ValueError("An item has negative quantities")
         if self.mode == 'sell':

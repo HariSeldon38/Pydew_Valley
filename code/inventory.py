@@ -239,6 +239,6 @@ class InventoryMenu(Menu):
     def draw(self, screen):
         grid = self.display_grid_box((SCREEN_WIDTH//2,SCREEN_HEIGHT//2), 10, self.nb_rows, self.nb_cols, self.box, screen)
         self.display_items(screen, grid)
-        self.display_name_selected_item(screen, grid)
         self.display_panels(screen)
+        self.display_name_selected_item(screen, grid)
         self.display_money(screen)

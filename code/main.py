@@ -50,8 +50,17 @@ better animation for destroying trees or no anim to exacerber feeling of hand ma
 
 IDk about the reset way for now, strange to reset when we want
 
+filter goes below ripple animation, little bug 
+also frame maybe not it right order idk
 
 change watering sprite generation, need to keep randomness but create more png with different levels of water
+
+idée de craft bébé saumon + vers + mettre des dialogue qui vont dans ce sens (genre le caht mange des vers ça le fait grandir)
+
+Facile à implémenter (mais faut nouveau sprite de canne a peche pr que ça se voie lors de la peche) : qd achète canne a peche set ver à pêche à 200 puis ensuite si tombe à 0 (5*200 = 1000 balles qd meme) débloque nouvelle cane a pèche ou vers infinis 
+faire parler dans les dialogues d'une canne a peche légendaire
+
+reste à implémenter le déblocage des outils aussi ( et les token )
 
 growing plants :
 	will change that so that during the day the plan can grow but when reset the time passes even more, 

@@ -56,8 +56,8 @@ class Player(pygame.sprite.Sprite):
         self.player_add = player_add
         self.fishing = Fishing(self.player_add, False)
 
-        self.item_inventory = {
-            'corn' : 1,
+        self.item_inventory = {}
+        """            'corn' : 1,
             'tomato': 10,
             'corn_seed': 1,
             'tomato_seed': 1,
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
             'fishing_rod': 1,
             'seewing_needle': 1,
             'white_thread': 1
-        }
+        }"""
         self.money = 20000
 
         #interactions
@@ -111,9 +111,15 @@ class Player(pygame.sprite.Sprite):
             for water in self.water_sprites:
                 if water.rect.collidepoint(self.target_position):
                     #need to offset target position like the hitbox debug display in the end of level
-                    x = self.target_position.x - self.rect.centerx + SCREEN_WIDTH / 2 +10
-                    y = self.target_position.y - self.rect.centery + SCREEN_HEIGHT / 2 +10
-                    self.fishing.fishing_start((x,y))
+                    x = self.target_position.x - self.rect.centerx + SCREEN_WIDTH / 2
+                    y = self.target_position.y - self.rect.centery + SCREEN_HEIGHT / 2
+                    if self.rect.centery > 1200: water_type = 'salted'
+                    else: water_type = 'fresh'
+                    if self.item_inventory.get('worm', 0) > 0:
+                        self.item_inventory['worm']-=1
+                        worm = True
+                    else: worm = False
+                    self.fishing.fishing_start((x,y), water_type, worm)
 
     def use_seed(self):
         if self.item_inventory.get(self.selected_seed+"_seed", 0) > 0:

@@ -9,4 +9,19 @@ black_beanie,Bonnet noir,../graphics/token/placeholder.png,"Un simple couvre che
 fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher de bons poissons, du saumon avec beaucoup de chance"
 seewing_needle,Aiguille de couture,../graphics/token/placeholder.png,Donne accès à un univers de créativité infini
 white_thread,Fil blanc,../graphics/token/placeholder.png,Saura se rendre utile...
-,Bonnet stylisé,,Pour un look de rockstar !
+no_yet,Bonnet stylisé,not_yet,Pour un look de rockstar !
+anchovy,Anchois,../graphics/token/anchovy.png,Appelle les des engraulidés si tu veux... (eau salée)
+angelfish,Poisson-Ange,../graphics/token/angelfish.png,Nouveau concept : les anges aquatiques (eau douce)
+bass,Bar,../graphics/token/bass.png,Bonjour je voudrais un monaco siouplait (eau douce)
+catfish,Poisson-Chat,../graphics/token/catfish.png,"Est-ce qu'un poisson, un chat et un gros légume pourraient aller ensemble ? (eau douce)"
+crab,Crabe,../graphics/token/crab.png,Attention aux pinces (eau salée)
+goldfish,Poisson-rouge,../graphics/token/goldfish.png,Celui-là vaut de l'or (eau douce)
+clownfish,Poisson-clown,../graphics/token/clownfish.png,Némo ! (eau salée)
+pufferfish,Poisson-globe,../graphics/token/pufferfish.png,Pourait peut-être servir à s'envoler... non impossible (eau salée)
+rainbow_trout,Truite arc-en-ciel,../graphics/token/rainbow_trout.png,Une espèce de saumon avec un peu d'imagination (eau douce)
+surgeonfish,Poisson-chirurgien,../graphics/token/surgeonfish.png,Un poisson qui gagne bien sa vie (eau salée)
+can,Canette vide,../graphics/token/can.png,Un bout d'aluminium
+rock,Pierre,../graphics/token/rock.png,Un bout de granite
+worm,Ver à pêche,../graphics/token/worm.png,Un ver qui se dandine au bout de votre fil
+salmon,Saumon,../graphics/token/salmon.png,Le poisson légendaire (eau salée)
+baby_salmon,Jeune saumon,../graphics/token/baby_salmon.png,Un poisson prêt à suivre le cours de sa vie (eau douce)

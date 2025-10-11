@@ -45,10 +45,10 @@ PLAYER_TOOL_OFFSET = {
 		'up': Vector2(23, -44),
 		'down': Vector2(-23, 60)},
 	'fishing': {
-		'left': Vector2(-95, 25),
-		'right': Vector2(95, 25),
-		'up': Vector2(23, -44),
-		'down': Vector2(-23, 60)}
+		'left': Vector2(-110, 53),
+		'right': Vector2(110, 45),
+		'up': Vector2(-25, -75),
+		'down': Vector2(-13, 90)}
 }
 LAYERS = {
 	'water': 0,

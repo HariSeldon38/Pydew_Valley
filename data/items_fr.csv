@@ -25,3 +25,6 @@ rock,Pierre,../graphics/token/rock.png,Un bout de granite
 worm,Ver à pêche,../graphics/token/worm.png,Un ver qui se dandine au bout de votre fil
 salmon,Saumon,../graphics/token/salmon.png,Le poisson légendaire (eau salée)
 baby_salmon,Jeune saumon,../graphics/token/baby_salmon.png,Un poisson prêt à suivre le cours de sa vie (eau douce)
+axe,Hâche,../graphics/token/axe.png,Not used for now
+hoe,Houe,../graphics/token/hoe.png,Not used for now
+water,Arrosoir,../graphics/token/water.png,Not used for now

@@ -29,49 +29,22 @@ if __name__ == '__main__':
 
 
 """
-Notes :
-
-maybegood to check the video about delta time
-about dt : we need to store position into pos and not inside the rect. 
-		because a rect store the pos as an integer and we use dt to 
-		move everything in framerate indep way we will have often float so --> error
-		so we move the pos vector and then we update the rect based on that
-
 I did duplicate some frame in idle animation in order to have a slower animation for idling
 NO a good thing to do I know, need to change that from the code if I find the time
 
 add a zone unreachable, to give player the envy to reach it and when it does there is a big monster guarding something but the ^player does not have attack and he discover that he have a health bar and can die
 
-peut fabriquer un bonnet nlsqps et l'offrir
-
 un jeu n'arrative d'une heure, première choise a faire assez basique histoire à la con mais reviens à la fin et surprend un peu en montrant que c'était pas si con
 
 better animation for destroying trees or no anim to exacerber feeling of hand made
 
-IDk about the reset way for now, strange to reset when we want
-
-filter goes below ripple animation, little bug 
-also frame maybe not it right order idk
-
 change watering sprite generation, need to keep randomness but create more png with different levels of water
 
 idée de craft bébé saumon + vers + mettre des dialogue qui vont dans ce sens (genre le caht mange des vers ça le fait grandir)
+"""
 
-Facile à implémenter (mais faut nouveau sprite de canne a peche pr que ça se voie lors de la peche) : qd achète canne a peche set ver à pêche à 200 puis ensuite si tombe à 0 (5*200 = 1000 balles qd meme) débloque nouvelle cane a pèche ou vers infinis 
-faire parler dans les dialogues d'une canne a peche légendaire
-
-reste à implémenter le déblocage des outils aussi ( et les token )
-
-growing plants :
-	will change that so that during the day the plan can grow but when reset the time passes even more, 
-	will figure it out in the end because need to know beforehand what to do with rst
-	need also to take into acount nb of time watered : once is ok, twice is best, thrice is slower than once
-
-I changed the player hitbox but now it revealed that the tree hitboxes are not right and I can glitch through corner of the house...
-need to recal all the hitboxes of the game in the end, by displaying it
-ALso another bug, with that new collision if press enter while moving, continue to move...
-
-Idée de base du jeu:
+# IDEE DE BASE
+"""
 1ère partie, introduction/tutoriel. Doit durer 1h max
 	map de base de clear code, on se balade on peut farm et tout et trade avec le trder pr gg de l'argent
 	de temps en temps des png spawn au matin et restent toute la journée, on peut leur parler,
@@ -85,10 +58,17 @@ Idée de base du jeu:
 2ème partie, on a le doirt de choisir entre 3 différents maisons:
 	on se retrouve dans un monde plus vaste avec tout les pnj du jeux. des magasins plus de sortes de fruit, de graines etc etc
 
-collect, destroy wildflower, need a way like for harvest crops because hitxox too little
+nom de la monaie est l'étincelle
+"""
 
-BUGS:
+# BUGS :
+"""
+- LOW rain shade can trigger during menu not paused but rain is /should not call random rain at all during pauses (but day night ok maybe)
+- MED apple flying after cut tree
+- HIGH night filter stuck after some reset ?
 - LOW condition not reach seem to be displayed for a split sec (Statue0.yaml to test without speaking to Spirit)
+- LOW filter goes below ripple animation
+- LOW ripple frame maybe not it right order idk
 - HIGH next day with two different npc the 2 dialogues where the same. I don't know why
 - HIGH if a npc is beside my bed and dont move --> game broken
 - MED inventory size reached
@@ -118,80 +98,60 @@ BUGS:
 		ValueError: empty range for randrange() (1, -3599, -3600)
 		
 		Process finished with exit code 1
+- optim: check if that could be a good idea to gather all the font in the same place (maybe not an issue)
+- warning : could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
+"""
+
+# QUALITY OF LIFE :
+"""
+- close menu with same key that open it
+- at least color the three different shops OR buy and sell different colors
+- better day/ nigh : increase and then descrease
+- maybe longer cooldown for hoe use
+- tomato and apple look too alike, change color apple, more bright in inventory (TOKEN) (when adding multi color tomatoes)
+- add images in the shop
+- add mention "paused" in inventory
+- text decriptif de ce qui se passe en bas de l'écran : 
+		inventory += pomme etc... obje obtenus
+		add little dialogue box when trying to plant a seed we don't have
+- hold arrow to navigate faster in inventory
+- change colors of overlay/fishing.png
+"""
+
+# NEXT FEATURE TO IMPLEMENT (down = not in a close futur)
+"""
+- Music
+- Craft
+- peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
+- un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
+- growing plants : (can be think as well with gold hoe and gold watercan
+	will change that so that during the day the plan can grow but when reset the time passes even more, 
+	will figure it out in the end because need to know beforehand what to do with rst
+	need also to take into acount nb of time watered : once is ok, twice is best, thrice is slower than once
+- collect, destroy wildflower, need a way like for harvest crops because hitxox too little
+- more complex meteo, like day with low proba of rain, and day with high proba
+- separate shop into multiple stands, unlockable (especially Trésor et reliques)
+- implement a notebook ingame to track all the conversation in case something is happening too fast
+- Facile à implémenter (mais faut nouveau sprite de canne a peche pr que ça se voie lors de la peche) :
+		qd achète canne a peche set ver à pêche à 200 puis ensuite si tombe à 0 (5*200 = 1000 balles qd meme) débloque nouvelle cane a pèche ou vers infinis 
+		faire parler dans les dialogues d'une canne a peche légendaire
+- jump, create the feature properly (useless for now WND)
+"""
 
 
-
-peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
-
-
-ajouter pêche
-un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
-
+"""
 trouver un moyen rapide pr faire comprendre qu'il faut beacoup discuter avec les personnages mais en même temps mettre un cooldown aléatoire
-pour éviter d' exploit ça
-
-bug : rain shade can trigger durring menu not paused but rain is
-should not call random rain at all during pauses (but day night ok maybe)
-
-add inventory to open
-check if correct for planting seeds
-
-nom de la monaie est l'étincelle
-
-change colors of overlay/fishing.png
+pour éviter d'exploit ça
 
 next to do with merchant menu : add the item purchased from the special shop.
 easiest may be add another tab when initiaize shop if player.special_item not empty with only the non empty fields
-
-better day/ nigh : increase and then descrease
-
-maybe longer cooldown for hoe use
-
-add images in the shop
-
-jump, create the feature properly
-
-
-close menu with same key that open it
-
-change color apple, mor bright in inventory (TOKEN)
-(when adding multi color tomatoes)
-
-more complex meteo, like day with low proba of rain, and day with high proba
-
-bug apple flying after cut tree
-
-add mention "paused" in inventory
 
 ANKI:
 os.walk(path) returns ('path', [subfolders], [file_names])
 git log --oneline    : display previous commit and state of master and origin
 pour parcourir un group : for sprite in self.collision_sprites.sprites(): pas oublier .sprites() (demander à gpt pk)
 
-important things to do :
-	panel with description of object in inventory
-	PNJ
-	Music
 
-quality of life :
-	-buy and sell different colors
-	-text decriptif de ce qui se passe en bas de l'écran : 
-		inventory += pomme etc... obje obtenus
-		add little dialogue box when trying to plant a seed we don't have
-	-tomato and apple look too alike
-	-hold arrow to navigate faster in inventory
-
-optim:
-	check if that could be a good idea to gather all the font in the same place (maybe not an issue)
-
-too complex/ ambitious
-	separate shop into multiple stands, unlockable (especially Trésor et reliques)
-
-centering detail :
-	in inventory line134:             image_rect = bigger_image_surf.get_rect(center=(126+offset,269))
-		# y pos is originally 267 but some items are not well centered so I settled for a middle value
-
-could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
 
 del reord feature and other dev feature for release
 anyway remove access to record feature during gameplay
@@ -230,41 +190,13 @@ GUIDELINE TO DIALOGUE:
 	all file must begin with start (and condition if necessary)
 	
 
-
 test all the different text of a npc : ask copilot to review all the yaml
 	list the different valid trigger keywords
 	explain the rule : next mandatory after a trigger: close dialogue
-	
+"""
 
-implement a notebook ingame to track all the conversation in case something is happening too fast
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# IA PROMPT : (never been used finally)
+"""
 IA prompt :
 I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.
 All the project is following OOP concepts.
@@ -276,11 +208,18 @@ level.py : The "hub" of my code where all the necessary class are imported and d
 it is composed of a init method, setup method that instanciate all the classes I need, reset method used to start a new day, toggle_shop method that open the shop menu, and run where everything is called.
 
 player.py define all the player character need, it is a Sprite class that contain the following methods : use_tool, use_seed, get_target_position, import_assets, animate, inpu, get_status (direction and action the player is currently doing) update_timers, collision, move, update : the main function to update the sprites.
+"""
 
-
-
-
+# TECHNICAL :
+"""
 ABOUT DT AND RECORDINGS :
+
+maybegood to check the video about delta time
+about dt : we need to store position into pos and not inside the rect. 
+		because a rect store the pos as an integer and we use dt to 
+		move everything in framerate indep way we will have often float so --> error
+		so we move the pos vector and then we update the rect based on that
+
 But also I can do it later, because I know what my current fps is if I lower it I should be able to correct it without re-recording or it is a bad idea ?
 You're absolutely right, Antoine — if you know the FPS at which the input was recorded, you can correct for it later. It’s not a bad idea at all, especially if you're keeping things simple for now and want flexibility later.
 

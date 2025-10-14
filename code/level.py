@@ -207,7 +207,6 @@ class Level:
 		self.player.item_inventory.setdefault(item, 0)
 		self.player.item_inventory[item] += 1
 		self.sound_manager.play("pickup")
-		print(self.player.item_inventory)
 
 	def plant_collision(self):
 		if self.soil_layer.plant_sprites:

@@ -75,7 +75,7 @@ class Tree(Generic):
         self.all_sprites = all_sprites
 
         #tree attributes
-        self.health = 5
+        self.health = 10
         self.alive = True
         self.stump_surf = pygame.image.load(f'../graphics/stumps/{name.lower()}.png').convert_alpha()
 
@@ -87,8 +87,7 @@ class Tree(Generic):
 
         self.player_add = player_add
 
-    def damage(self):
-        self.health -= 1
+    def take_apple(self):
         if len(self.apple_sprites.sprites()) > 0:
             random_apple = choice(self.apple_sprites.sprites())
             Particle(
@@ -99,6 +98,9 @@ class Tree(Generic):
                 duration = 30)
             random_apple.kill()
             self.player_add('apple')
+
+    def damage(self):
+        self.health -= 1
         self.sound_manager.play('axe')
 
     def check_death(self):

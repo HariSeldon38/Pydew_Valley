@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
         }
 
         #tools
-        self.tools = ['hoe','axe','water','jump', 'fishing']
+        self.tools = ['hand'] #'jump' removed, hoe, water, fishing, axe --> moved to shop
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
@@ -91,18 +91,24 @@ class Player(pygame.sprite.Sprite):
                            'up_axe': [], 'down_axe': [], 'right_axe': [], 'left_axe': [],
                            'up_water': [], 'down_water': [], 'right_water': [], 'left_water': [],
                            'up_jump': [], 'down_jump': [], 'right_jump': [], 'left_jump': [],
-                           'up_fishing': [], 'down_fishing': [], 'right_fishing': [], 'left_fishing': []}
+                           'up_fishing': [], 'down_fishing': [], 'right_fishing': [], 'left_fishing': [],
+                           'up_hand': [], 'down_hand': [], 'right_hand': [], 'left_hand': [],}
 
         for animation in self.animations.keys():
             full_path = '../graphics/characters/player/' + animation
             self.animations[animation] = import_folder(full_path)
 
     def use_tool(self):
-        if self.selected_tool == 'hoe':
+        if self.selected_tool == 'hand':
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_position):
+                    tree.take_apple()
+        elif self.selected_tool == 'hoe':
             self.soil_layer.get_hit(self.target_position)
         elif self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_position):
+                    tree.take_apple()
                     tree.damage()
         elif self.selected_tool == 'water':
             self.soil_layer.get_watered(self.target_position)

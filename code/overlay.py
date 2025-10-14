@@ -14,7 +14,7 @@ class Overlay:
 
         #imports
         overlay_path = '../graphics/overlay/'
-        self.tools_surf = {tool:pygame.image.load(f'{overlay_path}{tool}.png').convert_alpha() for tool in player.tools}
+        self.tools_surf = {tool:pygame.image.load(f'{overlay_path}{tool}.png').convert_alpha() for tool in ['axe', 'jump', 'hoe', 'water', 'fishing', 'hand']}
         self.seeds_surf = {seed:pygame.image.load(f'{overlay_path}{seed}.png').convert_alpha() for seed in player.seeds}
 
     def display(self):

@@ -29,6 +29,11 @@ PLAYER_TOOL_OFFSET = {
 		'right': Vector2(51,37),
 		'up': Vector2(12,-32),
 		'down': Vector2(-12,50)},
+	'hand': {
+		'left': Vector2(-56,37),
+		'right': Vector2(56,37),
+		'up': Vector2(14,-41),
+		'down': Vector2(-12,50)},
 	'axe' : {
 		'left': Vector2(-56,37),
 		'right': Vector2(56,37),

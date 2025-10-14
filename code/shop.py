@@ -17,7 +17,11 @@ PURCHASE_PRICES = {
 	'black_beanie': 500,
 	'fishing_rod': 500,
 	'seewing_needle': 1000,
-	'white_thread': 50
+	'white_thread': 50,
+    'axe': 500,
+    'hoe': 500,
+    'water': 500,
+
 }
 SELL_SHOP_INVENTORY = {
     'wood': None,
@@ -32,11 +36,14 @@ BUY_SHOP_INVENTORY = {
     'tomato_seed': float('inf'),
 }
 SPECIAL_SHOP_INVENTORY = {
-    'black_beanie': 1,
+    'axe': 1,
+    'hoe': 1,
+    'water': 1,
     'fishing_rod': 1,
     'worm': 0,
     'seewing_needle': 1,
     'white_thread': 1,
+    'black_beanie': 1,
 }
 
 class ShopManager:
@@ -145,10 +152,16 @@ class ShopLogic(ABC):
         if self.mode == 'buy':
             item_price = PURCHASE_PRICES[self.current_item]
             if self.player.money >= item_price:
-                self.player.item_inventory.setdefault(self.current_item, 0)
-                self.player.item_inventory[self.current_item] += 1 #why not use player add ?
+                #Handling tools separatedly
                 if self.current_item == 'fishing_rod':
                     self.inventory['worm'] = float('inf')
+                    self.player.tools.append('fishing')
+                elif self.current_item in ['hoe', 'water', 'axe']:
+                    self.player.tools.append(self.current_item)
+                else: #Regular items
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1 #why not use player add ?
+
                 self.player.money -= item_price
                 self.inventory[self.current_item] -= 1
                 self.setup()

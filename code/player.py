@@ -1,4 +1,5 @@
 import pygame
+import random
 from settings import *
 from support import *
 from timer import Timer
@@ -39,8 +40,12 @@ class Player(pygame.sprite.Sprite):
             'seed switch': Timer(350),
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
             'fishing timer': Timer(450),
-            'record': Timer(500)
+            'record': Timer(500),
+            'evening': Timer(500000, [self.get_to_sleep, self.bad_sleep_penalty]),
+            'slowing': Timer(3000, self.default_speed)
         }
+        self.timers['day'] = Timer(1000, self.timers['evening'].activate) #when day is over, evening starts
+        self.timers['sleepy'] = Timer(15000, [self.timers['slowing'].activate, self.decrease_speed], loop=True) #every sleepy sec, slowing activate
 
         #tools
         self.tools = ['hand'] #'jump' removed, hoe, water, fishing, axe --> moved to shop
@@ -79,7 +84,7 @@ class Player(pygame.sprite.Sprite):
         self.npc_sprites = npc
         self.talkable_npcs = set()
         self.talking = False
-        self.flags = {} #will contains a dict 'flag_name': boolean to track keypoints in the stories of the npcs, NEED TO BE INSTANCIATE THOUGH LOAD_SAVE
+        self.flags = {} #will contain a dict 'flag_name': boolean to track keypoints in the stories of the npcs, NEED TO BE INSTANCIATE THOUGH LOAD_SAVE
 
         self.sound_manager = sound_manager
         self.item_loader = item_loader
@@ -204,7 +209,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_LSHIFT]:
             self.speed = PLAYER_LOW_SPEED
             self.lock_status = True
-        else:
+        elif self.speed == PLAYER_LOW_SPEED:
             self.speed = PLAYER_SPEED
             self.lock_status = False
 
@@ -268,8 +273,27 @@ class Player(pygame.sprite.Sprite):
             collided_interaction_sprite = pygame.sprite.spritecollide(self, self.interaction, dokill=False)
             if collided_interaction_sprite:
                 if collided_interaction_sprite[0].name == 'Bed':
-                    self.status = 'left_idle'
-                    self.sleep = True
+                    if self.timers['evening'].active:
+                        self.get_to_sleep()
+                        if self.timers['sleepy'].active: self.timers['sleepy'].deactivate()
+                        if self.timers['slowing'].active: self.timers['slowing'].deactivate()
+
+    def get_to_sleep(self):
+        self.status = 'left_idle'
+        self.direction = pygame.math.Vector2()
+        self.sleep = True
+        self.timers['evening'].deactivate()
+        self.timers['day'].deactivate()
+
+    def bad_sleep_penalty(self):
+        self.timers['sleepy'].activate()
+
+    def decrease_speed(self):
+        self.speed = 180
+        self.speech = random.choice(TIRED_SPEECH)
+
+    def default_speed(self):
+        self.speed = PLAYER_SPEED
 
     def move(self, dt):
         """due to last line, can't move at lower speed that 1 px/ frame (177 speed)
@@ -341,4 +365,3 @@ class Player(pygame.sprite.Sprite):
         self.get_target_position() #I'm thinking about running that only in case of using tool, will see if need some optim
         self.get_status()
         self.animate(dt)
-        debug(f'Fishing = {self.fishing.fishing_status}', y=30,x=10)

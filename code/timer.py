@@ -1,10 +1,11 @@
 import pygame
 
 class Timer:
-    def __init__(self, duration, func=None):
+    def __init__(self, duration, func=None, loop=False):
         """func : a function that will be ran at the END of the duration of the timer"""
         self.duration = duration
         self.func = func
+        self.loop = loop
         self.start_time = 0
         self.active = False
         self.complete = False
@@ -24,4 +25,10 @@ class Timer:
             if current_time - self.start_time >= self.duration:
                 self.deactivate()
                 if self.func:
-                    self.func()
+                    if isinstance(self.func, list):
+                        for elt in self.func:
+                            elt()
+                    else:
+                        self.func()
+                if self.loop:
+                    self.activate()

@@ -65,7 +65,8 @@ nom de la monaie est l'étincelle
 """
 - LOW rain shade can trigger during menu not paused but rain is /should not call random rain at all during pauses (but day night ok maybe)
 - MED apple flying after cut tree
-- HIGH night filter stuck after some reset ?
+- LOW ? rain color issue
+		Invalid color argument: [256.6149999999989, 256.6149999999989, 255]
 - LOW condition not reach seem to be displayed for a split sec (Statue0.yaml to test without speaking to Spirit)
 - LOW filter goes below ripple animation
 - LOW ripple frame maybe not it right order idk
@@ -100,6 +101,7 @@ nom de la monaie est l'étincelle
 		Process finished with exit code 1
 - optim: check if that could be a good idea to gather all the font in the same place (maybe not an issue)
 - warning : could be dangerous to not be able to purchase an item again, could lose it whatever how, need a way to avoid softlock
+- MED rendering text at each frame in display_speech
 """
 
 # QUALITY OF LIFE :
@@ -122,6 +124,8 @@ nom de la monaie est l'étincelle
 """
 - Music
 - Craft
+- Menu
+- Save
 - peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
 - un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
 - growing plants : (can be think as well with gold hoe and gold watercan
@@ -136,6 +140,9 @@ nom de la monaie est l'étincelle
 		qd achète canne a peche set ver à pêche à 200 puis ensuite si tombe à 0 (5*200 = 1000 balles qd meme) débloque nouvelle cane a pèche ou vers infinis 
 		faire parler dans les dialogues d'une canne a peche légendaire
 - jump, create the feature properly (useless for now WND)
+
+- before release fine tune : 
+   -timer day, evening, slowing, sleepy
 """
 
 
@@ -158,7 +165,6 @@ anyway remove access to record feature during gameplay
 
 create a drwback to be outside with rain to renforcer le comportement de rentrer à l'abri s'occuper de trucs
 (mais du coup faut tj avoir un truc à faire à l'intérieur)
-
 
 implement delta time for recordings of npcs movement see below discussion with copilot
 

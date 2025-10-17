@@ -1,3 +1,5 @@
+import random
+
 import pygame, sys
 import json
 from pytmx.util_pygame import load_pygame
@@ -9,6 +11,7 @@ from npcs import NPC
 from overlay import Overlay
 from sprites import Generic, Water, WildFlower, Tree, Fence, Interaction, Particle, CollisionShift
 from transition import Transition
+from timer import Timer
 from soil import SoilLayer
 from sky import Rain, Sky
 from sound import SoundManager
@@ -19,6 +22,7 @@ from debug import debug
 class Level:
 	def __init__(self):
 		self.display_surface = pygame.display.get_surface()
+		self.mini_font = pygame.font.Font('../font/LycheeSoda.ttf', 20)
 
 		self.item_loader = ItemCSVLoader('../data/items_fr.csv')
 
@@ -37,6 +41,8 @@ class Level:
 		#sky
 		self.sky = Sky()
 		self.rain = Rain(self.all_sprites, rain_level=0, sky=self.sky)
+		self.start_evening_timer = Timer(20000)
+		self.stop_evening_timer = Timer(40000)
 
 		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites, sound_manager=self.sound_manager)
 		self.setup()
@@ -106,6 +112,7 @@ class Level:
 					item_loader = self.item_loader,
 					player_add = self.player_add
 				)
+				self.player.timers['day'].activate()
 			if obj.name == 'Bed':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 			if obj.name == 'Trader':
@@ -137,6 +144,8 @@ class Level:
 			)
 
 	def reset(self):
+		self.player.pos.x, self.player.pos.y = (1440,1400)
+
 		#plants
 		self.soil_layer.update_plants() #will change that so that during the day the plan can grow (see main comment)
 
@@ -153,7 +162,8 @@ class Level:
 		#sky
 		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
 		self.rain.update_rain_color(0)
-		self.sky.current_color = self.sky.day_color #maybe will put it in setting idk or now
+		self.sky.current_color = self.sky.day_color.copy() #maybe will put it in setting idk or now
+		self.player.timers['day'].activate()
 
 		#saving npc dialogue state
 		try:
@@ -180,7 +190,6 @@ class Level:
 		#loading the npc data
 		with open('../save/save.json', "r") as saving_file:
 			data = json.load(saving_file)
-
 		"""		#creating new npc: that will be updated later
 		list_record = [
 			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
@@ -208,6 +217,11 @@ class Level:
 		self.player.item_inventory[item] += 1
 		self.sound_manager.play("pickup")
 
+	def display_player_speech(self, text):
+		for idx, line in enumerate(text.split('\n')):
+			render = self.mini_font.render(line, False, 'black')
+			self.display_surface.blit(render, (SCREEN_WIDTH//2+45, SCREEN_HEIGHT//2-60+idx*20))
+
 	def plant_collision(self):
 		if self.soil_layer.plant_sprites:
 			for plant in self.soil_layer.plant_sprites.sprites():
@@ -227,7 +241,9 @@ class Level:
 		self.sky.display_daylight()
 		self.sky.display_weather(dt, self.rain.rain_level)
 		debug(self.rain.rain_level)
-		debug(f'Recording = {self.player.record}', y=50, x=10)
+		debug(f"Recording = {self.player.record}", y=50, x=10)
+		debug(f"day timer : {self.player.timers['day'].active}", y=70, x=10)
+		debug(f"evening timer : {self.player.timers['evening'].active}", y=90, x=10)
 
 		# manage states
 		for event in events:
@@ -265,6 +281,9 @@ class Level:
 			if self.rain.rain_level:
 				self.rain.update()
 				self.soil_layer.water_all(rain_level=self.rain.rain_level)
+
+			if self.player.timers['slowing'].active and not self.player.sleep:
+				self.display_player_speech(self.player.speech)
 
 		if self.player.sleep:
 			self.transition.play()

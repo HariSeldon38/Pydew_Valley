@@ -76,3 +76,12 @@ GROW_SPEED = {
 	'corn': 1,
 	'tomato': 0.7
 }
+
+TIRED_SPEECH = [
+	"Je suis\nfatigué",
+	"Je vais bien\ndormir cette nuit",
+	"Pffff fuuyaw...",
+	"Aller,\non se motive",
+	"Courage",
+	"Un pas après\nl'autre",
+]

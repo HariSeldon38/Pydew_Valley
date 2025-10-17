@@ -20,7 +20,7 @@ class Transition:
             self.reset()
         if self.color >= 255:
             self.player.sleep = False
-            self.speed = -2
+            self.speed = -4
             self.color = 255
 
         self.image.fill((self.color,self.color,self.color))

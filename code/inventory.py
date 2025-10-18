@@ -1,4 +1,5 @@
 import pygame
+import pandas as pd
 import time
 from state_manager import Menu
 from settings import *
@@ -8,15 +9,20 @@ class InventoryMenu(Menu):
     def __init__(self, player, item_loader):
         self.nb_rows = 5
         self.nb_cols = 10
-        self.box = pygame.image.load("../graphics/UI/clear_less_box_48x48.png").convert_alpha()
-        self.cursor_box = pygame.image.load("../graphics/UI/clear_box_48x48.png").convert_alpha()
-        self.box_selected = pygame.image.load("../graphics/UI/clear_less_box_48x48_selected.png").convert_alpha()
-        self.cursor_box_selected = pygame.image.load("../graphics/UI/clear_box_48x48_selected.png").convert_alpha()
+        self.box = pygame.image.load("../graphics/UI/clear_box_48x48.png").convert_alpha()
+        self.cursor_box = pygame.image.load("../graphics/UI/clear_less_box_48x48.png").convert_alpha()
+        self.box_selected = pygame.image.load("../graphics/UI/clear_box_48x48_selected.png").convert_alpha()
+        self.cursor_box_selected = pygame.image.load("../graphics/UI/clear_less_box_48x48_selected.png").convert_alpha()
         self.player = player
         self.mini_font = pygame.font.Font('../font/LycheeSoda.ttf', 20)
+        self.little_font = pygame.font.Font('../font/LycheeSoda.ttf', 25)
         self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
         self.title_font = pygame.font.Font('../font/LycheeSoda.ttf', 35)
         self.loader = item_loader
+
+        self.df_craft = pd.read_csv('../data/crafts.csv', index_col=0, keep_default_na=False, na_values=[])
+        self.crafting_button = pygame.image.load('../graphics/UI/clear_box_256x35.png')
+        self.crafting_text = self.font.render("Assembler ? (Entrée)", False, 'black')
 
     def setUp(self):
         # Flatten inventory into a list of item names (repeated by quantity)
@@ -233,8 +239,33 @@ class InventoryMenu(Menu):
                     else:
                         self.selection2 = None
 
-    def update(self):
-        pass
+                if self.selection1 and self.selection2:
+                    if event.key == pygame.K_RETURN:
+                        self.craft()
+
+    def craft(self):
+        idx_invent1 = (self.selection1[1]) * self.nb_cols + self.selection1[0]
+        idx_invent2 = (self.selection2[1]) * self.nb_cols + self.selection2[0]
+        if idx_invent1 <= len(self.item_list) - 1 and idx_invent2 <= len(self.item_list) - 1: #selection is not empty
+            item1 = self.item_list[idx_invent1]
+            item2 = self.item_list[idx_invent2]
+
+            crafted_item = self.df_craft[item1][item2]
+            if crafted_item:
+                self.player.item_inventory.setdefault(crafted_item, 0)
+                self.player.item_inventory[crafted_item] += 1  # why not use player add ?
+                self.player.item_inventory[item1] -= 1
+                self.player.item_inventory[item2] -= 1
+                self.setUp()
+                self.selection1 = [(len(self.item_list)-1)%10, (len(self.item_list)-1)//10]
+                self.last_selected = 1
+                self.cursor = list(self.selection1)
+                return True
+        return False
+
+    def display_crafting_button(self, screen):
+        screen.blit(self.crafting_button, (SCREEN_WIDTH//2-124, SCREEN_HEIGHT-190))
+        screen.blit(self.crafting_text, (SCREEN_WIDTH//2-116, SCREEN_HEIGHT-189))
 
     def draw(self, screen):
         grid = self.display_grid_box((SCREEN_WIDTH//2,SCREEN_HEIGHT//2), 10, self.nb_rows, self.nb_cols, self.box, screen)
@@ -242,3 +273,5 @@ class InventoryMenu(Menu):
         self.display_panels(screen)
         self.display_name_selected_item(screen, grid)
         self.display_money(screen)
+        if self.selection1 and self.selection2:
+            self.display_crafting_button(screen)

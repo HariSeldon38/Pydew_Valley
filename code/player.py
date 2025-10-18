@@ -61,7 +61,10 @@ class Player(pygame.sprite.Sprite):
         self.player_add = player_add
         self.fishing = Fishing(self.player_add, False)
 
-        self.item_inventory = {}
+        self.item_inventory = {
+            'baby_salmon' : 5,
+            'worm' : 6
+        }
         """            'corn' : 1,
             'tomato': 10,
             'corn_seed': 1,

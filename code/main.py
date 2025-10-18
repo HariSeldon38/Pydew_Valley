@@ -106,6 +106,9 @@ nom de la monaie est l'étincelle
 
 # QUALITY OF LIFE :
 """
+- center lines of speech (monologue charracter when tired)
+- shynier salmon with halo effect on it 
+- add obvious cursor in dialogue
 - close menu with same key that open it
 - at least color the three different shops OR buy and sell different colors
 - better day/ nigh : increase and then descrease
@@ -123,9 +126,9 @@ nom de la monaie est l'étincelle
 # NEXT FEATURE TO IMPLEMENT (down = not in a close futur)
 """
 - Music
-- Craft
 - Menu
 - Save
+- faire en sorte que sleep_deprived crer des dialog et but caché donne objet pr éviter d etre fatigue (si genre 4 perso me voient fatigue)
 - peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
 - un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.
 - growing plants : (can be think as well with gold hoe and gold watercan
@@ -147,6 +150,10 @@ nom de la monaie est l'étincelle
 
 
 """
+craft philosophie :  should be hinted. Either it is obvious (fil + aiguille + bonnet) either it is hinted by the np
+
+test : give the ttable to IA to proof check (crating) (check if transpose =)
+
 trouver un moyen rapide pr faire comprendre qu'il faut beacoup discuter avec les personnages mais en même temps mettre un cooldown aléatoire
 pour éviter d'exploit ça
 

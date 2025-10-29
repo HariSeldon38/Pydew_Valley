@@ -1,0 +1,20 @@
+ignorant2:
+  text: "J'ai de la chance d'avoir vécu tout ça, c'est indéniable, mais peut-être qu'il est temps de souffler un peu."
+  choices:
+    - text: "Faire comme moi, avoir sa petite maison et cutiver son potager, pêcher peut-être..."
+      next: ignorant3
+ignorant3:
+  text: "Oui et non, c'est quand même un peu petit ici, pardon mais il me faut plus de compagnie que ça. Je me verrais bien dans un petit village."
+  choices:
+    - text: "Oh je vois, je rêve d'un endroit comme ça moi aussi."
+      next: animal_crossing
+animal_crossing:
+  text: "Je m'imagine déjà : tocquer à la porte de mes voisins pour prendre le thé chez eux, agrandir peu à peu ma maison, trouver des artéfact pour garnir le musée..."
+  choices:
+    - text: "C'est décidé, je vais me renseigner si une bourgade dans ce genre existe par ici. Tu m'as convaincue"
+
+
+
+
+
+      condition: rumeurs_de_village_2

@@ -3,7 +3,7 @@ import random
 import os
 import yaml
 from menu import Menu
-from support import import_folder
+from support import import_folder, split_text_by_space
 from settings import *
 
 """some of the code is redundant to player class
@@ -43,7 +43,7 @@ class NPC(pygame.sprite.Sprite):
         #dialogue
         self.encounter = encounter
         self.next = next
-        #self.dialogue_status = 'start' #possible values : 'start', 'unfinished', 'done'
+        self.flags = {}
         with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
             self.dialogue = yaml.safe_load(f)
             print(f'{self.name}{self.encounter}.yaml')
@@ -195,13 +195,30 @@ class Dialogue(Menu):
                         # Handle set_flag from specific choice
                         selected = self.choices[self.index]
                         flag = selected.get('set_flag')
-                        if isinstance(flag, dict):
-                            name = flag['name']
-                            scope = flag.get('scope', 'npc')
-                            target = self.player.flags if scope == 'player' else self.npc
-                            target[name] = True
-                        elif isinstance(flag, str):
-                            setattr(self.npc, flag, True)
+                        if flag:
+                            if isinstance(flag, dict):
+                                name = flag['name']
+                                scope = flag.get('scope', 'npc')  # 'npc' or 'player'
+                                if scope == 'player':
+                                    self.player.flags[name] = True
+                                else:
+                                    self.npc.flags[name] = True
+                            elif isinstance(flag, str):
+                                # treat a simple string as a flag name for the npc.flags dict
+                                self.npc.flags[flag] = True
+
+                        unflag = selected.get('unset_flag')
+                        if unflag:
+                            if isinstance(unflag, dict):
+                                name = unflag['name']
+                                scope = unflag.get('scope', 'npc')  # 'npc' or 'player'
+                                if scope == 'player':
+                                    self.player.flags[name] = False
+                                else:
+                                    self.npc.flags[name] = False
+                            elif isinstance(unflag, str):
+                                # treat a simple string as a flag name for the npc.flags dict
+                                self.npc.flags[unflag] = False
 
                     elif not self.choices: #mean the dialogue is over after that
                         if 'next' in self.dialogue[self.next]:
@@ -257,13 +274,30 @@ class Dialogue(Menu):
         else: self.nb_choices = len(self.choices)
 
         flag = current.get('set_flag')
-        if isinstance(flag, dict):
-            name = flag['name']
-            scope = flag.get('scope', 'npc')  # default to npc
-            target = self.player.flags if scope == 'player' else self.npc
-            self.player.flags[name] = True
-        elif isinstance(flag, str):
-            setattr(self.npc, flag, True)
+        if flag:
+            if isinstance(flag, dict):
+                name = flag['name']
+                scope = flag.get('scope', 'npc')  # 'npc' or 'player'
+                if scope == 'player':
+                    self.player.flags[name] = True
+                else:
+                    self.npc.flags[name] = True
+            elif isinstance(flag, str):
+                # treat a simple string as a flag name for the npc.flags dict
+                self.npc.flags[flag] = True
+
+        unflag = current.get('unset_flag')
+        if unflag:
+            if isinstance(unflag, dict):
+                name = unflag['name']
+                scope = unflag.get('scope', 'npc')  # 'npc' or 'player'
+                if scope == 'player':
+                    self.player.flags[name] = False
+                else:
+                    self.npc.flags[name] = False
+            elif isinstance(unflag, str):
+                # treat a simple string as a flag name for the npc.flags dict
+                self.npc.flags[flag] = False
 
     def display_text_background(self, surface):
         if self.nb_choices == 0:
@@ -279,10 +313,13 @@ class Dialogue(Menu):
             surface.blit(self.text_background_surf3[(1+self.index)%3], (200, SCREEN_HEIGHT - 90))
 
     def display_text(self, surface):
-        if self.listen:
+        if self.listen: #to avoid render each could just store in self.text_render and flush it when not listening
+
             # Render and display the main dialogue line
-            text_render = self.font.render(self.text, False, 'black')
-            surface.blit(text_render, (220, SCREEN_HEIGHT - 160))  # Adjust position as needed
+            multi_line_text = split_text_by_space(self.text, max_length=85)
+            for idx, line in enumerate(multi_line_text):
+                text_render = self.font.render(line, False, 'black')
+                surface.blit(text_render, (220, SCREEN_HEIGHT - 160 + 26*idx))  # Adjust position as needed
         else:
             # Render and display all choices
             for i, choice in enumerate(self.choices):

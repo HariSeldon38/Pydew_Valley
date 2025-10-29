@@ -63,6 +63,7 @@ nom de la monaie est l'étincelle
 
 # BUGS :
 """
+- HIGH (not a bug but will create one certainly) Level l 124 load save before creating any npc
 - LOW rain shade can trigger during menu not paused but rain is /should not call random rain at all during pauses (but day night ok maybe)
 - MED apple flying after cut tree
 - LOW ? rain color issue
@@ -106,6 +107,7 @@ nom de la monaie est l'étincelle
 
 # QUALITY OF LIFE :
 """
+- display my faceset when my time to speak
 - center lines of speech (monologue charracter when tired)
 - shynier salmon with halo effect on it 
 - add obvious cursor in dialogue
@@ -188,12 +190,14 @@ to generate surface in the project with size I want and corner i want based on s
 GUIDELINE TO RECORD :
 	give player the speed of the npc
 	enable all previous npc to avoid conflicts between them
+		put it inside "o" input after from npcs import NPC (otherwise start at different times)
 	watch out player could not be stuck by a npc
 GUIDELINE TO DIALOGUE:
 	two way to exit : trigger: close_dialogue (so you will need a next and also need to be inside of choices)
 						no choices (dont forget that if next, will only happen if open dialoge again))
 	for now the last text is the one repeating if the player go again could be use to sumerize elegantly the dicussion
 		think about that when writting the last line of a yaml
+	just follow form : finX then finX_again
 		
 	if you think about chaining multiple line of monologue with next don't forget that for now listen is switching every time so need to change the code a little
 		(but can be no so hard just condition the self.listen to choice or not choice)
@@ -206,6 +210,8 @@ GUIDELINE TO DIALOGUE:
 test all the different text of a npc : ask copilot to review all the yaml
 	list the different valid trigger keywords
 	explain the rule : next mandatory after a trigger: close dialogue
+	smth_again must have next: smth_again also
+	all non next day end must have a a tree beginning from nextday_smth to continue and that tree must end with something that triggers nextday_smth also when reseting
 """
 
 # IA PROMPT : (never been used finally)

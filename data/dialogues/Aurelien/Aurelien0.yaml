@@ -1,0 +1,172 @@
+start:
+  text: "Salut, je viens d'arriver. Tu sais où on est ?"
+  choices:
+    - text: "À vrai dire, je me posais la même question"
+      next: complice
+      set_flag: amis1
+    - text: "Oh, tu sais, je me contente de ramasser des pommes. Il y a un marchant au nord qui me les rachète à bon prix"
+      next: indifference
+
+complice:
+  text: "En tout cas c'est sympa chez toi. Mais je ne sais pas bien ce que je vais noter dans mon carnet de voyage"
+  choices:
+    - text: "Oh, tu voyage ?"
+      next: voyage
+    - text: "Tu n'as qu'à noter que tu m'a rencontré moi : CookieShay, enchantée"
+      set_flag: amis2
+      next: rencontre
+
+voyage:
+  text: "J'entreprend un tour du monde... enfin aujourd'hui je ne suis plus sûr de rien. Ça fatigue à la longue."
+  set_flag: next_day
+  choices:
+    - text: "Je ne me rend pas bien compte"
+      next: ignorant
+    - text: "Ah oui, je vois, toujours être en mouvement, ne jamais arriver à se poser."
+      next: compatissant
+
+ignorant:
+  text: "C'est que j'ai du mal à me poser, il y a toujours un coin de la planète que j'ai pas visité et j'ai du mal à l'accepter. Ça peut paraître con."
+  choices:
+    - text: "Non, pas con, je dis pas que je comprend mais je peux au moins imaginer."
+      next: ignorant2
+ignorant2:
+  text: "J'ai de la chance d'avoir vécu tout ça, c'est indéniable, mais peut-être qu'il est temps de souffler un peu."
+  choices:
+    - text: "Faire comme moi, avoir sa petite maison et cutiver son potager, pêcher peut-être..."
+      next: fin1
+fin1:
+  text: "Oui et non, c'est quand même un peu petit ici, pardon mais il me faut plus de compagnie que ça. Je me verrais bien dans un petit village."
+  next: fin1_again
+fin1_again:
+  text: "Re ! C'est toujours moi, le voyageur qui fait une overdose de grand air ! Ah ah ah ! ... Juste un petit coin tranquille..."
+  next: fin1_again
+
+compatissant:
+  text: "Exactement ! Je suis incapable de rester tranquille. C'est usant à la longue. Mais je crois que là je suis prêt."
+  choices:
+    - text: "Prêt ?"
+      next: compatissant2
+    - text: "Prêt à quoi au juste ?"
+      next: compatissant2
+compatissant2:
+  text: "À 'chiller' comme on dit, à me trouver une baraque, des amis, et juste m'occuper de mon nid, acheter des meubles toussa..."
+  choices:
+    - text: "Ah oui je vois. Ici c'est un peu petit, même pour moi."
+      next: fin2
+fin2:
+  text: "Je me trouverais bien un petit village, mais pour le moment j'ai rien vu de tel dans les environs."
+  next: fin1_again
+
+rencontre:
+  text: "Ah oui, bonne idée. Pardon, j'ai tendance à donner trop d'importance aux lieux. Moi c'est Aurélien"
+  choices:
+    - text: "Aurélien, une chanson !"
+      unset_flag: amis2
+      next: blague
+    - text: "Heureuse de t'avoir rencontré (et de me faire une place dans ton carnet)"
+      not condition: kate_crush
+      set_flag: amis3
+      next: fin3
+    - text: "Et donc comme ça tu voyage ?"
+      next: voyage
+    - text: "Ah ! Mais c'est toi Aurélien !?"
+      condition: kate_crush
+      next:
+
+blague:
+  text: "Quoi ?"
+  choices:
+    - text: "Non rien, pardon, oublie"
+      next: fin4
+fin4:
+  text: "Ah ok."
+  next: fin4_again
+fin4_again:
+  text: "Ah, encore toi..."
+  choices:
+    - text: "Oui, euh, excuse moi je voulais pas paraître impolie"
+      next: rattrapage
+    - text: "Bah oui, j'attend toujours un rap..."
+      next: furieux
+rattrapage:
+  text: "C'est pas grave, j'imagine que j'aurai dû avoir la ref !"
+  choices:
+    - text: "Non c'est moi, des fois je m'enflamme. Mais dis moi alors, comme ça tu voyage ?"
+      next: voyage
+furieux:
+  text: "Bon euh t'es bien gentille mais j'ai des choses à faire moi !"
+  set_flag: furieux
+  next: furieux_again
+furieux_again:
+  text: "J'ai plus vraiment envie de te parler. Au revoir."
+  next: furieux_again
+
+fin3:
+  text: "Moi de même, j'espère qu'on se reverra !"
+  next: fin3_again
+fin3_again:
+  text: "Tu ne peux plus te passer de moi ahah, pardon mais j'ai des truc à faire, on se reparle plus tard ?"
+  next: fin3_again
+
+
+
+
+indifference:
+  text: "Ah bon ? Ça t'intrigue pas de savoir où tu te trouve ?... et où tu vas ?"
+  choices:
+    - text: "Eh d'où est-ce que tu viens toi déjà ?"
+      next: provenance
+    - text: "Si bien sûr, mais pour l'instant je ne sais pas, et il faut bien avancer"
+      next: avancer
+
+provenance:
+  text: "Moi ça fait un bail que je parcours le vaste monde tu sais. Je viens de partout et nulle part à la fois"
+  choices:
+    - text: "Tu voyage beaucoup ?"
+      next: voyage
+
+avancer:
+  text: "T'es bizare toi... Moi j'aimerais quand même bien compléter mon journal, il faudrait que j'en sache plus sur cet endroit"
+  choices:
+    - text: "Franchement je ne peux pas t'aider"
+      next: pas_aider
+    - text: "Je vais essayer de me renseigner sur où on se trouve"
+      set_flag: whereabouts_unknown
+      next: se_renseigner
+
+pas_aider:
+  text: "Dommage. Eh bien je n'ai qu'à continuer à chercher..."
+  next: pas_aider_again
+pas_aider_again:
+  text: "Hello, on a déjà discuté il me semble ?"
+  choices:
+    - text: "Oui en effet, tu semblais un peu perdu."
+      next: perdu
+    - text: "Non, je ne me souviens pas"
+      next: memoire
+
+perdu:
+  text: "Oui c'est un peu ça... à force de voyager, je me suis peu être un peu égaré..."
+  choices:
+    - text: "Oh ! tu voyage ?"
+      next: voyage
+
+memoire:
+  text: "J'ai l'impression que t'essaye de me faire marcher. Ou alors tu es une espèce de poisson rouge"
+  choices:
+    - text: "Eh oh, tu sais ce qu'il te dit le poisson rouge !"
+      set_flag: furieux
+      next: furieux_again
+
+se_renseigner:
+  text: "Cool ! Merci beaucoup !"
+  next: se_renseigner_again
+se_renseigner_again:
+  text: "Je te laisse mener ta petite enquête, moi aussi je vais essayer de comprendre de mon côté"
+  next: se_renseigner_again
+
+
+
+
+# ----- IN CASE NEXT_DAY HAS NOT BEEN REACHED : -----

@@ -1,5 +1,5 @@
 import random
-
+import copy
 import pygame, sys
 import json
 from pytmx.util_pygame import load_pygame
@@ -110,7 +110,9 @@ class Level:
 					rain = self.rain, #-------------------------------------------------------------maybe delete rain here
 					sound_manager = self.sound_manager,
 					item_loader = self.item_loader,
-					player_add = self.player_add
+					player_add = self.player_add,
+					all_sprites=self.all_sprites,
+					npc_sprites=self.npc_sprites,
 				)
 				self.player.timers['day'].activate()
 			if obj.name == 'Bed':
@@ -118,23 +120,20 @@ class Level:
 			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
-		"""		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
+		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
+		# don't forget to load save even in the beginning
 		list_record = [
-			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
+			r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt',
+			r'..\recordings\Aurelien\recording1_200speed_60fps_2025_10_25__19-40-11.txt',
+			r'..\recordings\Aurelien\recording2_200speed_60fps_2025_10_25__19-51-58.txt',
 		]
+
 		NPC(
 			list_record[0],
 			[self.all_sprites, self.npc_sprites],
 			self.collision_sprites,
-			name = 'Statue'
+			name = 'Aurelien'
 		)
-		NPC(
-			list_record[1],
-			[self.all_sprites, self.npc_sprites],
-			self.collision_sprites,
-			name = 'Spirit'
-		)"""
 
 		Generic(
 			pos=(0,0),
@@ -173,12 +172,25 @@ class Level:
 			print("Warning: save.json is empty or invalid. Starting fresh.")
 			data = {}
 		for npc in self.npc_sprites:
-			if getattr(npc, 'next_day', False):
+			if npc.flags.get('next_day', False):
 				npc.encounter += 1
-				npc.next = 'start'
-			data[npc.name] = {'next': npc.next,
-							  'encounter': npc.encounter}
-		data['PLAYER'] = self.player.flags
+				npc.flags['next_day'] = False # now it concern already the next day so for now it's False again
+
+			#update npc saved values
+			entry = data.setdefault(npc.name, {})
+			entry['next'] = npc.next
+			entry['encounter'] = npc.encounter
+			entry.setdefault('flags', {})  # keep existing dict if present
+			entry['flags'].update(copy.deepcopy(npc.flags))  # merges npc.flags into existing flags
+
+		#update player saved values
+		player_entry = data.setdefault('PLAYER', {})
+		if isinstance(player_entry, dict):
+			player_entry.update(self.player.flags) # will also tranfert to data["PLAYER"]
+		else:
+			data['PLAYER'] = copy.deepcopy(self.player.flags)
+
+		# save the file
 		with open('../save/save.json', "w") as saving_file:
 			json.dump(data, saving_file, indent=4)
 

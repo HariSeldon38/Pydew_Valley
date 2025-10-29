@@ -5,10 +5,14 @@ from support import *
 from timer import Timer
 from fishing import Fishing
 from debug import debug
+from npcs import NPC # remove that -------------------------------------------------------------------------------------
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, npc, tree_sprites, water_sprites, interaction, soil_layer, rain, sound_manager, item_loader, player_add): #--------maybe delete rain here , only need control rain from game when dev
+    def __init__(self, pos, group, collision_sprites, npc, tree_sprites, water_sprites, interaction, soil_layer, rain, sound_manager, item_loader, player_add, all_sprites, npc_sprites): #--------maybe delete rain here , only need control rain from game when dev DELETE ALSO ALLSPRITES
         super().__init__(group)
+
+        self.all_sprites = all_sprites # delete if not in record mode
+        self.npc_sprites = npc_sprites #same here
 
         self.rain = rain #--------------------------------------------------------------------------------same here
 
@@ -62,8 +66,6 @@ class Player(pygame.sprite.Sprite):
         self.fishing = Fishing(self.player_add, False)
 
         self.item_inventory = {
-            'baby_salmon' : 5,
-            'worm' : 6
         }
         """            'corn' : 1,
             'tomato': 10,
@@ -244,6 +246,15 @@ class Player(pygame.sprite.Sprite):
                     self.timers['record'].activate()
                     if not self.record:
                         self.start_record_input()
+                        list_record = [ # -----------------------------------------------------------------------------delete that
+                            r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt'
+                        ]
+                        NPC(
+                        	list_record[0],
+                        	[self.all_sprites, self.npc_sprites],
+                        	self.collision_sprites,
+                        	name = 'Aurelien'
+                        ) # -----------------------------------------------------------------------------delete that
                     else:
                         self.stop_record_input()
 

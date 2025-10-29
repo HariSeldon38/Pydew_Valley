@@ -1,3 +1,16 @@
 {
-    "PLAYER": {}
+    "PLAYER": {
+        "meet_spirit": true,
+        "brother": true,
+        "secret": true
+    },
+    "Aurelien": {
+        "next": "fin1_again",
+        "encounter": 1,
+        "flags": {
+            "amis1": true,
+            "amis2": false,
+            "next_day": false
+        }
+    }
 }

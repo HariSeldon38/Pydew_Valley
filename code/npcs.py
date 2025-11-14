@@ -203,8 +203,13 @@ class Dialogue(Menu):
                         if not self.listen:
                             visible_choices = []
                             for choice in self.dialogue[self.next]['choices']:
-                                if 'condition' not in choice or (self.player.flags.get(choice['condition'], False) or self.npc.flags.get(choice['condition'], False)):
-                                    visible_choices.append(choice)
+                                if 'condition' not in choice or (
+                                        self.player.flags.get(choice['condition'], False)
+                                        or self.npc.flags.get(choice['condition'], False)):
+                                    if 'not_condition' not in choice or not (
+                                            self.player.flags.get(choice['not_condition'], False)
+                                            or self.npc.flags.get(choice['not_condition'], False)):
+                                        visible_choices.append(choice)
 
                             if 'next' in visible_choices[self.index]:
                                 self.next = visible_choices[self.index]['next']
@@ -215,6 +220,10 @@ class Dialogue(Menu):
                                     self.state_manager.close_state()
                                 if visible_choices[self.index]['trigger'] == 'give_apple':
                                     self.player.give('apple')
+                                if visible_choices[self.index]['trigger'] == 'get_flowers':
+                                    self.player.receive('flowers')
+                                if visible_choices[self.index]['trigger'] == 'get_apples':
+                                    self.player.receive('apple', 10)
                                 if visible_choices[self.index]['trigger'] != 'close_dialogue':
                                     print(visible_choices[self.index]['trigger'])
 
@@ -290,7 +299,12 @@ class Dialogue(Menu):
                     cond = choice.get('condition')
                     if cond:
                         name = cond['name'] if isinstance(cond, dict) else cond
-                        if not self.player.flags.get(name, False):
+                        if not (self.player.flags.get(name, False) or self.npc.flags.get(name, False)):
+                            continue  # skip this choice
+                    not_cond = choice.get('not_condition')
+                    if not_cond:
+                        name = not_cond['name'] if isinstance(not_cond, dict) else not_cond
+                        if (self.player.flags.get(name, False) or self.npc.flags.get(name, False)):
                             continue  # skip this choice
 
                     elif all_cond:
@@ -351,7 +365,7 @@ class Dialogue(Menu):
         if self.listen: #to avoid render each could just store in self.text_render and flush it when not listening
 
             # Render and display the main dialogue line
-            multi_line_text = split_text_by_space(self.text, max_length=85)
+            multi_line_text = split_text_by_space(self.text, max_length=82)
             for idx, line in enumerate(multi_line_text):
                 text_render = self.font.render(line, False, 'black')
                 surface.blit(text_render, (220, SCREEN_HEIGHT - 160 + 26*idx))  # Adjust position as needed
@@ -360,10 +374,9 @@ class Dialogue(Menu):
             for i, choice in enumerate(self.choices):
                 text = choice['text']
 
-
                 # Fixed vertical positions based on number of choices
                 if self.nb_choices == 1:
-                    multi_line_text = split_text_by_space(text, max_length=85)
+                    multi_line_text = split_text_by_space(text, max_length=82)
                     for idx, line in enumerate(multi_line_text):
                         text_render = self.font.render(line, False, 'black')
                         surface.blit(text_render, (220, SCREEN_HEIGHT - 160 + 26 * idx))  # Adjust position as needed

@@ -1,3 +1,15 @@
 {
-    "PLAYER": {}
+    "Kate": {
+        "next": "renseignement_ldm",
+        "encounter": 1,
+        "flags": {
+            "renseignement": true,
+            "next_day": false,
+            "cookieshay": true
+        }
+    },
+    "PLAYER": {
+        "ask_aurelien": false,
+        "meet_aurelien": true
+    }
 }

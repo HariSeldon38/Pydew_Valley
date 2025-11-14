@@ -1,0 +1,323 @@
+SAFE_GUARD:
+  text: "OULA, PARDON, j'ai eu une absence. Je vais réinitialiser mes circuits et on poura se reparler. Désolé pour ce petit désagrément."
+  next: renseignement_ldm
+
+renseignement_ldm:
+  text: "Salut toi ! Comment tu va depuis la dernière fois ? Je me rend compte que je ne connais même pas ton nom !"
+  choices:
+    - text: "Je m'appelle CookieShay."
+      set_flag: cookieshay
+      next: cookieshay
+    - text: "Je m'appelle Mathilde."
+      setflag: mathilde
+      next: mathilde
+cookieshay:
+  text: "Moi c'est Kate ! enchantée CookieShay. J'avais jamais entendu ce prénom avant ahahah."
+  choices:
+    - text: "C'est vrai que c'est pas commun."
+      next: pas_commun
+    - text: "J'ai essayé de demandé à Aurélien pour les fleurs..."
+      condition: ask_aurelien
+      next: distrait
+    - text: "J'ai pas encore pû demander à Aurélien pour les fleurs..."
+      not_condition: ask_aurelien
+      next: pas_grave
+mathilde:
+  text: "Moi c'est Kate ! enchantée Mathilde. C'est un très joli prénom !"
+  choices:
+    - text: "Merci Kate."
+      next: math
+    - text: "J'ai essayé de demandé à Aurélien pour les fleurs..."
+      condition: ask_aurelien
+      next: distrait
+    - text: "J'ai pas encore pû demander à Aurélien pour les fleurs..."
+      not_condition: ask_aurelien
+      next: pas_demande
+math:
+  text: "Tu a pu demander à Aurelien au sujet des fleurs ?"
+  choices:
+    - text: "Oui."
+      next: oui
+    - text: "Non."
+      next: pas_grave
+pas_commun:
+  text: "J'aime bien en tout cas !\nTu a pu demander à Aurelien au sujet des fleurs ?"
+  choices:
+    - text: "Oui."
+      next: oui
+    - text: "Non."
+      next: pas_grave
+oui:
+  text: "Oh super ! et alors qu'est-ce qu'il en pense ?"
+  condition: ask_aurelien
+  fallback: lie
+  choices:
+    - text: "C'est à dire que... j'ai pas réussi à savoir... Je suis désolé.\nIl part dans tout les sens. Impossible de lui tirer une réponse digne de ce nom..."
+      next: pas_grave
+lie:
+  text: "Oh super ! et alors qu'est-ce qu'il en pense ?"
+  choices:
+    - text: "C'est à dire que... euh... enfin..."
+      next: lie2
+lie2:
+  text: "Tu ne lui a pas demandé c'est ça ?"
+  choices:
+    - text: "... non...\n\npardon."
+      next: pas_grave
+distrait:
+  text: "Oh ! trop bien !"
+  choices:
+    - text: "Oui, et bien... c'est dur de lui soutirer une réponse... résultat : Je sais pas."
+      next: pas_grave
+pas_grave:
+  text: "Bon et bien... c'est pas grave. Tu sais quoi ?\nOn va gagner du temps. Je vais directement de donner le bouquet de fleurs. S'il aime, tu lui donne, sinon, fais-en ce que tu veux."
+  choices:
+    - text: "D'accord !"
+      trigger: get_flowers
+      set_flag: next_day
+      next: merci
+merci:
+  text: "Je te remercie. Tu est vraiment adorable de faire ça pour moi !"
+  next: merci_again
+merci_again:
+  text: "Merci encore de te charger de ça !"
+  next: merci_again
+
+enquete_ldm:
+  text: "Salut toi ! Comment tu va depuis la dernière fois ? Je me rend compte que je ne connais même pas ton nom !"
+  choices:
+    - text: "Je m'appelle CookieShay."
+      set_flag: cookieshay
+      next: cookieshay2
+    - text: "Je m'appelle Mathilde."
+      setflag: mathilde
+      next: mathilde2
+cookieshay2:
+  text: "Moi c'est Kate ! enchantée CookieShay. J'avais jamais entendu ce prénom avant ahahah."
+  choices:
+    - text: "C'est vrai que c'est pas commun."
+      next: pas_commun2
+    - text: "J'ai essayé de demandé au mec à la coquille pour les fleurs..."
+      condition: ask_aurelien
+      next: distrait2
+    - text: "J'ai pas encore pû trouver ton crush pour les fleurs..."
+      not_condition: ask_aurelien
+      next: pas_grave2
+mathilde2:
+  text: "Moi c'est Kate ! enchantée Mathilde. C'est un très joli prénom !"
+  choices:
+    - text: "Merci Kate."
+      next: math2
+    - text: "J'ai essayé de demandé au mec à la coquille pour les fleurs..."
+      condition: ask_aurelien
+      next: distrait2
+    - text: "J'ai pas encore pû trouver ton crush pour les fleurs..."
+      not_condition: ask_aurelien
+      next: pas_grave2
+math2:
+  text: "Tu a pu demander à Aurelien au sujet des fleurs ?"
+  choices:
+    - text: "Le mec à la coquille ? Oui."
+      next: oui
+    - text: "Le mec à la coquille ? Non."
+      next: pas_grave
+pas_commun2:
+  text: "J'aime bien en tout cas !\nTu a pu demander à Aurelien au sujet des fleurs ?"
+  choices:
+    - text: "Le mec à la coquille ? Oui."
+      next: oui
+    - text: "Le mec à la coquille ? Non."
+      next: pas_grave
+pas_grave2:
+  text: "Ah oui, il s'appelle Aurelien d'ailleurs !"
+  choices:
+    - text: "D'accord"
+      next: pas_grave
+distrait2:
+  text: "Oh ! trop bien ! Il s'appelle Aurelien d'ailleurs."
+  choices:
+    - text: "Oui, et bien... c'est dur de lui soutirer une réponse... résultat : Je sais pas."
+      next: pas_grave
+
+charme2_ldm:
+  text: "Oh, voici ma rivale préférée ! D'ailleurs, comment tu t'appelle en fait ?"
+  choices:
+    - text: "Salut ! Je m'appelle CookieShay."
+      set_flag: cookieshay
+      next: cookieshay
+    - text: "Salut ! Je m'appelle Mathilde."
+      setflag: mathilde
+      next: mathilde
+
+remerciement_ldm:
+  text: "Hey ! Mon amie, ça va ?"
+  choices:
+    - text: "Oui bien et toi ?"
+      next: nom
+    - text: "Bof, ça va pas fort."
+      next: mal
+mal:
+  text: "Oh mince, t'es malade ?"
+  choices:
+    - text: "Oui, en quelque sorte."
+      next: malade
+    - text: "Pas vraiment, c'est juste que je suis pas en forme."
+      next: malade
+malade:
+  text: "Je vais pas t'embêter avec mes histoires alors, on fera la causette une autre fois."
+  choices:
+    - text: "Non, non, ne t'en fais pas, ça me changera les idées au contraire."
+      next: nom
+    - text: "Faisons comme ça, à la prochaine."
+      trigger: close_dialogue
+      next: remerciement_ldm
+nom:
+  text: "Ok ça marche. Dis, c'est quoi ton nom en fait, je ne te l'ai pas demandé."
+  choices:
+    - text: "Je m'appelle CookieShay."
+      set_flag: cookieshay
+      next: cookieshay
+    - text: "Je m'appelle Mathilde."
+      setflag: mathilde
+      next: mathilde
+
+invite_ldm:
+  text: "Bonjour ! J'ai cueillis quelques pommes hier. Tiens, elles sont pour toi."
+  choices:
+    - text: "Oh merci, fallait pas !"
+      trigger: get_apples
+      next: invite_ldm2
+invite_ldm2:
+  text: "C'est hyper migon chez toi. Merci encore pour m'avoir invitée chez toi."
+  choices:
+    - text: "Ya pas de quoi. Tu peux rester tant que tu veux !"
+      next: rester
+    - text: "Merci ! On va te trouver un chez toi à toi aussi, tu le mérite !"
+      next: chez_soi
+rester:
+  text: "Merci. J'espère tout de même arriver à me trouver un endroit un de ces jours."
+  choices:
+    - text: "Je vais essayer de me renseigner moi aussi."
+      next: chez_soi_again
+    - text: "Tu y arrivera, patience."
+      next: chez_soi_again
+chez_soi:
+  text: "Merci beaucoup. C'est adorable ce que tu fais pour moi."
+  choices:
+    - text: "C'est normal. Si tu a besoin de quoi que ce soit, dis le moi."
+      trigger: close_dialogue
+      next: chez_soi_again
+chez_soi_again:
+  text: "Je peux te poser une question ? On est amies non ?"
+  choices:
+    - text: "Oui bien sûr."
+      next: question
+question:
+  text: "Tout le monde aime recevoir des fleurs, pas vrai ? Même les garçons ?"
+  choices:
+    - text: "Oui, tout le monde."
+      next: garcon
+    - text: "Ça dépend de la personne à vrai dire."
+      next: garcon
+garcon:
+  text: "J'ai croisé un garçon par ici, et... \n...enfin \nJ'aimerais lui offrir des fleurs mais peut-être qu'il n'aime pas."
+  choices:
+    - text: "Je vois... comment il s'appelle ?"
+      next: aurelien
+    - text: "Oui, peut-être. Il faudrait que tu fasse plus connaissance avec lui."
+      next: connaissance
+aurelien:
+  text: "Aurelien."
+  choices:
+    - text: "D'accord, tu veux que je me renseigne si jamais je le croise ?"
+      next: renseignement
+      set_flag: renseignement
+    - text: "Ah mais je vois qui c'est ! C'est vrai qu'il est charmant !"
+      condition: meet_aurelien
+      next: demande
+demande:
+  text: "Tu peux lui demander s'il aime les fleurs alors ?"
+  choices:
+    - text: "Oui, je vais faire ça."
+      next: ok
+    - text: "Non, pas envie."
+      next: blague
+ok:
+  text: "Merci mille fois !"
+  next: renseignement_again
+blague:
+  text: "Oh... d'accord."
+  choices:
+    - text: "Mais bien sûr que je vais t'aider, je rigole !"
+      next: ok
+renseignement:
+  text: "Oh oui ! S'il te plaît. Tu devrais le reconnaître facilement, il a un genre de coquille d'oeuf sur la tête."
+  choices:
+    - text: "Une coquille d'oeuf ? Voilà qui est étrange."
+      trigger: close_dialogue
+      next: renseignement_again
+renseignement_again:
+  text: "Demande à Aurélien s'il aime les fleurs. Souviens-toi : une coquille d'oeuf en guise se chapeau."
+  next: renseignement_again
+connaissance:
+  text: "Tu crois ? Je suis tellement timide, et tout me semble tellement peu familier par ici. ARRG je suis perdue..."
+  choices:
+    - text: "Oui, ça me semble la meilleure chose à faire, tu connais son nom au moins ?"
+      next: aurelien 
+    - text: "Détend toi, tout va bien tu semble en pleine crise d'angoisse."
+      next: crise_angoisse
+crise_angoisse:
+  text: "Oui ça m'arrive parfois, depuis que je suis partie."
+  choices:
+    - text: "Respire un bon grand coup. Ferme les yeux, fais moi confiance, je veille sur toi."
+      next: meditation
+meditation:
+  text: "Ok... ok, je me calme."
+  choices:
+    - text: "Voilà, c'est mieux, concentre toi juste sur le son de ma voix. Respire un bon coup."
+      next: meditation2
+meditation2:
+  text: "Fffffffeeeeee"
+  choices:
+    - text: "Imagine une plume..."
+      set_flag: plume
+      next: plume
+    - text: "Tu va laisser 5 secondes à l'angoisse pour t'envahir..."
+      set_flag: compter5
+      next: compte
+    # - text: je vais te mettre une chanson de Népal, je connais rien de plus efficace pour me détendre
+plume:
+  text: "..."
+  choices:
+    - text: "...quand tu expire elle monte puis elle redescend quand tu inspire. Concentre toi pour la laisse planer le plus longtemps."
+      next: fin_meditation
+compte:
+  text: "Euh... ok..."
+  choices:
+    - text: "Pas une de plus. Tu va compter jusqu'à 5 et ensuite elle ne sera plus."
+      next: fin_meditation
+compte2:
+  text: "1... 2... 3... ... 4... ... ... 5."
+  choices:
+    - text: "Voilà, c'est fini maintenant. C'est tout."
+      next: fin_meditation
+fin_meditation:
+  text: "Ah, ça va beaucoup mieux, merci pour cette technique, ça marche bien !"
+  choices:
+    - text: "Derien, n'hésite pas, j'ai vla les techniques pour ce genre de problème."
+      next: fin_meditation2
+fin_meditation2:
+  text: "Super ! T'es géniale."
+  choices:
+    - text: "Comment il s'appelle ton crush déjà ?"
+      next: aurelien
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Next day if first is failed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+chez_soi_ldm:
+  text: "Bonjour, bien dormi ?"
+  choices:
+    - text: "Oui et toi ?"
+      next: chez_soi_again

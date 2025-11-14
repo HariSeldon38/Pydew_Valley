@@ -9,7 +9,7 @@ black_beanie,Bonnet noir,../graphics/token/placeholder.png,"Un simple couvre che
 fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher de bons poissons, du saumon avec beaucoup de chance"
 seewing_needle,Aiguille de couture,../graphics/token/placeholder.png,Donne accès à un univers de créativité infini
 white_thread,Fil blanc,../graphics/token/placeholder.png,Saura se rendre utile...
-no_yet,Bonnet stylisé,not_yet,Pour un look de rockstar !
+stylized_beanie,Bonnet stylisé,not_yet,Pour un look de rockstar !
 anchovy,Anchois,../graphics/token/anchovy.png,Appelle les des engraulidés si tu veux... (eau salée)
 angelfish,Poisson-Ange,../graphics/token/angelfish.png,Nouveau concept : les anges aquatiques (eau douce)
 bass,Bar,../graphics/token/bass.png,Bonjour je voudrais un monaco siouplait (eau douce)
@@ -28,3 +28,5 @@ baby_salmon,Jeune saumon,../graphics/token/baby_salmon.png,Un poisson prêt à s
 axe,Hâche,../graphics/token/axe.png,Not used for now
 hoe,Houe,../graphics/token/hoe.png,Not used for now
 water,Arrosoir,../graphics/token/water.png,Not used for now
+white_thread_needle,Aiguille préparée,not_yet,Une aiguille prête à être utilisée pour coudre.\n (contient: fil blanc)
+flowers,Bouquet,../graphics/token/flowers.png,Un bouquet de fleurs à offrir... ou pas.

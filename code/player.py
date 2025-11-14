@@ -178,6 +178,10 @@ class Player(pygame.sprite.Sprite):
     def give(self, name):
         self.item_inventory.pop(name)
 
+    def receive(self, item, number=1):
+        self.item_inventory.setdefault(item, 0)
+        self.item_inventory[item] += number
+
     def start_record_input(self):
         self.record = True
         self.recorded_inputs = [self.rect.center] #store the starting position

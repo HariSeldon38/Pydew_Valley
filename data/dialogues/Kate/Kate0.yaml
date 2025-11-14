@@ -674,7 +674,7 @@ mal:
   choices:
     - text: "Oui, en quelque sorte."
       next: malade
-    - text: "Pas vraiment, c'est juste que je suis en forme."
+    - text: "Pas vraiment, c'est juste que je suis pas en forme."
       next: malade
 malade:
   text: "Je vais pas t'embêter avec mes histoires alors, on fera la causette une autre fois."

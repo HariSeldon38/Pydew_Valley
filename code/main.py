@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 """
 corection ortho graphe not done yet !
-
+b09643,713970,f3f2c0,b68962,78a158,a4c263,545959,d2e077,67835c,cd8a8e,ed1834,ab293a,c44356
 chercher comment faire des voix yahourt comme ds celeste
 ACHIEVEMENT: trouver tout les meme dans les conv
 

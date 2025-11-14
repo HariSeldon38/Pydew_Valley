@@ -29,6 +29,11 @@ if __name__ == '__main__':
 
 
 """
+corection ortho graphe not done yet !
+
+chercher comment faire des voix yahourt comme ds celeste
+ACHIEVEMENT: trouver tout les meme dans les conv
+
 I did duplicate some frame in idle animation in order to have a slower animation for idling
 NO a good thing to do I know, need to change that from the code if I find the time
 
@@ -63,6 +68,15 @@ nom de la monaie est l'étincelle
 
 # BUGS :
 """
+- low :  tester si ça : peut faire crasher si unnset flag does not exist anymore
+			deception_again:
+		  text: "Tu a besoin de quelque chose ?"
+		  choices:
+			- text: "Je suis désolé, j'ai été un peu froide, je veux bien t'aider finalement"
+			  next: remerciement
+			- text: "Non c'est bon, pardon de t'avoir dérangée."
+			  unset_flag: amis1
+			  next: deception_again
 - HIGH (not a bug but will create one certainly) Level l 124 load save before creating any npc
 - LOW rain shade can trigger during menu not paused but rain is /should not call random rain at all during pauses (but day night ok maybe)
 - MED apple flying after cut tree

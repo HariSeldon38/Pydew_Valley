@@ -120,20 +120,23 @@ class Level:
 			if obj.name == 'Trader':
 				Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, obj.name)
 
+		saved_data = self.load_save()
+
 		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
 		# don't forget to load save even in the beginning
 		list_record = [
-			r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt',
-			r'..\recordings\Aurelien\recording1_200speed_60fps_2025_10_25__19-40-11.txt',
-			r'..\recordings\Aurelien\recording2_200speed_60fps_2025_10_25__19-51-58.txt',
+				r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
+				r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
+				r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
 		]
-
 		NPC(
-			list_record[0],
-			[self.all_sprites, self.npc_sprites],
-			self.collision_sprites,
-			name = 'Aurelien'
+				list_record[2],
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				name = 'Kate',
+				saved_data=saved_data
 		)
+
 
 		Generic(
 			pos=(0,0),
@@ -164,29 +167,60 @@ class Level:
 		self.sky.current_color = self.sky.day_color.copy() #maybe will put it in setting idk or now
 		self.player.timers['day'].activate()
 
-		#saving npc dialogue state
+		saved_data = self.write_save()
+
+		#clearing the npc
+		for npc in self.npc_sprites:
+			npc.kill()
+		self.npc_sprites.empty()
+		self.player.talkable_npcs = set()
+
+		list_record = [
+				r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
+				r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
+				r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
+		]
+		NPC(
+				list_record[2],
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				name = 'Kate',
+				saved_data=saved_data
+		)
+
+	def write_save(self):
+
+		# saving npc dialogue state
 		try:
 			with open('../save/save.json', "r") as saving_file:
 				data = json.load(saving_file)
+		except FileNotFoundError:
+			print("Warning: save.json is not found. Starting fresh.")
+			data = {}
 		except json.JSONDecodeError:
-			print("Warning: save.json is empty or invalid. Starting fresh.")
+			print("ERROR ! : save.json is invalid, make sure to fix it.")
+			#sys.exit()
 			data = {}
 		for npc in self.npc_sprites:
 			if npc.flags.get('next_day', False):
 				npc.encounter += 1
-				npc.flags['next_day'] = False # now it concern already the next day so for now it's False again
+				npc.flags['next_day'] = False  # now it concern already the next day so for now it's False again
 
-			#update npc saved values
+			# update npc saved values
 			entry = data.setdefault(npc.name, {})
-			entry['next'] = npc.next
+			# simple and explicit
+			entry['next'] = npc.next[:-6] + '_ldm' if npc.next.endswith('_again') else npc.next
 			entry['encounter'] = npc.encounter
 			entry.setdefault('flags', {})  # keep existing dict if present
-			entry['flags'].update(copy.deepcopy(npc.flags))  # merges npc.flags into existing flags
 
-		#update player saved values
+			entry['flags'].update(copy.deepcopy(npc.flags))  # merges npc.flags into existing flags
+			npc.flags.update(entry['flags']) # That workaround of updating both to 'merge' make sens only in dev mode during play, save cannot have more flags that the game
+
+		# update player saved values
 		player_entry = data.setdefault('PLAYER', {})
 		if isinstance(player_entry, dict):
-			player_entry.update(self.player.flags) # will also tranfert to data["PLAYER"]
+			player_entry.update(self.player.flags)  # will also tranfert to data["PLAYER"]
+			self.player.flags.update(player_entry)
 		else:
 			data['PLAYER'] = copy.deepcopy(self.player.flags)
 
@@ -194,35 +228,28 @@ class Level:
 		with open('../save/save.json', "w") as saving_file:
 			json.dump(data, saving_file, indent=4)
 
-		#clearing the npc
-		for npc in self.npc_sprites:
-			npc.kill()
-		self.npc_sprites.empty()
+		return data
 
-		#loading the npc data
-		with open('../save/save.json', "r") as saving_file:
-			data = json.load(saving_file)
-		"""		#creating new npc: that will be updated later
-		list_record = [
-			'../recordings/recording_200speed_60fps_2025_10_04__23-19-08.txt',
-			'../recordings/recording_200speed_60fps_2025_10_04__23-21-15.txt',
-		]
-		NPC(
-			list_record[0],
-			[self.all_sprites, self.npc_sprites],
-			self.collision_sprites,
-			name = 'Statue',
-			next = data['Statue']['next'],
-			encounter = data['Statue']['encounter']
-		)
-		NPC(
-			list_record[1],
-			[self.all_sprites, self.npc_sprites],
-			self.collision_sprites,
-			name = 'Spirit',
-			next=data['Spirit']['next'],
-			encounter=data['Spirit']['encounter']
-		)"""
+	def load_save(self):
+		"""Load a save file and put every data in the right attribute
+		Except for NPC which depends on the NPC name and are handled outside of this method"""
+
+		# Open the save file
+		try:
+			with open('../save/save.json', "r") as saving_file:
+				data = json.load(saving_file)
+		except FileNotFoundError:
+			print("Warning: save.json is not found. Starting fresh.")
+			data = {}
+		except json.JSONDecodeError:
+			print("ERROR ! : save.json is invalid, make sure to fix it.")
+			#sys.exit()
+			data = {}
+
+		# Put data in the right places
+		self.player.flags = data.setdefault('PLAYER', {})
+
+		return data
 
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)
@@ -265,7 +292,7 @@ class Level:
 				elif event.key == pygame.K_RETURN and self.player.trader_nearby() and not self.state_manager.active_state:
 					self.state_manager.open_state("shop")
 				elif event.key == pygame.K_RETURN and self.player.talkable_npcs and not self.state_manager.active_state and not self.player.timers['tool use'].active and not self.player.sleep:
-					self.state_manager.open_state("dialogue")
+					self.state_manager.open_state("dialogue", dt)
 					self.player.talking = True
 				elif event.key == pygame.K_p and not self.state_manager.active_state:  # before release change this to ESCAPE if not self.menu_manager.active_menu
 					self.state_manager.open_state(

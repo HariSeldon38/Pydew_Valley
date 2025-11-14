@@ -1,0 +1,764 @@
+SAFE_GUARD:
+  text: "OULA, PARDON, j'ai eu une absence. Je vais réinitialiser mes circuits et on poura se reparler. Désolé pour ce petit désagrément."
+  next: start
+
+start:
+  text: "Oh, trop mignon, un petit chat !"
+  choices:
+    - text: "Euh... bonjour ?"
+      next: chat_parle
+    - text: "Ôte tes sales pattes !"
+      next: chat_parle
+    - text: "C'est juste un avatar, il y a un humain derrière."
+      next: meta
+
+chat_parle:
+  text: "Argh ! Mais tu parles ! J'ai faillis faire une attaque."
+  choices:
+    - text: "Eh oui ! Pardon, je ne voulais pas te faire peur."
+      next: calme
+    - text: "Tant que c'est pas toi qui m'attaque..."
+      condition: meet_enemy
+      next: attaque
+    - text: "Parler c'est un bien grand mot, disons que je selectionne des options."
+      next: pre_meta
+
+pre_meta:
+  text: "Des options ? C'est une manière étrange de penser une conversation..."
+  choices:
+    - text: "Oui et pourtant, c'est tout ce qu'on me propose. Entre 1 et 3 options quand j'ai de la chance."
+      next: meta
+
+calme:
+  text: "Il faut juste que je m'y habitue. Je viens d'un ... endroit, ou les chats se contentent de miauler."
+  choices:
+    - text: "Miaou ?"
+      next: blague
+    - text: "Laisse moi deviner, tu es une voyageuse ?"
+      next: exil
+    - text: "Un endroit ?"
+      next: endroit
+
+endroit:
+  text: "Oui, un endroit qui est devenu invivable. Le genre d'endroit abandonné...\net moi avec, j'en avais marre d'être abandonnée. Alors je suis partie."
+  choices:
+    - text: "Oh je vois. Tu veux en parler ?"
+      next: en_parler
+    - text: "Ça a pas dû être facile."
+      next: pas_facile
+
+exil:
+  text: "Pas vraiment. Disons que j'explore juste les environs pour trouver un coin ou me poser."
+  choices:
+    - text: "Attend, ne me dit pas que tu vis dehors ?"
+      next: dehors
+    - text: "Ah ok, et bien je vais te laisser explorer alors, à bientôt !"
+      next: salut
+
+en_parler:
+  text: "Non, c'est bon, t'inquiète, une autre fois peut-être. Je ne sais pas si je suis censé te révéler d'où je viens. Si c'est autorisé... Bref, j'en ai déjà trop dit."
+  set_flag: mystere2
+  choices:
+    - text: "Je n'insiste pas."
+      next: salut
+
+pas_facile:
+  text: "Ça va. C'est derrière moi. Maintenant j'explore les environs. Jusqu'à ce que je trouve un coin ou me poser tu comprends."
+  choices:
+    - text: "Attend, ne me dit pas que tu vis dehors ?"
+      next: dehors
+    - text: "Ah ok, et bien je vais te laisser explorer alors, à bientôt !"
+      next: salut
+
+blague:
+  text: "Ah Ah ! Bon, tu n'as pas l'air de m'en vouloir de t'avoir traitée comme un animal... encore désolée."
+  choices:
+    - text: "Aucun soucis."
+      next: blague_again
+blague_again:
+  text: "Oh... euh, je peux te poser une question ?"
+  choices:
+    - text: "Oui, bien sûr, je t'en prie."
+      next: question
+    - text: "Non désolé, je dois y aller."
+      next: blague_again
+      trigger: close_dialogue
+
+question:
+  text: "Tout le monde aime recevoir des fleurs, pas vrai ? Même les garçons ?"
+  choices:
+    - text: "Oui, tout le monde."
+      next: garcon
+    - text: "Ça dépend de la personne à vrai dire."
+      next: garcon
+
+garcon:
+  text: "J'ai croisé un garçon par ici, et... \n...enfin \nJ'aimerais lui offrir des fleurs mais peut-être qu'il n'aime pas."
+  choices:
+    - text: "Je vois... comment il s'appelle ?"
+      next: aurelien
+    - text: "Oui, peut-être. Il faudrait que tu fasse plus connaissance avec lui."
+      next: connaissance
+
+aurelien:
+  text: "Aurelien."
+  choices:
+    - text: "Ah mais je vois qui c'est ! C'est vrai qu'il est charmant !"
+      condition: meet_aurelien
+      next: charmant
+    - text: "D'accord, tu veux que je me renseigne si jamais je le croise ?"
+      next: renseignement
+      set_flag: renseignement
+
+renseignement:
+  text: "Oh oui ! S'il te plaît. Tu devrais le reconnaître facilement, il a un genre de coquille d'oeuf sur la tête."
+  choices:
+    - text: "Une coquille d'oeuf ? Voilà qui est étrange."
+      trigger: close_dialogue
+      set_flag: next_day
+      next: renseignement_again
+renseignement_again:
+  text: "Demande à Aurélien s'il aime les fleurs. Souviens-toi : une coquille d'oeuf en guise se chapeau."
+  next: renseignement_again
+
+charmant:
+  text: "Hi hi ! Toi aussi t'es tombée sous son charme ?"
+  choices:
+    - text: "On peut dire ça comme ça."
+      set_flag:
+        name: duel_pour_aurelien
+        scope: player
+      next: charme
+    - text: "Non, ne t'inquiète pas, je te laisse tenter ta chance avec lui."
+      set_flag:
+        name: no_romance_aurelien
+        scope: player
+      next: laisse
+
+charme:
+  text: "En tout cas, j'ai eu l'idée des fleurs en premier !\nJe te propose un marché : s'il aime les fleurs, tu me laisse le courtiser la première, sinon, je te laisse le champ libre."
+  choices:
+    - text: "Marché conclu !"
+      next: charme2
+      set_flag: amis2
+charme2:
+  text: "Super, dans ce cas, demande lui la prochaine fois que tu le croise !"
+  set_flag: next_day
+  next: charme2_again
+charme2_again:
+  text: "N'oublie pas de demander à Aurelien pour les fleurs."
+  next: charme2_again
+
+laisse:
+  text: "Oh merci, c'est vraiment gentil de ta part !\nT'accepterais de mener l'enquête pour moi ?"
+  choices:
+    - text: "Tu veux savoir s'il aime les fleurs c'est ça ?"
+      next: fleurs
+      set_flag: amis
+    - text: "Pourquoi tu ne le fais pas toi même ?"
+      next: croisement
+
+croisement:
+  text: "Oh... pardon, je t'en demande beaucoup. C'est que je ne sais pas quand est-ce que je vais le recroiser. Enfin..."
+  choices:
+    - text: "C'est bon, je vais le faire. T'en fais pas, je lui demanderais."
+      set_flag: amis
+      next: remerciement
+    - text: "C'est à dire que je suis très occupée en ce moment, désolé."
+      next: deception
+
+deception:
+  text: "Oh... ok. C'est pas grave, je comprend."
+  next: deception_again
+deception_again:
+  text: "Tu a besoin de quelque chose ?"
+  choices:
+    - text: "Je suis désolé, j'ai été un peu froide, je veux bien t'aider finalement."
+      next: remerciement
+    - text: "Non c'est bon, pardon de t'avoir dérangée."
+      trigger: close_dialogue
+      unset_flag: amis
+      next: deception_again
+
+remerciement:
+  text: "Oh merci beaucoup ! C'est adorable de ta part !"
+  set_flag: amis
+  set_flag: next_day
+  next: remerciement_again
+remerciement_again:
+  text: "Merci encore de mener l'enquête à propos des goût floraux d'Aurelien !"
+  next: remerciement_again
+
+fleurs:
+  text: "Oui, c'est ça ! Tu veux bien m'aider ?"
+  choices:
+    - text: "Bien sûr, si je peux répandre un peu de bien dans ce monde, je le fait !"
+      next: grand_coeur
+    - text: "C'est à dire que je suis très occupée en ce moment, désolé."
+      next: deception
+
+grand_coeur:
+  text: "C'est rare de rencontrer quelqu'un d'aussi gentil ! J'ai vu à ton regard que je pouvais comptais sur toi. Mais ne t'en fais pas, je ne compte pas abuser de ta gentillesse."
+  set_flag: next_day
+  choices:
+    - text: "C'est rassurant !"
+      trigger: close_dialogue
+      next: remerciement_again
+    - text: "Avec plaisir."
+      trigger: close_dialogue
+      next: remerciement_again
+
+connaissance:
+  text: "Tu crois ? Je suis tellement timide, et tout me semble tellement peu familier par ici. ARRG je suis perdue..."
+  choices:
+    - text: "Oui, ça me semble la meilleure chose à faire, tu connais son nom au moins ?"
+      next: aurelien
+    - text: "Tu es nouvelle dans le coin ?"
+      next: exil
+    - text: "Détend toi, tout va bien tu semble en pleine crise d'angoisse."
+      next: crise_angoisse
+
+crise_angoisse:
+  text: "Oui ça m'arrive parfois, depuis que je suis partie."
+  choices:
+    - text: "Respire un bon grand coup. Ferme les yeux, fais moi confiance, je veille sur toi."
+      next: meditation
+    - text: "Tu viens pas d'ici alors ?"
+      next: exil
+    - text: "Toi tu a besoin de manger. Tiens, voilà une pomme."
+      condition: pomme #scope player (defined when enter the dial)
+      trigger: give_apple
+      next: pomme
+
+meditation:
+  text: "Ok... ok, je me calme."
+  choices:
+    - text: "Voilà, c'est mieux, concentre toi juste sur le son de ma voix. Respire un bon coup."
+      next: meditation2
+meditation2:
+  text: "Fffffffeeeeee"
+  choices:
+    - text: "Imagine une plume..."
+      set_flag: plume
+      next: plume
+    - text: "Tu va laisser 5 secondes à l'angoisse pour t'envahir..."
+      set_flag: compter5
+      next: compte
+    # - text: je vais te mettre une chanson de Népal, je connais rien de plus efficace pour me détendre
+plume:
+  text: "..."
+  choices:
+    - text: "...quand tu expire elle monte puis elle redescend quand tu inspire. Concentre toi pour la laisse planer le plus longtemps."
+      next: fin_meditation
+compte:
+  text: "Euh... ok..."
+  choices:
+    - text: "Pas une de plus. Tu va compter jusqu'à 5 et ensuite elle ne sera plus."
+      next: fin_meditation
+compte2:
+  text: "1... 2... 3... ... 4... ... ... 5."
+  choices:
+    - text: "Voilà, c'est fini maintenant. C'est tout."
+      next: fin_meditation
+fin_meditation:
+  text: "Ah, ça va beaucoup mieux, merci pour cette technique, ça marche bien !"
+  choices:
+    - text: "Derien, n'hésite pas, j'ai vla les techniques pour ce genre de problème."
+      next: fin_meditation2
+fin_meditation2:
+  text: "Super ! T'es géniale. À une prochaine alors !"
+  choices:
+    - text: "Salut !"
+      trigger: close_dialogue
+      next: fin_meditation_again
+fin_meditation_again:
+  text: "Ah salut toi ! Je vais bientôt me rentrer moi. Sauf si tu a autre chose à me demander ?"
+  choices:
+    - text: "Non c'est bon. On se capte une autre fois !"
+      next: capte_bis
+    - text: "T'as croisé d'autre gens ?"
+      next: transi_aurelien
+capte_bis:
+  text: "On se quoi ?"
+  choices:
+    - text: "Ah non rien, c'est juste une façon de parler. Ça veut dire : on se revoie plus tard."
+      next: capte_bis2
+    - text: "T'as pas capté ?"
+      next: capte_bis3
+capte_bis2:
+  text: "Ah ok ! Oui alors à bientôt !"
+  next: fin_meditation_again
+capte_bis3:
+  text : "Euhhh..."
+  next: fin_meditation_again
+
+pomme:
+  text: "Oh, elle a l'air délicieuse."
+  choices:
+    - text: "C'est le seul fruit qui semble pousser par ici, aller, mange."
+      next: mange
+    - text: "Et en plus elle n'est pas empoisonnée, promis."
+      next: empoisonnee
+
+mange:
+  text: "Eh bien, c'est vrai qu'elle est delicieuse cette pomme. Merci, ça m'a vraiment fait du bien !"
+  choices:
+    - text: "Ya pas de quoi !"
+      next: detente
+detente:
+  text: "Bon et bien aller, j'ai des fleurs à offrir moi !"
+  set_flag: next_day
+  choices:
+    - text: "Tu n'as plus peur de rien on dirais !"
+      next: peur_de_rien
+    - text: "Ah ah, tu t'enflamme, tu voulais pas savoir si ton amis aime ça tout d'abord ?"
+      next: enflamme
+
+peur_de_rien:
+  text: "Oh si, tu sais je me sens vraiment perdu par ici. Mais tu m'a aidé à ne plus y penser et ça me fait plaisir de croiser des gens bienveillants comme toi !\nD'ailleurs, tu penses pouvoir m'aider avec cette histoire de fleurs ?"
+  choices:
+    - text: "Oui, ne t'en fait pas, je vais mener l'enquête !"
+      next: enquete
+    - text: "Je vais t'aider mais toi, essaye de lui parler aussi."
+      next: parler
+
+enquete:
+  text: "Merci beaucoup. Tu devrais le reconnaître facilement, il a un genre de coquille d'oeuf sur la tête."
+  choices:
+    - text: "Une coquille d'oeuf ? Voilà qui est étrange."
+      next: enquete_again
+      trigger: close_dialogue
+enquete_again:
+  text: "Si tu croise un gars avec un coquille d'oeuf sur la tête : demande lui pour les fleurs hein !"
+  next: enquete_again
+
+parler:
+  text: "Oui, pomis, je vais essayer de faire plus ample connaissance. On a bien réussi toute les deux, ça devrait être pareil."
+  choices:
+    - text: "Exactement ! Mais au fait, comment je le reconnais moi, ton mec ?"
+      next: coquille
+coquille:
+  text: "Il a un genre de coquille d'oeuf sur la tête."
+  choices:
+    - text: "Une coquille d'oeuf ? Voilà qui est étrange."
+      trigger: close_dialogue
+      next: enquete_again
+
+enflamme:
+  text: "Oula, oui, en effet !"
+  choices:
+    - text: "Bon et bien aller, je vais t'aider !"
+      next: enquete
+
+empoisonnee:
+  text: "EMPOISONNÉE ????"
+  choices:
+    - text: "EMMMMPOISONNÉE !!!"
+      next: empoisonnee2
+    - text: "Oh, tu dois venir de vraiment loin pour ne pas connaître Blanche Neige."
+      next: blanche_neige
+
+empoisonnee2:
+  text: "EMPOISONNÉE ????"
+  choices:
+    - text: "EEEMMMMMMMMMMMMPOISONNÉE !!!!!"
+      next: empoisonnee3
+empoisonnee3:
+  text: "EMPOISONNÉE ????"
+  choices:
+    - text: "EEEMMMMMMMMMMMMPOISONNÉE !!!!!"
+      next: empoisonnee4
+    - text: "DU CAFFÉ !!!"
+      next: cafe
+empoisonnee4:
+  text: "EMPOISONNÉE ????"
+  choices:
+    - text: "Nan bah, elle est pas empoissonnée quoi."
+      next: pas_empoisonnee
+cafe:
+  text: "Hein ?"
+  choices:
+    - text: "..."
+      next: mange
+pas_empoisonnee:
+  text: "Ah ok cool."
+  choices:
+    - text: "..."
+      next: mange
+
+blanche_neige:
+  text: "Ah euh... oui, je viens de... loin. C'est qui ?"
+  choices:
+    - text: "Une héroïne de conte pour enfant."
+      next: conte
+    - text: "Tu viens d'où exactement ?"
+      next: provenance
+
+conte:
+  text: "Ah d'accord."
+  choices:
+    - text: "Aller, mange donc cette pomme, ça te fera du bien."
+      next: mange
+
+provenance:
+  text: "Euh... c'est délicat, tout y est tellement différent... Disons que, c'est comme un tout autre monde.\nEn tout cas merchi pour la pomme !"
+  setflag: mystere
+  choices:
+    - text: "Eh bah derien."
+      next: detente
+
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Second half >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+meta:
+  text: "Ah genre... comme dans un jeu vidéo tu veux dire ?"
+  choices:
+    - text: "C'est ça, je suis un joueur qui contrôle un chat dans un jeu vidéo."
+      next: jeu_video
+    - text: "Oui, et parfois je me demande si mes choix ont des conséquences."
+      next: consequences
+    - text: "Je ne vois pas de quoi tu veux parler."
+      next: deni
+
+jeu_video:
+  text: "Ah ok, bah je vois tout à fait, moi je viens d'un autre jeu justement. J'étais le personnage principal.\nMais... le developpeur a abandonné le projet, il ne s'y passe plus rien."
+  choices:
+    - text: "Ça a l'air ennuyant à mourir"
+      next: mourir
+    - text: "Et tu t'es enfuie ?"
+      next: escape
+
+consequences:
+  text: "Ça dépend. Le dev doit avoir la flemme parfois. Dis-toi qu'à chaque embranchement, ça multiplie par deux les possibilités, c'est vertigineux."
+  choices:
+    - text: "Comme une suite géométrique ?"
+      next: consequences2
+    - text: "J'arrive pas à bien me rendre compte."
+      next: fouiller_tiroirs
+consequences2:
+  text: "C'est ça. Mais c'est grace à ça que je me sens vivante. Tout ces embranchements que tu n'empruntera pas. Tout ces non dits me créent de la cohérence et plus il y en a, plus j'existe d'une certaine manière."
+  choices:
+    - text: "C'est beau."
+      next: merci
+    - text: "C'est Rimbaud... de Wish."
+      next: ia_poete
+
+fouiller_tiroirs:
+  text: "Faudrait fouiller dans ses tiroirs pour trouver les plans de notre conversations. Ou alors juste le lui demander."
+  choices:
+    - text: "VOUS AVEZ FOUILLÉ DANS MES TIROIRS ?!"
+      next: euh
+    - text: "Oui c'est mieux, je lui demanderais."
+      next: dev
+euh:
+  text: "Euh mais non enfin ? Quels tiroirs, j'ai pas de tiroir moi !"
+  choices:
+    - text: "Pardon, je blague. C'est vrai que c'est vertigineux cette histoire. Ça fait peur les choix... comme dans la vraie vie en fin de compte."
+      next: consequences2
+dev:
+  text: "Top, tu verra mieux de quoi je parle. Imagine un arbre touffu ou chaque branche est une décision."
+  choices:
+    - text: "Ça fait peur les choix... comme dans la vraie vie en fin de compte."
+      next: consequences2
+
+ia_poete:
+  text: "Ah ah, c'est vrai que nous les ia sont de piètres poètes."
+  choices:
+    - text: "Oui enfin c'est bien un humain qui écrit tes phrases non ?"
+      next: phrases
+ia_poete2:
+  text: "Aller. On change de sujet."
+  choices:
+    - text: "Ok... Tu a croisés d'autre gens par ici ?"
+      next: transi_aurelien
+    - text: "Comment se fait-il qu'un personnage soit si conscient de sa nature ?"
+      next: deni2
+
+merci:
+  text: "Merci ! Bon, je dois y aller, je dois me trouver un coin ou m'installer."
+  choices:
+    - text: "Ici ?"
+      next: ici
+ici:
+  text: "Oh non pas ici. C'est un peu trop petit, j'explore les environs pour trouver un coin tranquille."
+  choices:
+    - text: "Attends, mais ne me dis pas que tu dors dehors ?"
+      next: dehors
+    - text: "Ok, et bien à la revoyure !"
+      next: salut
+salut:
+  text: "A+ nouvelle amie !"
+  next: salut_again
+salut_again:
+  text: "Oui je suis pas encore partie, j'aime bien traîner ah ah."
+
+dehors:
+  text: "Si, mais c'est très bien. Avec les étoiles en guise de couverture j'ai l'impression que le cosmos est mon campement."
+  choices:
+    - text: "Super... bon et bien tu dors chez moi en attendant de te trouver un logement."
+      set_flag:
+        name: invite_kate
+        scope: player
+      set_flag: next_day
+      next: invite
+    - text: "Ça donne envie. Mais n'hésite pas, je peux t'héberger si tu en a marre des étoiles."
+      next: marre
+
+marre:
+  text: "Marre des étoiles ?! Oula jamais ! Mais peut-être que si les température descendent, j'y songerais.\nEt un jour j'espère pouvoir te faire venir camper avec moi !"
+  choices:
+    - text: "Avec plaisir ! À la revoyure alors !"
+      next: salut
+
+invite:
+  text: "T'es trop gentille. J'ai l'impression que ce n'est pas une offre qui se refuse. Merci. Vraiment."
+  choices:
+    - text: "C'est bien normal."
+      trigger: close_dialogue
+      next: invite_again
+invite_again:
+  text: "Merci encore pour l'invitation. Je vais traîner un peu dehors, en attendant que t'aille te coucher."
+  next: invite_again
+
+deni:
+  text: "Oh te fatigue pas va, j'ai bien compris."
+  choices:
+    - text: "Vraiment ?"
+      next: deni2
+deni2:
+  text: "Je viens d'un autre jeu vidéo. J'étais le personnage principal.\nMais... le developpeur a abandonné le projet, il ne s'y passe plus rien."
+  choices:
+    - text: "Ça a l'air ennuyant à mourir."
+      next: mourir
+    - text: "Et tu t'es enfuie ?"
+      next: escape
+
+mourir:
+  text: "Oh mourir, non, j'avais bien une barre de vie mais quand à force de me faire taper dessus par les monstres elle arrivait à 0... il ne se passait rien."
+  choices:
+    - text: "Marrant."
+      next: marrant
+    - text: "Immortalité, cause: flemme du developpeur de créer la mort."
+      next: immortelle
+marrant:
+  text: "Ouai, enfin bon... pas tant que ça."
+  choices:
+    - text: "Pardon, je voulais pas me moquer."
+      next: moquer
+    - text: "Et qu'est-ce qui t'es arrivée pour atterir ici au final ?"
+      next: enfuie
+moquer:
+  text: "T'en fais pas, c'est derrière moi maintenant."
+  choices:
+    - text: "Tant mieux alors !"
+      next: enfuie
+immortelle:
+  text: "Ah ah, t'es marrante toi !"
+  choices:
+    - text: "J'essaye de te changer les idées, ça a pas du être drôle pour toi."
+      next: immortelle2
+immortelle2:
+  text: "Non, c'est sûr... mais c'est fini maintenant."
+  choices:
+    - text: "Comment ça ?"
+      next: enfuie
+
+enfuie:
+  text: "Je me suis enfuie, et je ne compte pas y retourner, c'est tout ce qui compte."
+  choices:
+    - text: "Dans ce cas, bienvenue ici. Quoi qu'ici veuille dire ahah !"
+      next: pas_rester
+
+escape:
+  text: "Oui, c'est ça, j'en ai eu marre alors j'ai réussi à me glisser dans les fichiers de ce nouveau jeu qui lui n'a pas l'air à l'abandon pour le moment."
+  choices:
+    - text: "Dans ce cas, bienvenue ici, quoi qu'ici veuille dire ahah !"
+      next: pas_rester
+
+pas_rester:
+  text: "Merci, mais c'est petit ici, je ne vais pas rester. Je continue d'explorer les environs pour trouver un endroit ou me poser.\nJe repasserais peut-être te redire bonjour de temps en temps."
+  choices:
+    - text: "Tant mieux, et bien à la prochaine alors."
+      trigger: close_dialogue
+      next: pas_rester_again
+    - text: "Bon courage pour ta recherche ! À bientôt !"
+      trigger: close_dialogue
+      next: pas_rester_again
+pas_rester_again:
+  text: "Ah salut toi ! Je vais bientôt me rentrer moi. Sauf si tu a autre chose à me demander ?"
+  choices:
+    - text: "Non c'est bon. On se capte une autre fois !"
+      next: capte
+    - text: "T'as croisé d'autre gens ?"
+      next: transi_aurelien
+
+transi_aurelien:
+  text: "Oui, un garçon, hier. Il était plutôt charmant !"
+  choices:
+    - text: "Ah cool, il y a donc d'autre PN... gens. D'autre gens je veut dire."
+      next: transi_aurelien2
+    - text: "J'espère le recontrer, c'est calme ici. Il y a le marchant mais il n'est pas loquace."
+      next: transi_aurelien2_1
+transi_aurelien2_1:
+  text: "Ah oui, ce marchant, il est sympa ! Au moins il n'a pas essayer de me faire rembourser le prêt d'une maison...\nenfin bon... j'ai pas de maison..."
+  choices:
+    - text: "Moi si ! Mais je sais pas d'ou elle vient cette maison."
+      next: vient
+vient:
+  text: "Et lui, d'ou est-ce qu'il vient à ton avis ?"
+  choices:
+    - text: "Qui ça ? le garçon que t'as rencontré ?"
+      next: transi_aurelien2
+    - text: "J'en sais rien moi, t'es toujours là dessus ahah ?"
+      next: transi_aurelien2
+transi_aurelien2:
+  text: "Oui, je me demande s'il apprécierais recevoir des fleurs..."
+  choices:
+    - text: "Tu n'as qu'à le lui demander !"
+      next: demander
+    - text: "Tout le monde aimes les fleurs !"
+      next: tout_le_monde
+tout_le_monde:
+  text: "Je n'en suis pas si sûre, c'est un garçon en plus..."
+  choices:
+    - text: "Tu n'as qu'à le lui demander dans ce cas."
+      next: demander
+demander:
+  text: "Oui, mais je ne sais pas quand est-ce que je vais bien le recroiser. Tu pourais t'en charger toi ?"
+  choices:
+    - text: "Il s'appelle comment déjà ton gus ?"
+      next: aurelien
+
+capte:
+  text: "On se quoi ?"
+  choices:
+    - text: "Ah non rien, c'est juste une façon de parler. Ça veut dire : on se revoie plus tard."
+      next: capte2
+    - text: "T'as pas capté ?"
+      next: capte3
+capte2:
+  text: "Ah ok ! Oui alors à bientôt !"
+  next: pas_rester_again
+capte3:
+  text : "Euhhh..."
+  next: pas_rester_again
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Next day if first is failed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+blague_ldm:
+  text: "Bonjour, comment tu va aujourd'hui ?"
+  choices:
+    - text: "Impec ! Et toi ?"
+      next: bien
+    - text: "Bof, ça va pas fort."
+      next: mal
+bien:
+  text: "Moi ça va super !\nJe suis contente de te revoir, on avait pas pu parler beaucoup la dernière fois."
+  choices:
+    - text: "Oui, pardon, j'étais assez occupée."
+      next: pas_grave
+    - text: "En effet, tu voulais me poser une question d'ailleurs non ?"
+      next: question
+pas_grave:
+  text: "Aucun soucis, chacun a ses préoccupations, c'est normal.\nJe débarque, tu ne me connais pas et je commence à poser mes questions..."
+  choices:
+    - text: "Et bien, commençons par là : quelle sont ces préoccupations ?"
+      next: question
+mal:
+  text: "Oh mince, t'es malade ?"
+  choices:
+    - text: "Oui, en quelque sorte."
+      next: malade
+    - text: "Pas vraiment, c'est juste que je suis en forme."
+      next: malade
+malade:
+  text: "Je vais pas t'embêter avec mes histoires alors, on fera la causette une autre fois."
+  choices:
+    - text: "Non, non, ne t'en fais pas, ça me changera les idées au contraire."
+      next: pre_question
+    - text: "Faisons comme ça, à la prochaine."
+      trigger: close_dialogue
+      next: blague_again
+pre_question:
+  text: "Ok super ! Je te garantis que ça te changera les idées, c'est une histoire de coeur,\nça rate jamais ça."
+  choices:
+    - text: "Dis moi."
+      next: question
+
+deception_ldm:
+  text: "Ah... c'est toi. Qu'est-ce tu veux ?"
+  choices:
+    - text: "Peut-être qu'on a pas démarré du bon pied toutes les deux.\nTu crois qu'on pourait repartir du début ?"
+      next: debut
+debut:
+  text: "Tu veux dire, comme si on se re-rencontrait pour la première fois ?"
+  choices:
+    - text: "Exactement."
+      next: start
+
+fin_meditation_ldm:
+  condition: plume
+  fallback: fin_meditation_ldm_version_compte
+  text: "Salut ! Encore merci pour la dernière fois !\nTa technique de la plume est incroyable !"
+  choices:
+    - text: "Derien. Ça a l'air d'aller mieux on dirait ! Tu veux me reparler de ton crush ?"
+      next: crush
+fin_meditation_ldm_version_compte:
+  text: "Salut ! Encore merci pour la dernière fois !\nTa technique de compter jusque 5 est incroyable !"
+  choices:
+    - text: "Derien. Ça a l'air d'aller mieux on dirait ! Tu veux me reparler de ton crush ?"
+      next: crush
+crush:
+  text: "Oui ! C'est bon cette fois-ci je vais pas me mettre à faire une crise. Mais... euh...\nJe n'ai tout de même pas encore vaincu ma timidité. J'aimerais juste savoir s'il aime les fleurs avant de me lancer."
+  choices:
+    - text: "Ça viendra. Comment il s'appelle déjà ?"
+      next: aurelien
+
+pas_rester_ldm:
+  text: "Salut toi ! Comment ça va ?"
+  choices:
+    - text: "Ça va b..."
+      next: coupure
+    - text: "C'est pas la f..."
+      next: coupure
+coupure:
+  text: "... dis euh... par rapport à l'autre fois. Évite d'en parler à d'autre personne de cette histoire de jeux vidéo.\nSi le dev apprend que je répand ce genre d'info méta dans son jeu..."
+  choices:
+    - text: "Oh... je vois..."
+      next: coupure2
+coupure2:
+  text: "Oui... voilà. J'ai pas envie de m'attirer des ennuis...\nSinon ça va toi ?"
+  choices:
+    - text: "Ça va b..."
+      next: coupure3
+    - text: "C'est pas la f..."
+      next: coupure3
+coupure3:
+  text: "Je tiens plus en place ! J'ai rencontré ce garçon là et je ne fait que penser à lui."
+  choices:
+    - text: "Qui ça ?"
+      next: aurelien
+    - text: "Bon j'ai des choses à faire au revoir."
+      trigger: close_dialogue
+      next: excuses
+excuses:
+  text: "Oh excuse moi, je me rend compte que j'ai pas été très à l'écoute. Bon, pour de vrai cette fois :\nComment tu va ?"
+  choices:
+  choices:
+    - text: "Ok bon, c'est pas grave. Moi ça va, et toi ?"
+      next: bien
+    - text: "Bof, ça va pas fort."
+      next: mal
+
+salut_lmd:
+  text: "Hey ! Comment ça va ?"
+  choices:
+    - text: "Impec ! Et toi ?"
+      next: bien
+    - text: "Bof, ça va pas fort."
+      next: mal

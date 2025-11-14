@@ -35,9 +35,10 @@ class StateManager:
             return self.states[self.active_state_name]
         return None
 
-    def open_state(self, name):
+    def open_state(self, name, dt=None):
         if name in self.states:
-            self.states[name].setUp()
+            if dt: self.states[name].setUp(dt) #only dialogue needs and accept dt for now
+            else: self.states[name].setUp()
             self.active_state_name = name
 
     def close_state(self):

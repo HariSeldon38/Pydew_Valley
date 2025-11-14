@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
 
         self.item_inventory = {
         }
-        """            'corn' : 1,
+        """ 'corn' : 1,
             'tomato': 10,
             'corn_seed': 1,
             'tomato_seed': 1,
@@ -175,6 +175,9 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.talkable_npcs.discard(sprite)
 
+    def give(self, name):
+        self.item_inventory.pop(name)
+
     def start_record_input(self):
         self.record = True
         self.recorded_inputs = [self.rect.center] #store the starting position
@@ -247,10 +250,24 @@ class Player(pygame.sprite.Sprite):
                     if not self.record:
                         self.start_record_input()
                         list_record = [ # -----------------------------------------------------------------------------delete that
-                            r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt'
+                            r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt',
+                            r'..\recordings\Aurelien\recording1_200speed_60fps_2025_10_25__19-40-11.txt',
+                            r'..\recordings\Aurelien\recording2_200speed_60fps_2025_10_25__19-51-58.txt',
                         ]
                         NPC(
                         	list_record[0],
+                        	[self.all_sprites, self.npc_sprites],
+                        	self.collision_sprites,
+                        	name = 'Aurelien'
+                        ) # -----------------------------------------------------------------------------delete that
+                        NPC(
+                        	list_record[1],
+                        	[self.all_sprites, self.npc_sprites],
+                        	self.collision_sprites,
+                        	name = 'Aurelien'
+                        ) # -----------------------------------------------------------------------------delete that
+                        NPC(
+                        	list_record[2],
                         	[self.all_sprites, self.npc_sprites],
                         	self.collision_sprites,
                         	name = 'Aurelien'

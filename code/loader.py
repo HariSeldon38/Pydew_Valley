@@ -11,9 +11,12 @@ class ItemCSVLoader:
         with open(filepath, newline='', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
+                desc = row["desc"]
+                # Decode readable escapes to actual control chars
+                desc = desc.replace("\\r\\n", "\n").replace("\\n", "\n").replace("\\t", "\t")
                 self.items[row["id"]] = {
                     "name": row["name"],
-                    "description": row["desc"],
+                    "description": desc,
                     "image_path": row["image_path"]
                 }
 

@@ -1,7 +1,7 @@
 {
     "Kate": {
-        "next": "renseignement_ldm",
-        "encounter": 1,
+        "next": "start",
+        "encounter": 0,
         "flags": {
             "renseignement": true,
             "next_day": false,
@@ -9,7 +9,13 @@
         }
     },
     "PLAYER": {
-        "ask_aurelien": false,
         "meet_aurelien": true
+    },
+    "Antoine": {
+        "next": "start",
+        "encounter": 0,
+        "flags": {
+            "beanie": false
+        }
     }
 }

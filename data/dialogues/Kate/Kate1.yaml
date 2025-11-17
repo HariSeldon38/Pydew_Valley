@@ -85,6 +85,7 @@ merci_again:
 
 enquete_ldm:
   text: "Salut toi ! Comment tu va depuis la dernière fois ? Je me rend compte que je ne connais même pas ton nom !"
+  set_flag: know_aurelien_name
   choices:
     - text: "Je m'appelle CookieShay."
       set_flag: cookieshay
@@ -214,6 +215,9 @@ chez_soi_again:
       next: question
 question:
   text: "Tout le monde aime recevoir des fleurs, pas vrai ? Même les garçons ?"
+  set_flag:
+    name: demander_aurelien_fleurs
+    scope: player
   choices:
     - text: "Oui, tout le monde."
       next: garcon
@@ -228,6 +232,7 @@ garcon:
       next: connaissance
 aurelien:
   text: "Aurelien."
+  set_flag: know_aurelien_name
   choices:
     - text: "D'accord, tu veux que je me renseigne si jamais je le croise ?"
       next: renseignement

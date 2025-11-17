@@ -1,0 +1,181 @@
+SAFE_GUARD:
+  text: "OULA, PARDON, j'ai eu une absence. J'ai du boire trop de café. Je vais me recentrer et on poura se reparler. Désolé."
+  next: start
+
+start:
+  text: "Wesh, ça farte ?"
+  choices:
+    - text: "Heu... oui, ça farte, et toi Brice ?"
+      next: brice
+    - text: "Qui est-tu ?"
+      next: rencontre
+brice:
+  text:  "Brice ?"
+  choices:
+    - text: "Bah oui, Brice de Nice."
+      next: brice2
+brice2:
+  text: "Ah non ya erreur, moi je viens de Grenoble."
+  choices:
+    - text: "Et tu t'appelle ?"
+      next: rencontre
+    - text: "Laisse tomber..."
+      trigger: close_dialogue
+      next: hello
+hello:
+  text: "Hello again ! Comment ça va ?"
+  choices:
+    - text: "Ça farte."
+      next: brice_foutage
+    - text: "Bien et toi."
+      next: bien
+brice_foutage:
+  text: "Ahah, ok Brice."
+  choices:
+    - text: "Mais !"
+      next: ahah
+    - text: "Est-ce que tu te fout de ma gueule ?"
+      next: ahah
+ahah:
+  text: "Ah ah ah. Je te fais marcher, pardon... C'est quoi ton nom au fait ?"
+  choices:
+    - text: "CookieShay, et toi ?"
+      next: cookie
+    - text: "Mathilde, et toi ?"
+      next: mathilde
+bien:
+  text: "Moi ça va super ! C'est quoi ton nom au fait ?"
+  choices:
+    - text: "CookieShay, et toi ?"
+      next: cookie
+    - text: "Mathilde, et toi ?"
+      next: mathilde
+cookie:
+  text: "C'est original. Moi c'est... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: give_apples
+  choices:
+    - text: "Oh merci, des pommes !"
+      next: fruits
+    - text: "Un amateur de fruit j'imagine..."
+      next: fruits
+mathilde:
+  text: "Oh ! C'est un beau prénom. Moi c'est... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: give_apples
+  choices:
+    - text: "Oh merci, des pommes !"
+      next: fruits
+    - text: "Un amateur de fruit j'imagine..."
+      next: fruits
+rencontre:
+  text: "Je m'appelle... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: give_apples
+  choices:
+    - text: "Oh merci, des pommes !"
+      next: fruits
+    - text: "Un amateur de fruit j'imagine..."
+      next: fruits
+fruits:
+  text: "Oui c'est ça. Rien de tel que les fruits, c'est bon pour la santé et c'est délicieux. C'est juste incroyable. Tu connais beaucoup de choses qui sont bonnes pour la santé ET aussi sucrées ?"
+  choices:
+    - text: "Merci mais, pour le moment je n'ai pas faim."
+      next: compte
+    - text: "Je les mangerais plus tard."
+      next: cool
+    - text: "(Je vais me faire de l'argent en revendant ces trucs)"
+      next: argent
+compte:
+  text: "C'est pas grave ça, ça compte pas les fruits, ça fait 'glisser' après un bon repas."
+  choices:
+    - text: "Pfff, j'ai l'impression d'avoir déjà entendu ça quelque part..."
+      next: fin_rencontre
+    - text: "Mais bien sûr..."
+      next: fin_rencontre
+cool:
+  text: "Cool !\n(Elle ferait mieux de les vendre en vrai. C'est pas possible de manger dans ce jeux vidéo...)"
+  choices:
+    - text: "Hein quoi ?"
+      next: fin_rencontre
+argent:
+  text: "Capitaliste va !"
+  choices:
+    - text: "Toute transaction n'est pas du capitalisme..."
+      next: gnagna
+    - text: "Et alors ?"
+      next: raison
+gnagna:
+  text: "Gnagnagna... Relou ces gens qui ont raison...\nBon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+  choices:
+    - text: "Au revoir."
+      trigger: close_dialogue
+      next: fin_rencontre_again
+    - text: "A+"
+      trigger: close_dialogue
+      next: fin_rencontre_again
+raison:
+  text: "T'as bien raison ! \nBon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+  choices:
+    - text: "Au revoir."
+      trigger: close_dialogue
+      next: fin_rencontre_again
+    - text: "A+"
+      trigger: close_dialogue
+      next: fin_rencontre_again
+fin_rencontre:
+  text: "Bon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+  choices:
+    - text: "Au revoir."
+      trigger: close_dialogue
+      next: fin_rencontre_again
+    - text: "A+"
+      trigger: close_dialogue
+      next: fin_rencontre_again
+fin_rencontre_again:
+  text: "Re ! Excuse moi, j'ai des chose à faire. On se reparle une autre fois ok ?"
+  choices:
+    - text: "Ça marche !"
+      trigger: close_dialogue
+      next: fin_rencontre_again
+    - text: "À la prochaine !"
+      trigger: close_dialogue
+      next: fin_rencontre_again
+
+fin_rencontre_ldm:
+  text: "debut jour 2"
+  choices:
+    - text: ""
+      next:
+hub1:
+  text: ""
+  choices:
+    - text: ""
+      not_condition:
+      next:
+    - text: ""
+      not_condition:
+      next:
+    - text: ""
+      condition: #that condition must be met in the end of a particular choice to unlock the three others
+      next: hub2
+hub2:
+  text: ""
+  choices:
+    - text: ""
+      not_condition:
+      next:
+    - text: ""
+      not_condition:
+      next:
+    - text: ""
+      not_condition:
+      next:
+
+
+compte_pas:
+  text: ""
+  choices:
+    - text: ""
+      next:
+    - text: ""
+      next:
+    - text: ""
+      next:

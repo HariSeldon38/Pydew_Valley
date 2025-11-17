@@ -125,18 +125,19 @@ class Level:
 		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
 		# don't forget to load save even in the beginning
 		list_record = [
-				r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
-				r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
-				r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
+			r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
+			r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
+			r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
+			r'..\recordings\Antoine\recording0_200speed_60fps_2025_11_16__11-47-05.txt',
+			r'..\recordings\Antoine\recording1_200speed_60fps_2025_11_16__11-49-39.txt',
 		]
 		NPC(
-				list_record[2],
+				list_record[4],
 				[self.all_sprites, self.npc_sprites],
 				self.collision_sprites,
-				name = 'Kate',
+				name = 'Antoine',
 				saved_data=saved_data
 		)
-
 
 		Generic(
 			pos=(0,0),

@@ -3,7 +3,6 @@ start:
   choices:
     - text: "À vrai dire, je me posais la même question"
       next: complice
-      set_flag: amis1
     - text: "Oh, tu sais, je me contente de ramasser des pommes. Il y a un marchant au nord qui me les rachète à bon prix"
       next: indifference
 
@@ -13,7 +12,6 @@ complice:
     - text: "Oh, tu voyage ?"
       next: voyage
     - text: "Tu n'as qu'à noter que tu m'a rencontré moi : CookieShay, enchantée"
-      set_flag: amis2
       next: rencontre
 
 voyage:
@@ -59,20 +57,63 @@ fin2:
   next: fin1_again
 
 rencontre:
-  text: "Ah oui, bonne idée. Pardon, j'ai tendance à donner trop d'importance aux lieux. Moi c'est Aurélien"
+  text: "Ah oui, bonne idée. Pardon, j'ai tendance à donner trop d'importance aux lieux. Moi c'est Aurélien."
   choices:
     - text: "Aurélien, une chanson !"
-      unset_flag: amis2
       next: blague
     - text: "Heureuse de t'avoir rencontré (et de me faire une place dans ton carnet)"
-      not condition: kate_crush
-      set_flag: amis3
       next: fin3
     - text: "Et donc comme ça tu voyage ?"
       next: voyage
     - text: "Ah ! Mais c'est toi Aurélien !?"
-      condition: kate_crush
-      next:
+      condition: know_aurelien_name
+      next: kate
+
+kate:
+  text: "Comment ça c'est moi Aurélien ? Bah oui je viens de te le dire."
+  choices:
+    - text: "C'est que j'ai recontré quelqu'un qui m'a parlé de toi."
+      next: kate2
+kate2:
+  text: "Ah oui, ça doit être Kate alors. On a discuté un peu l'autre jour. Elle est plutôt sympa."
+  choices:
+    - text: "Elle se demande si tu apprécie les fleurs."
+      condition: demander_aurelien_fleurs
+      set_flag:
+        name: ask_aurelien
+        scope: player
+      next: evasif
+    - text: "C'est vrai. Dis, je peux te poser une question ?"
+      condition: demander_aurelien_fleurs
+      set_flag:
+        name: ask_aurelien
+        scope: player
+      next: poser_question
+    - text: "C'est vrai qu'elle est sympa."
+      next: sympa
+
+poser_question:
+  text: "Je t'en prie."
+  choices:
+    - text: "Ça a rien à voir mais est-ce que tu aimes les fleurs ?"
+      next: evasif
+    - text: "J'aimerais savoir si tu aimes les fleurs."
+      next: evasif
+evasif:
+  text: "Oh, et bien, je connais pas bien. Je vois pas comment je pourais t'aider sur ce sujet tu sais."
+  choices:
+    - text: "Mais non mais..."
+      next: evasif2
+    - text: "C'est que..."
+      next: evasif2
+    - text: "En fait..."
+      next: evasif2
+evasif2:
+  text: "Et dis, tu trouve pas que"
+  choices:
+
+sympa:
+
 
 blague:
   text: "Quoi ?"
@@ -108,9 +149,6 @@ fin3:
 fin3_again:
   text: "Tu ne peux plus te passer de moi ahah, pardon mais j'ai des truc à faire, on se reparle plus tard ?"
   next: fin3_again
-
-
-
 
 indifference:
   text: "Ah bon ? Ça t'intrigue pas de savoir où tu te trouve ?... et où tu vas ?"
@@ -166,7 +204,7 @@ se_renseigner_again:
   text: "Je te laisse mener ta petite enquête, moi aussi je vais essayer de comprendre de mon côté"
   next: se_renseigner_again
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Next day if first is failed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
-
-# ----- IN CASE NEXT_DAY HAS NOT BEEN REACHED : -----

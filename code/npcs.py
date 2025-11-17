@@ -20,6 +20,17 @@ class NPC(pygame.sprite.Sprite):
         self.sprite_type = 'npc'
         self.name = name
 
+        #dialogue
+        if not saved_data:
+            saved_data = {}
+        save_npc = saved_data.get(name, {})
+        self.encounter = save_npc.get('encounter', 0)
+        self.next = save_npc.get('next', "start")
+        self.flags = save_npc.get('flags', {})
+        with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
+            self.dialogue = yaml.safe_load(f)
+            print(f'{self.name}{self.encounter}.yaml')
+
         self.import_assets()
         self.status = 'up'
         self.frame_index = 0
@@ -41,16 +52,6 @@ class NPC(pygame.sprite.Sprite):
         self.collision_sprites = collision_sprites
         self.blocked = False
 
-        #dialogue
-        save_npc = saved_data.get(name, {})
-        self.encounter = save_npc.get('encounter', 0)
-        self.next = save_npc.get('next', "start")
-        self.flags = save_npc.get('flags', {})
-
-        with open(f"../data/dialogues/{self.name}/{self.name}{self.encounter}.yaml", "r", encoding="utf-8") as f:
-            self.dialogue = yaml.safe_load(f)
-            print(f'{self.name}{self.encounter}.yaml')
-
     def load_route(self, file_path):
         with open(file_path, 'r') as record:
             self.start_pos = tuple(map(int, record.readline().strip().split(',')))
@@ -60,8 +61,12 @@ class NPC(pygame.sprite.Sprite):
         self.animations = {'up': [], 'down': [], 'right': [], 'left': [],
                            'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],}
 
+        if self.name == 'Antoine' and self.flags.get('beanie', False):
+            sup_folder = '\with_beanie'
+        else: sup_folder = ''
+
         for animation in self.animations.keys():
-            full_path = '../graphics/characters/npcs/' + self.name + '/' + animation
+            full_path = '../graphics/characters/npcs/' + self.name + sup_folder + '/' + animation
             self.animations[animation] = import_folder(full_path)
 
     def replay_input(self):
@@ -173,7 +178,10 @@ class Dialogue(Menu):
         self.dt = dt
         self.npc = list(self.player.talkable_npcs)[0] #for now only choosing one npc if several
 
-        self.npc_face = pygame.image.load('../graphics/characters/npcs/' + self.npc.name + '/Faceset.png').convert_alpha()
+        if self.npc.name == 'Antoine' and self.npc.flags.get('beanie', False):
+            sup_folder = '\with_beanie'
+        else: sup_folder = ''
+        self.npc_face = pygame.image.load('../graphics/characters/npcs/' + self.npc.name + sup_folder + '/Faceset.png').convert_alpha()
         self.npc_face = pygame.transform.scale(self.npc_face, (100, 100))
         self.npc_face_rect = self.npc_face.get_rect(bottomleft=(65, SCREEN_HEIGHT - 65))
 

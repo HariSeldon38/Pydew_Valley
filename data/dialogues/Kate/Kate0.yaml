@@ -102,13 +102,16 @@ garcon:
 
 aurelien:
   text: "Aurelien."
+  set_flag: know_aurelien_name
   choices:
     - text: "Ah mais je vois qui c'est ! C'est vrai qu'il est charmant !"
       condition: meet_aurelien
       next: charmant
     - text: "D'accord, tu veux que je me renseigne si jamais je le croise ?"
       next: renseignement
-      set_flag: renseignement
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
 
 renseignement:
   text: "Oh oui ! S'il te plaît. Tu devrais le reconnaître facilement, il a un genre de coquille d'oeuf sur la tête."
@@ -140,7 +143,9 @@ charme:
   choices:
     - text: "Marché conclu !"
       next: charme2
-      set_flag: amis2
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
 charme2:
   text: "Super, dans ce cas, demande lui la prochaine fois que tu le croise !"
   set_flag: next_day
@@ -162,7 +167,9 @@ croisement:
   text: "Oh... pardon, je t'en demande beaucoup. C'est que je ne sais pas quand est-ce que je vais le recroiser. Enfin..."
   choices:
     - text: "C'est bon, je vais le faire. T'en fais pas, je lui demanderais."
-      set_flag: amis
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
       next: remerciement
     - text: "C'est à dire que je suis très occupée en ce moment, désolé."
       next: deception
@@ -175,6 +182,9 @@ deception_again:
   choices:
     - text: "Je suis désolé, j'ai été un peu froide, je veux bien t'aider finalement."
       next: remerciement
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
     - text: "Non c'est bon, pardon de t'avoir dérangée."
       trigger: close_dialogue
       unset_flag: amis
@@ -182,7 +192,6 @@ deception_again:
 
 remerciement:
   text: "Oh merci beaucoup ! C'est adorable de ta part !"
-  set_flag: amis
   set_flag: next_day
   next: remerciement_again
 remerciement_again:
@@ -203,9 +212,15 @@ grand_coeur:
   choices:
     - text: "C'est rassurant !"
       trigger: close_dialogue
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
       next: remerciement_again
     - text: "Avec plaisir."
       trigger: close_dialogue
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
       next: remerciement_again
 
 connaissance:
@@ -310,8 +325,14 @@ detente:
   set_flag: next_day
   choices:
     - text: "Tu n'as plus peur de rien on dirais !"
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
       next: peur_de_rien
     - text: "Ah ah, tu t'enflamme, tu voulais pas savoir si ton amis aime ça tout d'abord ?"
+      set_flag:
+        name: demander_aurelien_fleurs
+        scope: player
       next: enflamme
 
 peur_de_rien:

@@ -1,13 +1,13 @@
 SAFE_GUARD:
-  text: "OULA, PARDON, j'ai eu une absence. J'ai du boire trop de café. Je vais me recentrer et on poura se reparler. Désolé."
+  text: "OULA, PARDON, j'ai eu une absence. J'ai dû boire trop de café. Je vais me recentrer et on pourra se reparler. Désolé."
   next: start
 
 start:
   text: "Wesh, ça farte ?"
   choices:
-    - text: "Heu... oui, ça farte, et toi Brice ?"
+    - text: "Heu... Oui, ça farte, et toi Brice ?"
       next: brice
-    - text: "Qui est-tu ?"
+    - text: "Qui es-tu ?"
       next: rencontre
 brice:
   text:  "Brice ?"
@@ -34,7 +34,7 @@ brice_foutage:
   choices:
     - text: "Mais !"
       next: ahah
-    - text: "Est-ce que tu te fout de ma gueule ?"
+    - text: "Est-ce que tu te fous de ma gueule ?"
       next: ahah
 ahah:
   text: "Ah ah ah. Je te fais marcher, pardon... C'est quoi ton nom au fait ?"
@@ -51,50 +51,50 @@ bien:
     - text: "Mathilde, et toi ?"
       next: mathilde
 cookie:
-  text: "C'est original. Moi c'est... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
-  trigger: give_apples
+  text: "C'est original. Moi c'est... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
       next: fruits
-    - text: "Un amateur de fruit j'imagine..."
+    - text: "Un amateur de fruit, j'imagine..."
       next: fruits
 mathilde:
-  text: "Oh ! C'est un beau prénom. Moi c'est... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
-  trigger: give_apples
+  text: "Oh ! C'est un beau prénom. Moi c'est... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
       next: fruits
-    - text: "Un amateur de fruit j'imagine..."
+    - text: "Un amateur de fruit, j'imagine..."
       next: fruits
 rencontre:
-  text: "Je m'appelle... c'est pas important en vrai. Dis toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
-  trigger: give_apples
+  text: "Je m'appelle... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
       next: fruits
-    - text: "Un amateur de fruit j'imagine..."
+    - text: "Un amateur de fruit, j'imagine..."
       next: fruits
 fruits:
-  text: "Oui c'est ça. Rien de tel que les fruits, c'est bon pour la santé et c'est délicieux. C'est juste incroyable. Tu connais beaucoup de choses qui sont bonnes pour la santé ET aussi sucrées ?"
+  text: "Oui, c'est ça. Rien de tel que les fruits, c'est bon pour la santé et c'est délicieux. C'est juste incroyable. Tu connais beaucoup de choses qui sont bonnes pour la santé ET aussi sucrées ?"
   choices:
-    - text: "Merci mais, pour le moment je n'ai pas faim."
+    - text: "Merci, mais, pour le moment je n'ai pas faim."
       next: compte
-    - text: "Je les mangerais plus tard."
+    - text: "Je les mangerai plus tard."
       next: cool
-    - text: "(Je vais me faire de l'argent en revendant ces trucs)"
+    - text: "(Je vais me faire de l'argent en revendant ces trucs.)"
       next: argent
 compte:
   text: "C'est pas grave ça, ça compte pas les fruits, ça fait 'glisser' après un bon repas."
   choices:
     - text: "Pfff, j'ai l'impression d'avoir déjà entendu ça quelque part..."
-      next: fin_rencontre
+      next: generic_end
     - text: "Mais bien sûr..."
-      next: fin_rencontre
+      next: generic_end
 cool:
-  text: "Cool !\n(Elle ferait mieux de les vendre en vrai. C'est pas possible de manger dans ce jeux vidéo...)"
+  text: "Cool !\n(Elle ferait mieux de les vendre en vrai. Ce n'est pas possible de manger dans ce jeux vidéo...)"
   choices:
     - text: "Hein quoi ?"
-      next: fin_rencontre
+      next: generic_end
 argent:
   text: "Capitaliste va !"
   choices:
@@ -103,79 +103,582 @@ argent:
     - text: "Et alors ?"
       next: raison
 gnagna:
-  text: "Gnagnagna... Relou ces gens qui ont raison...\nBon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+  text: "Gnagnagna... Relou ces gens qui ont raison...\nBon, je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
   choices:
     - text: "Au revoir."
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
     - text: "A+"
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
 raison:
-  text: "T'as bien raison ! \nBon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+  text: "T'as bien raison ! \nBon, je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
   choices:
     - text: "Au revoir."
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
     - text: "A+"
       trigger: close_dialogue
-      next: fin_rencontre_again
-fin_rencontre:
-  text: "Bon je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
+      next: generic_end_again
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Looping end : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+generic_end:
+  text: "Bon. Je dois y aller moi, à la prochaine. Je suis content d'avoir parlé avec toi !"
   choices:
     - text: "Au revoir."
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
     - text: "A+"
       trigger: close_dialogue
-      next: fin_rencontre_again
-fin_rencontre_again:
-  text: "Re ! Excuse moi, j'ai des chose à faire. On se reparle une autre fois ok ?"
+      next: generic_end_again
+generic_end_again:
+  text: "Re ! Excuse-moi, j'ai des choses à faire. On se reparle une autre fois ok ?"
   choices:
     - text: "Ça marche !"
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
     - text: "À la prochaine !"
       trigger: close_dialogue
-      next: fin_rencontre_again
+      next: generic_end_again
 
-fin_rencontre_ldm:
-  text: "debut jour 2"
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Next day : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+generic_end_ldm:
+  text: "Comme on se retrouve ! C'est à chaque fois un plaisir de te croiser ici !"
   choices:
-    - text: ""
-      next:
-hub1:
-  text: ""
-  choices:
-    - text: ""
-      not_condition:
-      next:
-    - text: ""
-      not_condition:
-      next:
-    - text: ""
-      condition: #that condition must be met in the end of a particular choice to unlock the three others
+    - text: "Le plaisir est partagé !"
+      next: hub1
+    - text: "Salut toi !"
       next: hub2
+    - text: "J'ai un cadeau pour toi !"
+      condition: have_stylised_beanie #that condition contains also the path4_done cond, because need it to unlock items in the shop
+      next: post_path4
+
+hub1:
+  text: "Qu'est-ce que tu racontes aujourd'hui ?"
+  choices:
+    - text: "Déjà, merci pour les pommes de l'autre jour !"
+      not_condition: path1_done
+      next: path1
+    - text: "Je me prépare pour jouer une pièce de théâtre."
+      not_condition: path2_done
+      next: path2
+    - text: "La routine. Je cultive mon petit monde quoi."
+      condition: path1_done
+      next: eternal_path1
 hub2:
+  text: "Salut ! J'ai envie de parler aujourd'hui.\nDemande moi ce que tu voudrais savoir sur moi !"
+  choices:
+    - text: "Tu t'ennuies parfois ?"
+      not_condition: path3_done
+      next: path3
+    - text: "Je parie que t'es un musicien."
+      not_condition: path4_done
+      next: path4
+    - text: "Bah, euh, je sais pas moi."
+      condition: path3_done
+      next: eternal_path2
+
+path1:
+  text: "Oh, mais derien ! Ça fait toujours plaisir d'offrir des bons fruits !\n(pas des bananes)"
+  set_flag: path1_done
+  choices:
+    - text: "C'est très bon les bananes !"
+      next: bananes
+    - text: "T'as d'autres fruits que des bananes ?"
+      next: pre_tiens
+pre_tiens:
+  text: "Aujourd'hui, je peux te proposer des fraises."
+  choices:
+    - text: "Aller ! Va pour !"
+      next: tiens
+    - text: "Oarf... Non, pas envie."
+      next: pas_prevu
+pas_prevu:
+  text: "Ah mince, je n'avais pas prévu ce cas de figure moi..."
+  choices:
+    - text: "..."
+      next: tiens
+bananes:
+  text: "Oui, bon, euh, c'est facile à manger au moins."
+  choices:
+    - text: "Tu m'offres des bananes ?"
+      next: refus
+    - text: "Tu proposes quoi alors ?"
+      next: pre_tiens
+refus:
+  text: "Je ne peux pas faire ça pour de multiples raisons."
+  choices:
+    - text: "Ah bon ? Lesquelles ?"
+      next: assets
+    - text: "Dommage. T'as d'autre fruits sinon ?"
+      next: tiens
+assets:
+  text: "Je n'ai pas les bon assets... J'ai plus le temps d'en créer de nouveaux. Tu veux pas des fraises plutôt ?"
+  choices:
+    - text: "Non merci, c'est gentil."
+      next: ok
+    - text: "Volontier."
+      next: tiens
+ok:
+  text: "Je vois... Bon... Voilà..."
+  choices:
+    - text: "..."
+      next: generic_end
+tiens:
+  text: "Et une barquette de fraises pour la madame. Hop !"
+  trigger: get_strawberries
+  choices:
+    - text: "Trop cool !"
+      next: generic_end
+    - text: "Dommage qu'il n'y ai pas de sucre..."
+      next: sucre
+sucre:
+  text: "Ah... Euh... (Je pourrais éventuellement en fabriquer, vite fait... Non, n'y pense même pas, ya plus le temps là. Dans une mise à jour peut-être...)"
+  choices:
+    - text: "Ohé, ya quelqu'un ?"
+      next: hasty_end
+hasty_end:
+  text: "Excuse-moi, je viens de penser à un truc. Il faut que je m'en aille, j'ai du travail, désolé,\non se capte plus tard."
+  next: generic_end_again
+
+path2:
+  text: "Oh ! Trop bien ça ! J'adore le théâtre ! Tu as besoin d'aide pour réviser ?"
+  set_flag: path2_done
+  choices:
+    - text: "Sérieusement ?! Tu pourrais faire ça ?"
+      next: theatre
+    - text: "Arf, non, c'est bon, je veux me détendre."
+      next: pas_theatre
+theatre:
+  text: "Ça ne me fait pas peur !"
+  choices:
+    - text: "Bon et bien, je te donne le texte alors ?"
+      next: theatre2
+theatre2:
+  text: "Eh oui, c'est mieux ahahah !"
+  choices:
+    - text: "Voilà."
+      next: replique1
+replique1:
   text: ""
   choices:
     - text: ""
-      not_condition:
-      next:
+      next: replique1_ok
     - text: ""
-      not_condition:
-      next:
-    - text: ""
-      not_condition:
-      next:
-
-
-compte_pas:
-  text: ""
+      next: replique1_not_ok
+replique1_ok:
+  text: "" #replique2
   choices:
     - text: ""
-      next:
+      next: replique2_not_ok
     - text: ""
-      next:
+      next: replique2_ok
+replique1_not_ok:
+  text: "Ah non, c'était :\n"
+  choices:
+    - text: "Mince"
+      next: replique1_ok
+replique2_ok:
+  text: "" #replique3
+  choices:
     - text: ""
-      next:
+      next: replique3_not_ok
+    - text: ""
+      next: replique3_ok
+replique2_not_ok:
+  text: "Ah non, c'était :\n"
+  choices:
+    - text: "Mince"
+      next: replique2_ok
+replique3_ok:
+  text: "" #replique4
+  choices:
+    - text: ""
+      next: theatre_fin
+    - text: ""
+      next: replique4_not_ok
+replique3_not_ok:
+  text: "Ah non, c'était :\n"
+  choices:
+    - text: "Mince"
+      next: replique3_ok
+replique4_not_ok:
+  text: "Ah non, c'était :\n"
+  choices:
+    - text: "Mince."
+      next: theatre_fin
+theatre_fin:
+  text: "En-tout-cas, bravo, je sais pas comment tu fais pour apprendre tout ça !\nLa prochaine fois, on révisera autre chose..."
+  choices:
+    - text: "Euh... Quelle autre chose ?"
+      next: rigole
+    - text: "Non, surtout pas !"
+      next: rigole
+rigole:
+  text: "C'était une blague. On est là pour s'amuser, t'inquiète pas."
+  choices:
+    - text: "Ouf..."
+      next: generic_end
+pas_theatre:
+  text: "Ok, pas de soucis alors. Je t'embêterais plus avec ça !"
+  choices:
+    - text: "Merci."
+      next: generic_end
+
+path3:
+  text: "Jamais ! Tu connais Python ? Moi, j'adore Python !"
+  set_flag: path3_done
+  choices:
+    - text: "Non, c'est qui ?"
+      next: tunnel
+    - text: "..."
+      next: engouement
+    - text: "Et merde..."
+      next: saoule
+tunnel:
+  text: "Alors en fait c'est pas quelqu'un, c'est un langage de programmation.\nC'est le langage le plus intuitif aujourd'hui et il est de plus en plus populaire."
+  choices:
+    - text: "Ah ok."
+      next: tunnel2
+    - text: "C'est intéressant !"
+      next: tunnel2
+    - text: "Continue s'il te plaît."
+      next: tunnel2
+tunnel2:
+  text: "...C'est aussi un langage interprété, ce qui le rend plus facile d'utilisation que certains de ses compères, comme le C qui est, lui, compilé."
+  choices:
+    - text: "Dis-m'en plus !"
+      next: tunnel3
+    - text: "..."
+      next: tunnel3
+    - text: "Peux-tu te taire ?"
+      next: tunnel3
+tunnel3:
+  text: "... Tu savais que ce langage n'avait que 34 ans ? Il a été créé en 1991 par Guido van Rossum. C'est un langage qui favorise la programmation impérative structurée ainsi que la programmation orientée objet, OOP pour les intimes..."
+  choices:
+    - text: "Passionnant."
+      next: tunnel4
+    - text: "..."
+      next: tunnel4
+    - text: "Achevez-moi."
+      next: tunnel4
+tunnel4:
+  text: "Enfin bon bref, je pourrais parler de ça toute la journée ahah...\nD'ailleurs... J'ai du temps aujourd'hui..."
+  choices:
+    - text: "Évite. Par pitié."
+      next: tunnel5
+tunnel5:
+  text: "..."
+  choices:
+    - text: "..."
+      next: saoule
+engouement:
+  text: "Ton absence d'engouement pour une passion qui est prête à avaler tous les autres aspects de ta vie me ferais presque un peu peur."
+  choices:
+    - text: "Ben voyons."
+      next: saoule
+    - text: "Tu me saoules."
+      next: saoule
+saoule:
+  text: "Bon, bon... Je vois que ce que je raconte gêne. Très bien.\nTiens, des pêches pour me faire pardonner."
+  trigger: get_peaches
+  choices:
+    - text: "Encore d'autres fruits ! Mais ou est-ce que tu trouves tout ça ?"
+      next: ailleurs
+    - text: "Oh merci beaucoup monsieur fruits !"
+      next: monsieur_fruit
+ailleurs:
+  text: "Ailleurs."
+  choices:
+    - text: "Ah bon..."
+      next: generic_end
+    - text: "Bah super..."
+      next: generic_end
+monsieur_fruit:
+  text: "Ahahah, j'aime bien, madame fromages."
+  choices:
+    - text: "Mais ! Comment tu sais ?"
+      next: escape_end
+escape_end:
+  text: "Euh... Une intuition, c'est tout.\nJe dois y aller moi, à la prochaine. Ciao !"
+  choices:
+    - text: "Au revoir."
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "A+"
+      trigger: close_dialogue
+      next: generic_end_again
+
+path4:
+  text: "Mais nan ? Comment t'as deviné ?"
+  set_flag: path4_done
+  choices:
+    - text: "Une intuition..."
+      next: musicien
+    - text: "J'ai dit ça au pif."
+      next: musicien
+musicien:
+  text: "Eh bien, tu as raison. J'ai un super groupe de musique qui s'appelle NQNTMQMQMB.\nÇa se prononce 'George' !"
+  choices:
+    - text: "C'est pas très facile à retenir."
+      next: retenir
+    - text: "Ça veut dire quoi ?"
+      next: sens
+retenir:
+  text: "Oui, mais c'est facile à prononcer."
+  choices:
+    - text: "Argument imparable."
+      next: argument
+    - text: "Ça veut dire quoi ?"
+      next: sens
+sens:
+  text: "Ni queue ni tête, mais qui mets quand même bien."
+  choices:
+    - text: "Au moins, le ton est donné."
+      next: argument
+argument:
+  text: "Par contre, on galère à se faire connaître."
+  choices:
+    - text: "Sans blague..."
+      next: merch
+    - text: "Tiens, c'est étonnant ça !"
+      next: merch
+merch:
+  text: "Je pense qu'il nous faudrait du merch.\nOn pourrait en vendre à la fin des concerts."
+  choices:
+    - text: "Ah ouai ! Des T-shirts par exemple ?"
+      next: bonnet
+    - text: "C'est pas une mauvaise idée."
+      next: idee
+idee:
+  text: "Mais quoi ?...\nIl faudrait un truc que je puisse porter en même temps qu'un T-shirt de Leprous."
+  choices:
+    - text: "Des bonnets peut-être ?"
+      next: bonnet2
+    - text: "Des gants ?"
+      next: gants
+bonnet:
+  text: "Je verrai plus autre chose. C'est surfait les T-shirts.\nIl faudrait un truc que je puisse porter en même temps qu'un T-shirt de Leprous."
+  choices:
+    - text: "Des bonnets peut-être ?"
+      next: bonnet2
+    - text: "Des gants ?"
+      next: gants
+gants:
+  text: "Ah ouai ? Tu crois ? Ça me semble pas hyper adapté."
+  choices:
+    - text: "Des bonnets alors ?"
+      next: bonnet2
+    - text: "Ah, je sais ! Des écharpes !"
+      next: echarpe
+echarpe:
+  text: "Hum... nan, vraiment pas nan."
+  choices:
+    - text: "Des passe-montagnes ?"
+      next: montagne
+montagne:
+  text: "L'idée ne me plaît pas."
+  choices:
+    - text: "Bon, bah, des bonnets alors."
+      next: bonnet2
+bonnet2:
+  text: "Oh oui, énorme ! Mais je ne sais pas comment faire..."
+  choices:
+    - text: "À la limite..."
+      next: limite
+    - text: "Moi non plus."
+      next: dommage
+dommage:
+  text: "Ah... Dommage... Bon... Tanpis hein...\nC'est pas grave...\nJe vais me débrouiller. Tout seul..."
+  choices:
+    - text: "Arf, non attends, je peux peut-être t'aider."
+      next: limite
+    - text: "Aller, salut."
+      next: non_aide
+non_aide:
+  text: "(Pfff, c'est trop dur la vie, personne ne veut m'aider.)"
+  choices:
+    - text: "..."
+      next: non_aide2
+    - text: "Bon, euh, d'accord, je vais t'aider."
+      next: limite
+non_aide2:
+  text: "T'es sûre que tu ne veux pas m'aider ? Je t'offrirais une récompense digne de ton dévouement."
+  choices:
+    - text: "Euh... Dans ce cas."
+      next: limite
+    - text: "D'accord, j'ai peut-être une idée."
+      next: limite
+limite:
+  text: "Quoi ?"
+  choices:
+    - text: "Je pourrais peut-être te broder un truc si j'avais les bons outils..."
+      next: prototype
+    - text: "Je peux peut-être te faire un prototype."
+      next: prototype
+prototype:
+  text: "Sérieux ? Et il te faudrait quoi au juste ?"
+  choices:
+    - text: "Bah... Un bonnet pour commencer."
+      next: commencer
+    - text: "Du fil et une aiguille."
+      next: fil
+commencer:
+  text: "Ah oui bien, sûr, mais ensuite, est-ce que du fil et une aiguille pourraient suffire ?"
+  choices:
+    - text: "Ça devrait faire l'affaire oui."
+      next: fil
+fil:
+  text: "Bon, et bien je vais demander au marchant s'il ne pourrait pas te dégotter ça,\npour ce qui est du bonnet, j'en ai un tout neuf, tiens."
+  trigger: get_beanie
+  choices:
+    - text: "Parfait."
+      next: parfait
+    - text: "Faisons comme ça !"
+      next: parfait
+parfait:
+  text: "T'es vraiment trop cool.\nMerci beaucoup de faire ça pour moi.\nJ'espère un jour pouvoir fabriquer quelque chose pour toi."
+  next: generic_end_again
+
+eternal_path1:
+  text: "Ah oui, je vois le genre, petite journée chill. D'ailleurs, mon jardin à moi pousse à vitesse grand V.\nTiens, regarde ce que j'ai ramassé hier."
+  choices:
+    - text: "Oh des oranges !"
+      next: oranges
+oranges:
+  text: "Tu as l'oeil ! C'est pour toi au fait, prend les."
+  trigger: get_oranges
+  choices:
+    - text: "Oh, c'est gentil !"
+      next: pas_de_quoi
+    - text: "Merci beaucoup"
+      next: pas_de_quoi
+pas_de_quoi:
+  text: "T'inquiètes, des fruits j'en ai tout le tour du ventre !\n(Peut-être que je m'en occupe trop de mon jardin...)"
+  choices:
+    - text: "Ah ah ah ah ah ah"
+      next: generic_end
+
+eternal_path2:
+  text: "Je vois, pardon, je ne voulais pas te mettre dans l'embarras. C'est pas grave si tu n'as rien à dire.\nJe peux parler pour deux."
+  choices:
+    - text: "Je t'en prie !"
+      next: marche
+marche:
+  text: "J'ai entendu dire qu'on ne trouve pas les mêmes poissons selon qu'on pêche dans la mer ou dans le petit étang au nord d'ici."
+  choices:
+    - text: "Ah bon ?"
+      not_condition: subpath1_done 
+      next: poissons
+    - text: "Logique. Il y a des poissons d'eau douce et d'autres d'eau salée."
+      not_condition: subpath1_done
+      next: poissons
+    - text: "Tu m'as déjà dit ça..."
+      condition: subpath1_done
+      next: radote
+poissons:
+  text: "Oui, c'est vrai... Sauf pour les saumons. "
+  set_flag: subpath1_done
+  choices:
+    - text: "Ah d'accord."
+      next: saumons
+    - text: "Sérieux ?"
+      next: saumons
+saumons:
+  text: "Oui, les saumons adultes remontent les fleuves pour pondre dans de l'eau douce.\nC'est pour ça que tu peux trouver des bébés saumons au nord, mais pas dans la mer. Par contre j'ai jamais trouvé de saumon adulte dans l'étang."
+  choices:
+    - text: "Bizare..."
+      next: saumons2
+    - text: "Étrange..."
+      next: saumons2
+saumons2:
+  text: "Faut croire qu'ils ne se laissent attraper que dans la mer.\nJ'ai remarqué aussi que c'était plus facile d'attraper les bébés que les adultes."
+  choices:
+    - text: "Intéressant..."
+      next: interessant
+interessant:
+  text: "Oui, enfin, c'est pas très utile les saumons bébés.\nFaudrait arriver à les faire grandir, mais je ne sais pas ce qu'ils peuvent bien manger..."
+  choices:
+    - text: "J'y réfléchirais."
+      trigger: close_dialogue
+      next: generic_end_again
+radote:
+  text: "Ah, mince, oui, c'est vrai. Pardon. Je me souviens maintenant, on se demandait ce que pouvais manger les bébés saumons."
+  choices:
+    - text: "Et alors ?"
+      next: bebe_saumons
+bebe_saumons:
+  text: "Des vers. Une fois, j'en avais mis un à côté de ma réserve d'appât :\nIl m'a tout mangé."
+  choices:
+    - text: "Je ne m'attendais pas à ça."
+      next: vers
+vers:
+  text: "D'ailleurs, tu savais qu'avec ces appâts, c'était beaucoup plus simple de pêcher des poissons ?"
+  choices:
+    - text: "Ah bon ?"
+      next: vers2
+vers2:
+  text: "Eh oui. Depuis que j'utilise ces vers, j'attrape plus aucun déchet.\nC'est le top !"
+  choices:
+    - text: "Intéressant..."
+      trigger: close_dialogue
+      next: generic_end_again
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# If have stylised_beanie in item_inventory : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+post_path4:
+  text: "Ah ? Mais qu'est-ce que c'est ?"
+  choices:
+    - text: "À ton avis ?"
+      next: cadeau
+    - text: "Un bonnet benêt !"
+      next: cadeau
+cadeau:
+  text: "Mais nan ?!"
+  choices:
+    - text: "Mais si !"
+      next: cadeau2
+    - text: "Il plaît ?"
+      next: cadeau2
+cadeau2:
+  text: "Carrément ! Ça rend trop bien avec le nom du groupe en blanc là ! C'est giga cool !\nMerci infieniement !"
+  choices:
+    - text: "Contente que ça te plaisir."
+      next: cadeau3
+    - text: "Derien. Ça m'a fait plaisir de le faire !"
+      next: cadeau3
+cadeau3:
+  text: "Il me va bien ?"
+  trigger: give_beanie
+  choices:
+    - text: "Oh wow, c'est super !"
+      next: final_end
+    - text: "Au poil !"
+      next: final_end
+final_end:
+  text: "Et bah encore merci, c'est génial !\nAu fait, prépare toi à une surprise demain matin. Ce sera ma façon à moi de te remercier."
+  set_flag: next_day
+  choices:
+    - text: "J'ai hâte ! Encore derien, à bientôt !"
+      trigger: close_dialogue
+      next: final_end_again
+    - text: "J'ai hâte ! A+ !"
+      trigger: close_dialogue
+      next: final_end_again
+final_end_again:
+  text: "Re ! Comment j'ai l'impression de frimer avec ce bonnet !"
+  choices:
+    - text: "T'as la classe !"
+      trigger: close_dialogue
+      next: final_end_again
+    - text: "Trop stylé."
+      trigger: close_dialogue
+      next: final_end_again

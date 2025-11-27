@@ -1,6 +1,12 @@
 id,name,image_path,desc
 wood,Bois,../graphics/token/wood.png,Une bûche en bois de chêne. Basique mais robuste
 apple,Pomme,../graphics/token/apple.png,Le roi des fruits. Un grand classique
+strawberry,Fraise,../graphics/token/strawberry.png,Encore meilleures avec du sucre !
+peach,Pêche,../graphics/token/peach.png,Un arrière goût d'été.
+orange,Orange,../graphics/token/orange.png,Le réconfort de l'hiver\n(après la raclette)
+pear,Poire,../graphics/token/pear.png,Le plus sous-côté des fruits.
+grapes,Raisins,../graphics/token/grapes.png,Quel gâchis d'en faire du vin ???
+blueberry,Myrtille,../graphics/token/blueberry.png,Rien à dire sur ce fruit...\noubliable ?
 corn,Maïs,../graphics/token/corn.png,Rien qu'une valeur marchande pour certains... Chacun ses goûts
 tomato,Tomate,../graphics/token/tomato.png,Mozzarella non fournie
 corn_seed,Graines de maïs,../graphics/token/corn_seed.png,À planter dans la terre humide
@@ -9,7 +15,7 @@ black_beanie,Bonnet noir,../graphics/token/black_beanie.png,"Un simple couvre ch
 fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher de bons poissons, du saumon avec beaucoup de chance"
 seewing_needle,Aiguille de couture,../graphics/token/seewing_needle.png,Donne accès à un univers de créativité infini
 white_thread,Fil blanc,../graphics/token/white_thread.png,Saura se rendre utile...
-stylized_beanie,Bonnet stylisé,../graphics/token/stylised_beanie.png,Pour un look de rockstar !
+stylised_beanie,Bonnet stylisé,../graphics/token/stylised_beanie.png,Pour un look de rockstar !
 anchovy,Anchois,../graphics/token/anchovy.png,Appelle les des engraulidés si tu veux... (eau salée)
 angelfish,Poisson-Ange,../graphics/token/angelfish.png,Nouveau concept : les anges aquatiques (eau douce)
 bass,Bar,../graphics/token/bass.png,Bonjour je voudrais un monaco siouplait (eau douce)

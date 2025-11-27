@@ -14,7 +14,6 @@ PURCHASE_PRICES = {
 	'corn_seed': 4,
 	'tomato_seed': 5,
     'worm': 5,
-	'black_beanie': 500,
 	'fishing_rod': 500,
 	'seewing_needle': 1000,
 	'white_thread': 50,
@@ -41,9 +40,8 @@ SPECIAL_SHOP_INVENTORY = {
     'water': 1,
     'fishing_rod': 1,
     'worm': 0,
-    'seewing_needle': 1,
-    'white_thread': 1,
-    'black_beanie': 1,
+    'seewing_needle': 0,
+    'white_thread': 0,
 }
 
 class ShopManager:
@@ -62,7 +60,10 @@ class ShopManager:
         self.item_loader = item_loader
 
     def setUp(self):
-        pass
+        """That method is called when opening the menu"""
+        for shop in self.shops:
+            shop.setup()
+
     def tearDown(self):
         pass
 
@@ -108,16 +109,15 @@ class ShopLogic(ABC):
         self.index = 0
 
     def setup(self):
+        """That method is used only when init the Shop"""
         self.text_surfs = []
         self.total_height = 0
-        for item in self.inventory:
-            if self.inventory[item] != 0:
-                text_surf = self.font.render(self.item_loader.get_name(item), False, 'black')
-                self.text_surfs.append(text_surf)
-                self.total_height += text_surf.get_height() + (self.padding * 2)
+        for item in self.options:
+            text_surf = self.font.render(self.item_loader.get_name(item), False, 'black')
+            self.text_surfs.append(text_surf)
+            self.total_height += text_surf.get_height() + (self.padding * 2)
         if self.text_surfs:
             self.total_height += (len(self.text_surfs) - 1) * self.space
-            self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
         else:
             self.total_height = 46
         self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
@@ -232,10 +232,9 @@ class ShopLogic(ABC):
         self.display_shop_title()
         if self.text_surfs:
             for text_index, text_surf in enumerate(self.text_surfs):
+                item = self.options[text_index]   # guaranteed aligned
+                amount = self.player.item_inventory.get(item, 0)
                 top = self.main_rect.top + text_index * (text_surf.get_height() + self.padding*2 + self.space)
-                if self.options[text_index] in self.player.item_inventory.keys():
-                    amount = self.player.item_inventory[self.options[text_index]]
-                else : amount = 0
                 self.show_entry(text_surf, amount, top, self.index==text_index)
         else:
             self.show_empty_shop()

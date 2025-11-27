@@ -62,7 +62,7 @@ class NPC(pygame.sprite.Sprite):
                            'up_idle': [], 'down_idle': [], 'right_idle': [], 'left_idle': [],}
 
         if self.name == 'Antoine' and self.flags.get('beanie', False):
-            sup_folder = '\with_beanie'
+            sup_folder = '/with_beanie'
         else: sup_folder = ''
 
         for animation in self.animations.keys():
@@ -179,7 +179,7 @@ class Dialogue(Menu):
         self.npc = list(self.player.talkable_npcs)[0] #for now only choosing one npc if several
 
         if self.npc.name == 'Antoine' and self.npc.flags.get('beanie', False):
-            sup_folder = '\with_beanie'
+            sup_folder = '/with_beanie'
         else: sup_folder = ''
         self.npc_face = pygame.image.load('../graphics/characters/npcs/' + self.npc.name + sup_folder + '/Faceset.png').convert_alpha()
         self.npc_face = pygame.transform.scale(self.npc_face, (100, 100))
@@ -194,6 +194,10 @@ class Dialogue(Menu):
         # Inventory check
         if 'apple' in self.player.item_inventory:
             self.player.flags["pomme"] = True
+        if 'stylised_beanie' in self.player.item_inventory:
+            self.player.flags["have_stylised_beanie"] = True
+
+        self.already_triggered = False  # node_level triggers now apply only once and not at each frames
 
     def tearDown(self):
         """method that exe when closing the menu"""
@@ -203,12 +207,50 @@ class Dialogue(Menu):
         # Clean inventory related flags
         self.player.flags.pop("pomme", None)
 
+    def trigger_action(self, action):
+        """called when 'trigger' keyword is found on a dialogue
+        execute the instructions linked to the action that follows that 'trigger' keyword"""
+
+        if action == 'close_dialogue':
+            self.state_manager.close_state()
+        if action == 'give_apple':
+            self.player.give('apple')
+        if action == 'give_beanie':
+            self.player.give('stylised_beanie')
+            #make the npc wear it inside dialogue UI
+            self.npc_face = pygame.image.load(
+                '../graphics/characters/npcs/' + self.npc.name + '/with_beanie' + '/Faceset.png').convert_alpha()
+            self.npc_face = pygame.transform.scale(self.npc_face, (100, 100))
+            #make the npc wear it in the map
+            self.npc.flags["beanie"] = True
+            self.npc.import_assets()
+
+        #get_something actions : (ie the player receive something from the npc)
+        if action == 'get_flowers':
+            self.player.receive('flowers')
+        if action == 'get_apples':
+            self.player.receive('apple', 10)
+        if action == 'get_strawberries':
+            self.player.receive('strawberry', 5)
+        if action == 'get_peaches':
+            self.player.receive('peach', 5)
+        if action == 'get_oranges':
+            self.player.receive('orange', 5)
+        if action == 'get_beanie':
+            self.player.receive('black_beanie', 1)
+            special_shop = self.state_manager.states['shop'].shops[2]
+            special_shop.inventory['seewing_needle'] = 1
+            special_shop.inventory['white_thread'] = 1
+
+        print(action)
+
     def handle_input(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 try:
                     if event.key == pygame.K_SPACE:
                         if not self.listen:
+                            self.already_triggered = False  # reset the trigger for node-level triggers, putting the reset at choice level is strange but prevent double triggers
                             visible_choices = []
                             for choice in self.dialogue[self.next]['choices']:
                                 if 'condition' not in choice or (
@@ -224,16 +266,7 @@ class Dialogue(Menu):
                             else: self.state_manager.close_state()
 
                             if 'trigger' in visible_choices[self.index]:
-                                if visible_choices[self.index]['trigger'] == 'close_dialogue':
-                                    self.state_manager.close_state()
-                                if visible_choices[self.index]['trigger'] == 'give_apple':
-                                    self.player.give('apple')
-                                if visible_choices[self.index]['trigger'] == 'get_flowers':
-                                    self.player.receive('flowers')
-                                if visible_choices[self.index]['trigger'] == 'get_apples':
-                                    self.player.receive('apple', 10)
-                                if visible_choices[self.index]['trigger'] != 'close_dialogue':
-                                    print(visible_choices[self.index]['trigger'])
+                                self.trigger_action(visible_choices[self.index]['trigger'])
 
                             # Handle set_flag from specific choice
                             selected = visible_choices[self.index]
@@ -299,6 +332,11 @@ class Dialogue(Menu):
                 if not all(self.player.flags.get(name, False) for name in all_cond):
                     self.next = current.get('fallback', 'start')
                     current = self.dialogue[self.next]
+
+            # Handle node-level trigger :
+            if 'trigger' in current and not self.already_triggered:
+                self.already_triggered = True #that is not elegant but too complicated otherwise I think
+                self.trigger_action(current['trigger'])
 
             self.text = current['text']
             if 'choices' in current:

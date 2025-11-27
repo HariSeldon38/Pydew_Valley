@@ -12,10 +12,11 @@
         "meet_aurelien": true
     },
     "Antoine": {
-        "next": "start",
+        "next": "generic_end_ldm",
         "encounter": 0,
         "flags": {
-            "beanie": false
+            "path1_done": true,
+            "path2_done": true
         }
     }
 }

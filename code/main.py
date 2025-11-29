@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
 
 """
-corection ortho graphe not done yet !
+corection orthographe not done yet ! Done for Antoine
 
 chercher comment faire des voix yahourt comme ds celeste
 ACHIEVEMENT: trouver tout les meme dans les conv
@@ -121,7 +121,6 @@ nom de la monaie est l'étincelle
 
 # QUALITY OF LIFE :
 """
-- display my faceset when my time to speak
 - center lines of speech (monologue charracter when tired)
 - shynier salmon with halo effect on it 
 - add obvious cursor in dialogue
@@ -141,7 +140,6 @@ nom de la monaie est l'étincelle
 
 # NEXT FEATURE TO IMPLEMENT (down = not in a close futur)
 """
-- system to invite kate
 - Music
 - Menu
 - Save
@@ -168,6 +166,7 @@ nom de la monaie est l'étincelle
 
 """
 craft philosophie :  should be hinted. Either it is obvious (fil + aiguille + bonnet) either it is hinted by the np
+	ok for salmon, ok for beanie
 
 test : give the ttable to IA to proof check (crating) (check if transpose =)
 
@@ -231,17 +230,38 @@ test all the different text of a npc : ask copilot to review all the yaml
 
 # IA PROMPT : (never been used finally)
 """
-IA prompt :
-I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.
-All the project is following OOP concepts.
-Here is are the different files I got for now : 
+IA prompt (never used in fact, don't know if usefull):
+	I'm working on a pygame project. The game is a lot inspired by Stardew Valley, it is a farming game.
+	All the project is following OOP concepts.
+	Here is are the different files I got for now : 
+	
+	main.py : Game class with init and run method containing the while True loop. This file is just the entry point, I rarely touch it.
+	
+	level.py : The "hub" of my code where all the necessary class are imported and declared.
+	it is composed of a init method, setup method that instanciate all the classes I need, reset method used to start a new day, toggle_shop method that open the shop menu, and run where everything is called.
+	
+	player.py define all the player character need, it is a Sprite class that contain the following methods : use_tool, use_seed, get_target_position, import_assets, animate, inpu, get_status (direction and action the player is currently doing) update_timers, collision, move, update : the main function to update the sprites.
 
-main.py : Game class with init and run method containing the while True loop. This file is just the entry point, I rarely touch it.
-
-level.py : The "hub" of my code where all the necessary class are imported and declared.
-it is composed of a init method, setup method that instanciate all the classes I need, reset method used to start a new day, toggle_shop method that open the shop menu, and run where everything is called.
-
-player.py define all the player character need, it is a Sprite class that contain the following methods : use_tool, use_seed, get_target_position, import_assets, animate, inpu, get_status (direction and action the player is currently doing) update_timers, collision, move, update : the main function to update the sprites.
+Prompt to IA check the dialogues:
+				Hi, I wrote a lot of dialogue for my game. I cannot check myself if everything is right can you spot if there is some mistakes ?
+				
+				The rules are the following : 
+				value after a trigger keyword must be in that list :
+				[ 'close_dialogue',  'give_apple', 'give_beanie', 'get_flowers', 'get_apples', 'get_strawberries', 'get_blueberries', 'get_grapes', 'get_peaches', 'get_oranges', 'get_pears', 'get_beanie']
+				
+				Keywords must be in that list (make sure to check if they can be written with typo somewhere) : ['text','next','choices','trigger','set_flag',unset_flag','condition',not_condition','all_condition','scope']
+				
+				Make sure every value after 'next' has a corresponding entry (check for typo here also)
+				
+				Verify every entry which has a corresponding "_again" entry either has no 'choices' keyword' or has only choices that contains 'trigger: close_dialogue'
+				
+				Verify that every entry ending by _again has a corresponding entry where _again is replaced by _ldm except is there is a set_flag: next_day along the way.
+				
+				Each node ending by _again must loop. This is the text that the npc will repeat if talked again, but the next day _again will be replaced by _ldm
+				
+				Do only tell me where there is mistakes, do not give me a full corrected version. I want to correct things myself one at the time
+				
+				In some files, you can also check the conditionnal logic (easy to explain for Antoine0, hard, for kate0)
 """
 
 # TECHNICAL :

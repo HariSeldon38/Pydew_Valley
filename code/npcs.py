@@ -232,10 +232,16 @@ class Dialogue(Menu):
             self.player.receive('apple', 10)
         if action == 'get_strawberries':
             self.player.receive('strawberry', 5)
+        if action == 'get_blueberries':
+            self.player.receive('blueberry', 5)
+        if action == 'get_grapes':
+            self.player.receive('grapes', 5)
         if action == 'get_peaches':
             self.player.receive('peach', 5)
         if action == 'get_oranges':
             self.player.receive('orange', 5)
+        if action == 'get_pears':
+            self.player.receive('pear', 5)
         if action == 'get_beanie':
             self.player.receive('black_beanie', 1)
             special_shop = self.state_manager.states['shop'].shops[2]

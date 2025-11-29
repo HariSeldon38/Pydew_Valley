@@ -1,0 +1,75 @@
+SAFE_GUARD:
+  text: "OULA, PARDON, j'ai eu une absence. J'ai dû boire trop de café. Je vais me recentrer et on pourra se reparler. Désolé."
+  next: fin_ldm
+
+fin_ldm:
+  text: "Ma comédienne préférée ! Comment tu vas ?"
+  choices:
+    - text: "Ça va bien !"
+      next: bon
+    - text: "Bof."
+      next: requinquer
+
+requinquer:
+  text: "Arf, aller, un panier de fruits va te requinquer !"
+  choices:
+    - text: "Je peux avoir des poires ?"
+      trigger: get_pears
+      next: voila
+    - text: "Je peux avoir des oranges ?"
+      trigger: get_oranges
+      next: voila
+    - text: "J'aimerais autre chose."
+      next: autre
+bon:
+  text: "Bon et bien, que me vaut le plaisir ?"
+  choices:
+    - text: "Je peux avoir des poires ?"
+      trigger: get_pears
+      next: voila
+    - text: "Je peux avoir des oranges ?"
+      trigger: get_oranges
+      next: voila
+    - text: "J'aimerais autre chose."
+      next: autre
+autre:
+  text: "Je t'écoute."
+  choices:
+    - text: "Je peux avoir des pêches ?"
+      trigger: get_peaches
+      next: voila
+    - text: "Je peux avoir du raisin ?"
+      trigger: get_grapes
+      next: voila
+    - text: "J'aimerais autre chose."
+      next: autre2
+autre2:
+  text: "Je t'écoute."
+  choices:
+    - text: "Je peux avoir des myrtilles ?"
+      trigger: get_blueberries
+      next: voila
+    - text: "Je peux avoir des fraises ?"
+      trigger: get_strawberries
+      next: voila
+    - text: "Je peux avoir des pommes ?"
+      trigger: get_apples
+      next: voila
+
+voila:
+  text: "Et voilà pour toi !"
+  choices:
+    - text: "Merci monsieur fruit !"
+      next: fin
+fin:
+  text: "Derien ! Aller, je file moi !"
+  next: fin_again
+fin_again:
+  text: "Je dois vraiment y aller, on se voit un autre jour ?"
+  choices:
+    - text: "À la prochaine !"
+      trigger: close_dialogue
+      next: fin_again
+    - text: "See you !"
+      trigger: close_dialogue
+      next: fin_again

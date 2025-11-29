@@ -9,14 +9,7 @@
         }
     },
     "PLAYER": {
-        "meet_aurelien": true
-    },
-    "Antoine": {
-        "next": "generic_end_ldm",
-        "encounter": 0,
-        "flags": {
-            "path1_done": true,
-            "path2_done": true
-        }
+        "meet_aurelien": true,
+        "have_stylised_beanie": true
     }
 }

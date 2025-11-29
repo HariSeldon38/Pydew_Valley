@@ -216,10 +216,10 @@ refus:
   choices:
     - text: "Ah bon ? Lesquelles ?"
       next: assets
-    - text: "Dommage. T'as d'autre fruits sinon ?"
+    - text: "Dommage. T'as d'autres fruits sinon ?"
       next: tiens
 assets:
-  text: "Je n'ai pas les bon assets... J'ai plus le temps d'en créer de nouveaux. Tu veux pas des fraises plutôt ?"
+  text: "Je n'ai pas les bons assets... J'ai plus le temps d'en créer de nouveaux. Tu veux pas des fraises plutôt ?"
   choices:
     - text: "Non merci, c'est gentil."
       next: ok
@@ -231,7 +231,7 @@ ok:
     - text: "..."
       next: generic_end
 tiens:
-  text: "Et une barquette de fraises pour la madame. Hop !"
+  text: "Et une barquette de fraises pour la dame. Hop !"
   trigger: get_strawberries
   choices:
     - text: "Trop cool !"
@@ -241,13 +241,13 @@ tiens:
 sucre:
   text: "Ah... Euh... (Je pourrais éventuellement en fabriquer, vite fait... Non, n'y pense même pas, ya plus le temps là. Dans une mise à jour peut-être...)"
   choices:
-    - text: "Ohé, ya quelqu'un ?"
+    - text: "Ohé, y'a quelqu'un ?"
       next: hasty_end
 hasty_end:
   text: "Excuse-moi, je viens de penser à un truc. Il faut que je m'en aille, j'ai du travail, désolé,\non se capte plus tard."
   next: generic_end_again
 
-path2:
+path2: #Mme Jeulin p24,
   text: "Oh ! Trop bien ça ! J'adore le théâtre ! Tu as besoin d'aide pour réviser ?"
   set_flag: path2_done
   choices:
@@ -266,50 +266,50 @@ theatre2:
     - text: "Voilà."
       next: replique1
 replique1:
-  text: ""
+  text: "'Ah ben tu es encore là maman. Mais que fais-tu encore devant cette porte d'entrée ?'"
   choices:
-    - text: ""
+    - text: "J'aime bien être là. Je vois les gens qui entrent et qui sortent. J'aime bien."
       next: replique1_ok
-    - text: ""
+    - text: "Je suis bien là. Je regarde les gens entrer et sortir. J'aime bien."
       next: replique1_not_ok
 replique1_ok:
-  text: "" #replique2
+  text: "'Quand même, tu ne devrais pas rester devant la porte d'entrée comme ça, tu vas attraper froid.'" #replique2
   choices:
-    - text: ""
+    - text: "Ça ne te regarde pas. Fiche moi la paix !"
       next: replique2_not_ok
-    - text: ""
+    - text: "Mais de quoi je me mêle. Vas-tu donc me fiche la paix ?"
       next: replique2_ok
 replique1_not_ok:
-  text: "Ah non, c'était :\n"
+  text: "Ah non, c'était :\nJ'aime bien être là. Je vois les gens qui entrent et qui sortent. J'aime bien."
   choices:
-    - text: "Mince"
+    - text: "Mince."
       next: replique1_ok
 replique2_ok:
-  text: "" #replique3
+  text: "'C'est pour toi que je dis ça ...'" #replique3
   choices:
-    - text: ""
+    - text: "Gnagnagna... On ne peut donc pas faire ce qu'on veut !"
       next: replique3_not_ok
-    - text: ""
+    - text: "Gnagnagna... On peut donc jamais être tranquille."
       next: replique3_ok
 replique2_not_ok:
-  text: "Ah non, c'était :\n"
+  text: "Ah non, c'était :\nMais de quoi je me mêle. Vas-tu donc me fiche la paix ?"
   choices:
-    - text: "Mince"
+    - text: "Mince."
       next: replique2_ok
 replique3_ok:
-  text: "" #replique4
+  text: "*L'animatrice bénévole se met à pleurer et sort.*" #replique4
   choices:
-    - text: ""
+    - text: "Eh bien c'est ça, chiale, tu pisseras moins."
       next: theatre_fin
-    - text: ""
+    - text: "Eh voilà qu'elle se met à pleurer..."
       next: replique4_not_ok
 replique3_not_ok:
-  text: "Ah non, c'était :\n"
+  text: "Ah non, c'était :\nGnagnagna... On peut donc jamais être tranquille."
   choices:
     - text: "Mince"
       next: replique3_ok
 replique4_not_ok:
-  text: "Ah non, c'était :\n"
+  text: "Ah non, c'était :\nEh bien c'est ça, chiale, tu pisseras moins."
   choices:
     - text: "Mince."
       next: theatre_fin
@@ -379,7 +379,7 @@ tunnel5:
     - text: "..."
       next: saoule
 engouement:
-  text: "Ton absence d'engouement pour une passion qui est prête à avaler tous les autres aspects de ta vie me ferais presque un peu peur."
+  text: "Ton absence d'engouement pour une passion qui est prête à avaler tous les autres aspects de ta vie me ferait presque un peu peur."
   choices:
     - text: "Ben voyons."
       next: saoule
@@ -438,7 +438,7 @@ retenir:
     - text: "Ça veut dire quoi ?"
       next: sens
 sens:
-  text: "Ni queue ni tête, mais qui mets quand même bien."
+  text: "Ni queue ni tête, mais qui met quand même bien."
   choices:
     - text: "Au moins, le ton est donné."
       next: argument
@@ -530,12 +530,12 @@ prototype:
     - text: "Du fil et une aiguille."
       next: fil
 commencer:
-  text: "Ah oui bien, sûr, mais ensuite, est-ce que du fil et une aiguille pourraient suffire ?"
+  text: "Ah oui, bien sûr, mais ensuite, est-ce que du fil et une aiguille pourraient suffire ?"
   choices:
     - text: "Ça devrait faire l'affaire oui."
       next: fil
 fil:
-  text: "Bon, et bien je vais demander au marchant s'il ne pourrait pas te dégotter ça,\npour ce qui est du bonnet, j'en ai un tout neuf, tiens."
+  text: "Bon, et bien je vais demander au marchand s'il ne pourrait pas te dégotter ça,\npour ce qui est du bonnet, j'en ai un tout neuf, tiens."
   trigger: get_beanie
   choices:
     - text: "Parfait."
@@ -593,7 +593,7 @@ poissons:
 saumons:
   text: "Oui, les saumons adultes remontent les fleuves pour pondre dans de l'eau douce.\nC'est pour ça que tu peux trouver des bébés saumons au nord, mais pas dans la mer. Par contre j'ai jamais trouvé de saumon adulte dans l'étang."
   choices:
-    - text: "Bizare..."
+    - text: "Bizarre..."
       next: saumons2
     - text: "Étrange..."
       next: saumons2
@@ -609,7 +609,7 @@ interessant:
       trigger: close_dialogue
       next: generic_end_again
 radote:
-  text: "Ah, mince, oui, c'est vrai. Pardon. Je me souviens maintenant, on se demandait ce que pouvais manger les bébés saumons."
+  text: "Ah, mince, oui, c'est vrai. Pardon. Je me souviens maintenant, on se demandait ce que pouvaient manger les bébés saumons."
   choices:
     - text: "Et alors ?"
       next: bebe_saumons
@@ -651,12 +651,12 @@ cadeau:
 cadeau2:
   text: "Carrément ! Ça rend trop bien avec le nom du groupe en blanc là ! C'est giga cool !\nMerci infieniement !"
   choices:
-    - text: "Contente que ça te plaisir."
+    - text: "Contente que ça te fasse plaisir."
       next: cadeau3
     - text: "Derien. Ça m'a fait plaisir de le faire !"
       next: cadeau3
 cadeau3:
-  text: "Il me va bien ?"
+  text: "Ça me va bien ?"
   trigger: give_beanie
   choices:
     - text: "Oh wow, c'est super !"

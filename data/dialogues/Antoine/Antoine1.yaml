@@ -1,0 +1,118 @@
+SAFE_GUARD:
+  text: "OULA, PARDON, j'ai eu une absence. J'ai dû boire trop de café. Je vais me recentrer et on pourra se reparler. Désolé."
+  next: final_end_ldm
+
+final_end_ldm:
+  text: "Salut mon alliée ! Comment tu vas aujourd'hui ?"
+  choices:
+    - text: "Ça va bien !"
+      next: musique
+    - text: "Nickel. Tu ne quittes plus ton bonnet à ce que je vois !"
+      next: quitte
+
+quitte:
+  text: "Non, jamais, à part pour me laver !\nC'est mon bonnet fétiche à partir de maintenant."
+  choices:
+    - text: "Contente qu'il te plaise tant !"
+      next: musique
+    - text: "C'est flatteur !"
+      next: musique
+musique:
+  text: "La musique te plaît ? C'est pour te remercier de ton aide.\nOn m'a dit que t'aimais particulièrement cette chanson, alors je te l'aie joué !"
+  choices:
+    - text: "C'est adorable !"
+      next: fruits
+    - text: "Ouiiii, j'adore cette chanson !"
+      next: fruits
+fruits:
+  text: "Génial ! Mais ça ne s'arrête pas là !\nMaintenant tu peux me demander le fruit que tu veux à chaque fois qu'on se rencontre !"
+  choices:
+    - text: "Sérieux ?"
+      next: liste_fruits
+    - text: "Incroyable !"
+      next: liste_fruits
+
+liste_fruits:
+  text: "Je te jure ! Vas-y, essaye pour voir !"
+  choices:
+    - text: "Je peux avoir des poires ?"
+      trigger: get_pears
+      next: poires
+    - text: "Je peux avoir des oranges ?"
+      trigger: get_oranges
+      next: oranges
+    - text: "J'aimerais autre chose."
+      next: autre
+autre:
+  text: "Je t'écoute."
+  choices:
+    - text: "Je peux avoir des pêches ?"
+      trigger: get_peaches
+      next: peches
+    - text: "Je peux avoir du raisin ?"
+      trigger: get_grapes
+      next: raisin
+    - text: "J'aimerais autre chose."
+      next: autre2
+autre2:
+  text: "Je t'écoute."
+  choices:
+    - text: "Je peux avoir des myrtilles ?"
+      trigger: get_blueberries
+      next: myrtilles
+    - text: "Je peux avoir des fraises ?"
+      trigger: get_strawberries
+      next: fraises
+    - text: "Je peux avoir des pommes ?"
+      trigger: get_apples
+      next: pommes
+
+poires:
+  text: "Non, pas des poires. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+oranges:
+  text: "Non, pas des oranges. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+peches:
+  text: "Non, pas des pêches. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+raisin:
+  text: "Non, pas du raisin. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+myrtilles:
+  text: "Non, pas des myrtilles. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+fraises:
+  text: "Non, pas des fraises. Désolé...\n...\nJe rigole ! Les voilà !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+pommes:
+  text: "Ah bon ? Mais yen a plein ici.\nBon, et bien voilà 10 pommes pour toi !"
+  choices:
+    - text: "Wow, c'est trop gentil merci !"
+      next: fin
+
+fin:
+  text: "Derien ! Aller, je file moi !"
+  set_flag: next_day
+  next: fin_again
+fin_again:
+  text: "Je dois vraiment y aller, on se voit un autre jour ?"
+  choices:
+    - text: "À la prochaine !"
+      trigger: close_dialogue
+      next: fin_again
+    - text: "See you !"
+      trigger: close_dialogue
+      next: fin_again

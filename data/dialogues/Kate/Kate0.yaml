@@ -520,9 +520,6 @@ dehors:
   text: "Si, mais c'est très bien. Avec les étoiles en guise de couverture j'ai l'impression que le cosmos est mon campement."
   choices:
     - text: "Super... bon et bien tu dors chez moi en attendant de te trouver un logement."
-      set_flag:
-        name: invite_kate
-        scope: player
       set_flag: next_day
       next: invite
     - text: "Ça donne envie. Mais n'hésite pas, je peux t'héberger si tu en a marre des étoiles."
@@ -538,6 +535,9 @@ invite:
   text: "T'es trop gentille. J'ai l'impression que ce n'est pas une offre qui se refuse. Merci. Vraiment."
   choices:
     - text: "C'est bien normal."
+      set_flag:
+        name: invite_kate
+        scope: player
       trigger: close_dialogue
       next: invite_again
 invite_again:

@@ -1,15 +1,3 @@
 {
-    "Kate": {
-        "next": "start",
-        "encounter": 0,
-        "flags": {
-            "renseignement": true,
-            "next_day": false,
-            "cookieshay": true
-        }
-    },
-    "PLAYER": {
-        "meet_aurelien": true,
-        "have_stylised_beanie": true
-    }
+    "PLAYER": {}
 }

@@ -1,9 +1,9 @@
+import os
 import random
 import copy
 import pygame, sys
 import json
 from pytmx.util_pygame import load_pygame
-from random import randint
 from settings import *
 from support import *
 from player import Player
@@ -26,11 +26,20 @@ class Level:
 
 		self.item_loader = ItemCSVLoader('../data/items_fr.csv')
 
+		#day event
+		self.day_nb = 0
+		self.queue = [ #the behavior after last
+			('Aurelien', 'salmon garden'),
+			(None, 'salmon garden'),
+			('Antoine', None),
+			('Antoine', 'just_the_two_of_us.wav'),
+		]
+
 		#sound
 		self.sound_manager = SoundManager()
-		self.sound_manager.play("music", loops=-1)
+		self.surprise_music_already_played = False #to play Tears For Fears only once
 
-		# sprite groups
+		#sprite groups
 		self.all_sprites = CameraGroup()
 		self.collision_sprites = pygame.sprite.Group()
 		self.tree_sprites = pygame.sprite.Group()
@@ -49,6 +58,10 @@ class Level:
 		self.state_manager = StateManager(self.player, self.item_loader)
 		self.overlay = Overlay(self.player, self.state_manager)
 		self.transition = Transition(self.reset, self.player)
+
+	@property
+	def name_npc(self):
+		return self.queue[self.day_nb][0]
 
 	def setup(self):
 		tmx_data = load_pygame('../data/map.tmx')
@@ -122,22 +135,8 @@ class Level:
 
 		saved_data = self.load_save()
 
-		# NPC when uptdate the creation method need also to update it in reset (maybe create a creation method)
-		# don't forget to load save even in the beginning
-		list_record = [
-			r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
-			r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
-			r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
-			r'..\recordings\Antoine\recording0_200speed_60fps_2025_11_16__11-47-05.txt',
-			r'..\recordings\Antoine\recording1_200speed_60fps_2025_11_16__11-49-39.txt',
-		]
-		NPC(
-				list_record[4],
-				[self.all_sprites, self.npc_sprites],
-				self.collision_sprites,
-				name = 'Antoine',
-				saved_data=saved_data
-		)
+		self.create_npc(save=saved_data)
+		self.play_day_music(save=saved_data)
 
 		Generic(
 			pos=(0,0),
@@ -147,6 +146,10 @@ class Level:
 			)
 
 	def reset(self):
+		self.day_nb +=1
+		if self.day_nb>= len(self.queue): self.day_nb = 0
+		pygame.mixer.stop()
+
 		self.player.pos.x, self.player.pos.y = (1440,1400)
 
 		#plants
@@ -176,20 +179,8 @@ class Level:
 		self.npc_sprites.empty()
 		self.player.talkable_npcs = set()
 
-		list_record = [
-			r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
-			r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
-			r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
-			r'..\recordings\Antoine\recording0_200speed_60fps_2025_11_16__11-47-05.txt',
-			r'..\recordings\Antoine\recording1_200speed_60fps_2025_11_16__11-49-39.txt',
-		]
-		NPC(
-				list_record[4],
-				[self.all_sprites, self.npc_sprites],
-				self.collision_sprites,
-				name = 'Antoine',
-				saved_data=saved_data
-		)
+		self.create_npc(save=saved_data)
+		self.play_day_music(save=saved_data)
 
 	def write_save(self):
 
@@ -253,6 +244,48 @@ class Level:
 		self.player.flags = data.setdefault('PLAYER', {})
 
 		return data
+
+	def play_day_music(self, save):
+		music_handled = False
+		if self.name_npc == 'Antoine' and not self.surprise_music_already_played:
+			save_antoine = save.get('Antoine', {})
+			flags_antoine = save_antoine.get('flags', {})
+			if flags_antoine.get('beanie', False):
+				self.sound_manager.play('everybody wants to rule the world')
+				self.surprise_music_already_played = True
+				music_handled = True
+		if not music_handled:
+			if self.queue[self.day_nb][1]: #if None no music except if condition reached above
+				self.sound_manager.play(self.queue[self.day_nb][1])
+				print("Planed music should play")
+
+	def create_npc(self, save):
+
+		#the next if could easily be generalised for any character if other can be invited
+		if self.player.flags.get('invite_kate', False): #If Kate has been invited she will be there everyday
+			kate_record_file = f'..\\recordings\\Kate\\special_case\\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt'
+			NPC(
+					kate_record_file,
+					[self.all_sprites, self.npc_sprites],
+					self.collision_sprites,
+					name = 'Kate',
+					saved_data=save)
+			# Now we need to replace her in the queue attribute to not have her twice
+			self.queue = [(None if name == 'Kate' else name, song) for name, song in self.queue]
+
+		if self.name_npc:
+			if self.player.flags.get('invite_kate', False) and self.name_npc == 'Kate':
+				record_dir = f'..\\recordings\\{self.name_npc}\\special_case'
+			else : record_dir = f'..\\recordings\\{self.name_npc}'
+
+			record_files = [f for f in os.listdir(record_dir) if os.path.isfile(os.path.join(record_dir, f))]
+			NPC(
+					os.path.join(record_dir, random.choice(record_files)),
+					[self.all_sprites, self.npc_sprites],
+					self.collision_sprites,
+					name = self.name_npc,
+					saved_data=save
+			)
 
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)

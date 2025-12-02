@@ -31,7 +31,7 @@ class Level:
 		self.queue = [ #the behavior after last
 			('Aurelien', 'salmon garden'),
 			(None, 'salmon garden'),
-			('Antoine', None),
+			('Kate', None),
 			('Antoine', 'just_the_two_of_us.wav'),
 		]
 
@@ -54,8 +54,10 @@ class Level:
 		self.stop_evening_timer = Timer(40000)
 
 		self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites, sound_manager=self.sound_manager)
-		self.setup()
-		self.state_manager = StateManager(self.player, self.item_loader)
+		data = self.setup() #contains loading the save
+		self.state_manager = StateManager(self.player, self.item_loader) #this needs to be after defining player
+		self.load_shop_inventory(data)
+
 		self.overlay = Overlay(self.player, self.state_manager)
 		self.transition = Transition(self.reset, self.player)
 
@@ -145,6 +147,8 @@ class Level:
 			z = LAYERS['ground']
 			)
 
+		return saved_data
+
 	def reset(self):
 		self.day_nb +=1
 		if self.day_nb>= len(self.queue): self.day_nb = 0
@@ -183,8 +187,6 @@ class Level:
 		self.play_day_music(save=saved_data)
 
 	def write_save(self):
-
-		# saving npc dialogue state
 		try:
 			with open('../save/save.json', "r") as saving_file:
 				data = json.load(saving_file)
@@ -193,8 +195,9 @@ class Level:
 			data = {}
 		except json.JSONDecodeError:
 			print("ERROR ! : save.json is invalid, make sure to fix it.")
-			#sys.exit()
 			data = {}
+
+		# saving npc dialogue state
 		for npc in self.npc_sprites:
 			if npc.flags.get('next_day', False):
 				npc.encounter += 1
@@ -202,21 +205,26 @@ class Level:
 
 			# update npc saved values
 			entry = data.setdefault(npc.name, {})
-			# simple and explicit
 			entry['next'] = npc.next[:-6] + '_ldm' if npc.next.endswith('_again') else npc.next
 			entry['encounter'] = npc.encounter
 			entry.setdefault('flags', {})  # keep existing dict if present
-
 			entry['flags'].update(copy.deepcopy(npc.flags))  # merges npc.flags into existing flags
-			npc.flags.update(entry['flags']) # That workaround of updating both to 'merge' make sens only in dev mode during play, save cannot have more flags that the game
+			npc.flags.update(entry['flags']) # That workaround of updating both to 'merge' make sens only in dev mode during play, save cannot have more flags than the game
 
 		# update player saved values
 		player_entry = data.setdefault('PLAYER', {})
-		if isinstance(player_entry, dict):
-			player_entry.update(self.player.flags)  # will also tranfert to data["PLAYER"]
-			self.player.flags.update(player_entry)
-		else:
-			data['PLAYER'] = copy.deepcopy(self.player.flags)
+		player_entry['flags'] = self.player.flags # will also transfer to data["PLAYER"]
+		player_entry['item_inventory'] = self.player.item_inventory
+		player_entry['tool_inventory'] = self.player.tools
+		player_entry['money'] = self.player.money
+
+		# update environment saved values
+		env_entry = data.setdefault('Environment', {})
+		env_entry['nb_days'] = self.day_nb #this line must come after the update of day_nb
+		# self.surprise_music_already_played not saved on purpose, allow to hear it once per session
+		# same for sleep_deprived feature, player will not remember he did not get to sleep naturally
+		for shop in self.state_manager.states['shop'].shops:
+			env_entry[shop.__class__.__name__] = shop.inventory
 
 		# save the file
 		with open('../save/save.json', "w") as saving_file:
@@ -226,7 +234,9 @@ class Level:
 
 	def load_save(self):
 		"""Load a save file and put every data in the right attribute
-		Except for NPC which depends on the NPC name and are handled outside of this method"""
+		Except for NPC which depends on the NPC name and are handled outside of this method
+		Except for Shops inventories handled in load_shop_inventory
+		"""
 
 		# Open the save file
 		try:
@@ -241,9 +251,21 @@ class Level:
 			data = {}
 
 		# Put data in the right places
-		self.player.flags = data.setdefault('PLAYER', {})
+		player_entry = data.get('PLAYER', {})
+		self.player.flags = player_entry.get('flags', {})
+		self.player.item_inventory = player_entry.get('item_inventory', {})
+		self.player.tools = player_entry.get('tool_inventory', ['hand'])
+		self.player.selected_tool = self.player.tools[self.player.tool_index] #not very clean sorry...
+		self.player.money = player_entry.get('money', 0)
+		env_entry = data.get('Environment', {})
+		self.day_nb = env_entry.get('nb_days', 0)
 
 		return data
+
+	def load_shop_inventory(self, data):
+		env_entry = data.get('Environment', {})
+		for shop in self.state_manager.states['shop'].shops:
+			shop.inventory = env_entry.get(shop.__class__.__name__, {})
 
 	def play_day_music(self, save):
 		music_handled = False

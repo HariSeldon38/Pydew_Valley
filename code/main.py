@@ -29,6 +29,9 @@ if __name__ == '__main__':
 
 
 """
+NEED TO REDO the save system (when handling multiple saves and create new save
+could have been better to create the player with save_data argument so that it initialise its attribute upon create and not during load_save
+
 just song : too much R and not lound enough : also delete useless intro
 corection orthographe not done yet ! Done for Antoine
 
@@ -143,7 +146,6 @@ nom de la monaie est l'étincelle
 """
 - Music
 - Menu
-- Save : penser à sauvegarder day_nb, not saving self.surprise_music_already_played allow to hear it once per game session and I like it
 - faire en sorte que sleep_deprived crer des dialog et but caché donne objet pr éviter d etre fatigue (si genre 4 perso me voient fatigue)
 - peut aussi utiliser l'effet des éclairs pour créer des feux d'artifices --- ce serait le truc fun qui sert à rien à ajouter
 - un perso doit avoir un poisson hyper rare, mais en fonction du nombre d'essai, il peut se mettre à pêcher avec toi pour y arriver.

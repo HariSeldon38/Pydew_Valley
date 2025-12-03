@@ -5,7 +5,7 @@
         "tool_inventory": [
             "hand"
         ],
-        "money": 20000000000
+        "money": 0
     },
     "Environment": {
         "nb_days": 0,

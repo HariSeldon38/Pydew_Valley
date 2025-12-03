@@ -1,0 +1,111 @@
+SAFE_GUARD:
+  text: "Miou ? Miou ? *crache boule de poil*\nMAAAAAAAAAAAOOOOOOOOOOOOOUUUUUU"
+  next: start
+
+start:
+  text: "brouUU !"
+  choices:
+    - text: "Oh, trop mignon, un petit chat !"
+      next: mignon
+    - text: "Oh salut chat, comment tu t'appelle ?"
+      next: appelle
+
+mignon:
+  text: "Miaou !"
+  choices:
+    - text: "Comment tu t'appelle ?"
+      next: appelle
+    - text: "Tu veux quelque chose ?"
+      next: veux
+
+appelle:
+  text: "Miaou ?"
+  choices:
+    - text: "Ah oui, évidement..."
+      next: citrouille
+    - text: "Bon... je pense que je connais ton nom."
+      next: citrouille
+
+citrouille:
+  text: "Miou, miaou, mioau mimiau\nbrouUUh"
+  choices:
+    - text: "Tout à fait !"
+      next: ok
+    - text: "Jl'ai toujours dis ça !"
+      next: ok
+
+ok:
+  text: "..."
+  choices:
+    - text: "Bon mais qu'est-ce que tu veux ?"
+      next: veux
+    - text: "Je te laisse tranquille."
+      trigger: close_dialogue
+      next: generic_end_again
+
+veux:
+  text: "Miaou ?"
+  choices:
+    - text: "Tu veux des câlins ?"
+      next: calins
+    - text: "Tu veux à manger ?"
+      next: manger
+
+calins:
+  text: "Ronronron.\n*se frotte*"
+  choices:
+    - text: "Anw..."
+      next: generic_end
+    - text: "Adorable !"
+      next: generic_end
+manger:
+  text: "Miaou miaou miaou miaou miaou miaou miaou\nmiaou miaou miaou miaou miaou miaou !"
+  choices:
+    - text: "Mais je n'ai rien à te donner moi..."
+      next: rien
+    - text: "Peut-être que tu veux du saumon ?"
+      condition: have_salmon
+      next: saumon
+rien:
+  text: "Maaaaaaoooooooooouuuuuuu !"
+  choices:
+    - text: "Mais..."
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "Désolé petit chat."
+      trigger: close_dialogue
+      next: generic_end_again
+saumon:
+  text: "Miaou !!!"
+  trigger: give_salmon
+  choices:
+    - text: "Régale toi !"
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "Aller, tiens !"
+      trigger: close_dialogue
+      next: generic_end_again
+
+generic_end_ldm:
+  text: "Ronronronron"
+  choices:
+    - text: "Oh tu me reconnaît ?"
+      next: ok
+    - text: "Tu est adorable !"
+      next: ok
+
+generic_end:
+  text: "Miaou !"
+  choices:
+    - text: "Oui, d'accord chat, à la prochaine !"
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "Au revoir chat !"
+      trigger: close_dialogue
+      next: generic_end_again
+generic_end_again:
+  text: "Miaou ?"
+  choices:
+    - text: "À bientôt chat !"
+      trigger: close_dialogue
+      next: generic_end_again

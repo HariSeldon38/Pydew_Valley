@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
 
 """
+we could do something much better with cat animations but would need a tool to create that impossible like this too cumbersome
 NEED TO REDO the save system (when handling multiple saves and create new save
 could have been better to create the player with save_data argument so that it initialise its attribute upon create and not during load_save
 

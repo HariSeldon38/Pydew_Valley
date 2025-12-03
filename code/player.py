@@ -165,7 +165,10 @@ class Player(pygame.sprite.Sprite):
                 self.talkable_npcs.discard(sprite)
 
     def give(self, name):
-        self.item_inventory.pop(name)
+        if name in self.item_inventory:
+            self.item_inventory[name] -= 1
+            if self.item_inventory[name] == 0:
+                self.item_inventory.pop(name)
 
     def receive(self, item, number=1):
         self.item_inventory.setdefault(item, 0)
@@ -248,7 +251,6 @@ class Player(pygame.sprite.Sprite):
                             r'..\recordings\Aurelien\recording2_200speed_60fps_2025_10_25__19-51-58.txt',
                             r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
                             r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
-                            r'..\recordings\Kate\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt',
                         ]
                         NPC(
                         	list_record[0],
@@ -276,12 +278,6 @@ class Player(pygame.sprite.Sprite):
                         ) # -----------------------------------------------------------------------------delete that
                         NPC(
                         	list_record[4],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Kate'
-                        ) # -----------------------------------------------------------------------------delete that
-                        NPC(
-                        	list_record[5],
                         	[self.all_sprites, self.npc_sprites],
                         	self.collision_sprites,
                         	name = 'Kate'

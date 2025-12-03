@@ -9,8 +9,8 @@ grapes,Raisins,../graphics/token/grapes.png,Quel gâchis d'en faire du vin ???
 blueberry,Myrtille,../graphics/token/blueberry.png,Rien à dire sur ce fruit...\noubliable ?
 corn,Maïs,../graphics/token/corn.png,Rien qu'une valeur marchande pour certains... Chacun ses goûts
 tomato,Tomate,../graphics/token/tomato.png,Mozzarella non fournie
-corn_seed,Graines de maïs,../graphics/token/corn_seed.png,À planter dans la terre humide
-tomato_seed,Graines de tomate,../graphics/token/tomato_seed.png,De quelle couleur seront les fruits ? Affaire à suivre...
+corn_seed,Graine de maïs,../graphics/token/corn_seed.png,À planter dans la terre humide
+tomato_seed,Graine de tomate,../graphics/token/tomato_seed.png,De quelle couleur seront les fruits ? Affaire à suivre...
 black_beanie,Bonnet noir,../graphics/token/black_beanie.png,"Un simple couvre chef d'hiver. Idéal pour l'extérieur, mais pas seulement"
 fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher de bons poissons, du saumon avec beaucoup de chance"
 seewing_needle,Aiguille de couture,../graphics/token/seewing_needle.png,Donne accès à un univers de créativité infini
@@ -36,3 +36,5 @@ hoe,Houe,../graphics/token/hoe.png,Not used for now
 water,Arrosoir,../graphics/token/water.png,Not used for now
 white_thread_needle,Aiguille préparée,../graphics/token/white_thread_needle.png,Une aiguille prête à être utilisée pour coudre.\n(contient: fil blanc)
 flowers,Bouquet,../graphics/token/flowers.png,Un bouquet de fleurs à offrir... ou pas.
+pumkin,Citrouille,../graphics/token/pumkin.png,Celle-ci ne brwoute pas.\n(ou alors faut consulter)
+pumkin_seed,Grain de Citrouille,../graphics/token/pumkin_seed.png,Offertes par le plus migon des chats !

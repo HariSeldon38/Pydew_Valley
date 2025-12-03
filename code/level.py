@@ -29,8 +29,8 @@ class Level:
 		#day event
 		self.day_nb = 0
 		self.queue = [ #the behavior after last
-			('Aurelien', 'salmon garden'),
-			(None, 'salmon garden'),
+			('Citrouille', 'salmon garden'),
+			('Citrouille', 'salmon garden'),
 			('Kate', None),
 			('Antoine', 'just_the_two_of_us.wav'),
 		]
@@ -217,6 +217,7 @@ class Level:
 		player_entry['item_inventory'] = self.player.item_inventory
 		player_entry['tool_inventory'] = self.player.tools
 		player_entry['money'] = self.player.money
+		player_entry['seeds'] = self.player.seeds
 
 		# update environment saved values
 		env_entry = data.setdefault('Environment', {})
@@ -257,6 +258,7 @@ class Level:
 		self.player.tools = player_entry.get('tool_inventory', ['hand'])
 		self.player.selected_tool = self.player.tools[self.player.tool_index] #not very clean sorry...
 		self.player.money = player_entry.get('money', 0)
+		self.player.seeds = player_entry.get('seeds', ['corn', 'tomato'])
 		env_entry = data.get('Environment', {})
 		self.day_nb = env_entry.get('nb_days', 0)
 

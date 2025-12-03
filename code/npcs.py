@@ -196,6 +196,8 @@ class Dialogue(Menu):
             self.player.flags["pomme"] = True
         if 'stylised_beanie' in self.player.item_inventory:
             self.player.flags["have_stylised_beanie"] = True
+        if 'salmon' in self.player.item_inventory:
+            self.player.flags["have_salmon"] = True
 
         self.already_triggered = False  # node_level triggers now apply only once and not at each frames
 
@@ -224,6 +226,11 @@ class Dialogue(Menu):
             #make the npc wear it in the map
             self.npc.flags["beanie"] = True
             self.npc.import_assets()
+        if action == 'give_salmon':
+            self.player.give('salmon')
+            self.player.receive('pumkin_seed', 5)
+            if 'pumkin' not in self.player.seeds:
+                self.player.seeds.append('pumkin')
 
         #get_something actions : (ie the player receive something from the npc)
         if action == 'get_flowers':

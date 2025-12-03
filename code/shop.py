@@ -3,12 +3,32 @@ from abc import ABC, abstractmethod
 from settings import *
 
 SALE_PRICES = {
-	'wood': 4,
-	'apple': 2,
-	'corn': 10,
-	'tomato': 20,
+    'wood': 7,
+    'apple': 4,
+    'strawberry': 8,
+    'peach': 8,
+    'orange': 8,
+    'pear': 8,
+    'grapes': 8,
+    'blueberry': 8,
+    'corn': 10,
+    'tomato': 10,
+    'anchovy': 7,
+    'angelfish': 20,
+    'bass': 10,
+    'catfish': 15,
+    'crab': 40,
+    'goldfish': 30,
+    'clownfish': 10,
+    'pufferfish': 20,
+    'rainbow_trout': 10,
+    'surgeonfish': 20,
+    'can': 1,
     'rock': 1,
-    'can': 1
+    'worm': 1,
+    'salmon': 50,
+    'baby_salmon': 20,
+    'pumkin': 25,
 }
 PURCHASE_PRICES = {
 	'corn_seed': 4,
@@ -20,15 +40,34 @@ PURCHASE_PRICES = {
     'axe': 500,
     'hoe': 500,
     'water': 500,
-
 }
 SELL_SHOP_INVENTORY = {
     'wood': None,
     'apple': None,
+    'strawberry': None,
+    'peach': None,
+    'orange': None,
+    'pear': None,
+    'grapes': None,
+    'blueberry': None,
     'corn': None,
     'tomato': None,
-    'rock': None,
+    'anchovy': None,
+    'angelfish': None,
+    'bass': None,
+    'catfish': None,
+    'crab': None,
+    'goldfish': None,
+    'clownfish': None,
+    'pufferfish': None,
+    'rainbow_trout': None,
+    'surgeonfish': None,
     'can': None,
+    'rock': None,
+    'worm': None,
+    'salmon': None,
+    'baby_salmon': None,
+    'pumkin': None,
 }
 BUY_SHOP_INVENTORY = {
     'corn_seed': float('inf'),
@@ -98,6 +137,9 @@ class ShopLogic(ABC):
         self.title_font = pygame.font.Font('../font/LycheeSoda.ttf', 35)
         self.item_loader = item_loader
 
+        #movement
+        self.index = 0
+
         #options
         self.width = 700
         self.space = 10
@@ -105,11 +147,8 @@ class ShopLogic(ABC):
 
         self.setup()
 
-        #movement
-        self.index = 0
-
     def setup(self):
-        """That method is used only when init the Shop"""
+        """That method is used when init the Shop as well as when opening the shop menu"""
         self.text_surfs = []
         self.total_height = 0
         for item in self.options:
@@ -171,6 +210,12 @@ class ShopLogic(ABC):
             if self.current_item in self.player.item_inventory.keys() and self.player.item_inventory[self.current_item] > 0:
                 self.player.item_inventory[self.current_item] -= 1
                 self.player.money += SALE_PRICES[self.current_item]
+                if self.player.item_inventory[self.current_item] <= 0:
+                    self.index -= 1
+                    if self.index < 0: self.index = 0
+                    if self.options:
+                        self.current_item = self.options[self.index]
+                    self.setup()
 
     @property
     def options(self):
@@ -203,7 +248,10 @@ class ShopLogic(ABC):
         pygame.draw.rect(self.display_surface, 'white', bg_rect, 0, 4)
         
         # text
-        text_surf = self.title_font.render("Désolé cet étal est vide pour le moment", False, 'black')
+        if self.mode == 'buy':
+            text_surf = self.title_font.render("Désolé cet étal est vide pour le moment", False, 'black')
+        else:
+            text_surf = self.title_font.render("Tu n'as rien à vendre pour le moment", False, 'black')
         text_rect = text_surf.get_rect(center=bg_rect.center)
         self.display_surface.blit(text_surf, text_rect)
 
@@ -217,14 +265,16 @@ class ShopLogic(ABC):
                 if event.key in [pygame.K_DOWN, pygame.K_s]:
                     self.index += 1
                 if event.key == pygame.K_SPACE:
-                    self.current_item = self.options[self.index]
-                    if self.current_item: #ie if shop not empty
-                        self.transaction(self.mode)
+                    if self.options:
+                        self.current_item = self.options[self.index]
+                        if self.current_item: #ie if shop not empty
+                            self.transaction(self.mode)
         if self.index < 0:
             self.index = len(self.options) - 1
         if self.index > len(self.options) - 1:
             self.index = 0
-        self.current_item = self.options[self.index]
+        if self.options:
+            self.current_item = self.options[self.index]
 
     def update(self):
         self.display_money()
@@ -245,7 +295,16 @@ class SellShop(ShopLogic):
         self.mode = 'sell'
         self.inventory = SELL_SHOP_INVENTORY
         super().__init__(player, item_loader)
-        self.current_item = self.options[self.index]
+        if self.options:
+            self.current_item = self.options[self.index]
+
+    @property
+    def options(self):
+        option = [item for item in self.inventory if self.player.item_inventory.get(item, 0)!=0]
+        if option and not self.index > len(option) - 1:
+            self.current_item = option[self.index]
+        return option
+
     @property
     def action_text(self):
         return self.font.render(f'prix de vente: {SALE_PRICES[self.current_item]}*', False, 'black')
@@ -256,7 +315,8 @@ class BuyShop(ShopLogic):
         self.mode = 'buy'
         self.inventory = BUY_SHOP_INVENTORY
         super().__init__(player, item_loader)
-        self.current_item = self.options[self.index]
+        if self.options:
+            self.current_item = self.options[self.index]
     @property
     def action_text(self):
         return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')
@@ -267,7 +327,8 @@ class SpecialShop(ShopLogic):
         self.mode = 'buy'
         self.inventory = SPECIAL_SHOP_INVENTORY
         super().__init__(player, item_loader)
-        self.current_item = self.options[self.index]
+        if self.options:
+            self.current_item = self.options[self.index]
     @property
     def action_text(self):
         return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')

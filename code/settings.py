@@ -75,7 +75,8 @@ APPLE_POS = {
 GROW_SPEED = {
 	'corn': 1,
 	'tomato': 0.7,
-	'pumkin': 0.5
+	'pumkin': 0.5,
+	'eggplant': 0.5,
 }
 
 TIRED_SPEECH = [

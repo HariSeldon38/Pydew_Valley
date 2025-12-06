@@ -38,3 +38,5 @@ white_thread_needle,Aiguille préparée,../graphics/token/white_thread_needle.pn
 flowers,Bouquet,../graphics/token/flowers.png,Un bouquet de fleurs à offrir... ou pas.
 pumkin,Citrouille,../graphics/token/pumkin.png,Celle-ci ne brwoute pas.\n(ou alors faut consulter)
 pumkin_seed,Grain de Citrouille,../graphics/token/pumkin_seed.png,Offertes par le plus migon des chats !
+eggplant_seed,Grain d'Aubergine,../graphics/token/eggplant_seed.png,Un des cinq légumes poussant dans cette contrée.
+eggplant,Aubergine,../graphics/token/eggplant.png,Idéal pour la moussaka !\n(Allergie founie avec...)

@@ -1,47 +1,97 @@
+SAFE_GUARD:
+  text: "EUHHH PARDON, j'avais la tête ailleurs. Je me suis complètement perdu dans mes pensées.\nOn peut la refaire ?"
+  next: start
+
 start:
-  text: "Salut, je viens d'arriver. Tu sais où on est ?"
+  text: "Euh, ah salut ? Euh, tu veux me parler ?"
   choices:
-    - text: "À vrai dire, je me posais la même question"
-      next: complice
-    - text: "Oh, tu sais, je me contente de ramasser des pommes. Il y a un marchant au nord qui me les rachète à bon prix"
-      next: indifference
+    - text: "Si ça ne te dérange pas."
+      next: hub1
+    - text: "Pourquoi pas oui."
+      next: hub2
 
-complice:
-  text: "En tout cas c'est sympa chez toi. Mais je ne sais pas bien ce que je vais noter dans mon carnet de voyage"
+generic_end_ldm:
+  text: "Oh salut ! Je pensais justement à toi !\nJe me demandais ce que tu devenais."
   choices:
-    - text: "Oh, tu voyage ?"
+    - text: "Oh rien de bien spécial, je chill fort."
+      next: hub1
+    - text: "J'avance, tranquillement."
+      next: hub2
+    - text: "Tu tombes bien, j'ai quelque chose pour toi !"
+      condition: have_flowers
+      next: deliver_flowers
+
+pas_aider_ldm:
+  text: "Hello there ! Ça va depuis la dernière fois ?"
+  choices:
+    - text: "Oui, ça va bien ! Je chill, donc ça va."
+      next: hub1
+    - text: "Au poil !"
+      next: hub2
+    - text: "Tu tombes bien, j'ai quelque chose pour toi !"
+      condition: have_flowers
+      next: deliver_flowers
+
+fin1_ldm:
+  text: "Hey ! Salut toi ! Des news ?"
+  choices:
+    - text: "Je chill, c'est à peu près tout."
+      next: hub1
+    - text: "On fait aller hein, que dire de plus."
+      next: hub2
+    - text: "Tu tombes bien, j'ai quelque chose pour toi !"
+      condition: have_flowers
+      next: deliver_flowers
+
+fin4_ldm:
+  text: "J'ai compris la blague de la dernière fois. C'est un rappeur Aurélien, c'est pour ça !\nBon je t'en veux pas, mais t'aurais pu juste m'expliquer."
+  choices:
+    - text: "Oui, c'est vrai pardon."
+      next: hub1
+    - text: "Je suis désolé."
+      next: hub2
+    - text: "Tu tombes bien, j'ai quelque chose pour toi !"
+      condition: have_flowers
+      next: deliver_flowers
+
+hub1:
+  text: "Nickel !"
+  choices:
+    - text: "Tu profites du grand air toi aussi ?"
+      not_condition: path1_done
+      next: path1
+    - text: "Comment tu t'appelles au fait ? Moi c'est CookieShay."
+      not_condition: path2_done
+      next: path2
+    - text: "..."
+      condition: path1_done
+      next: eternal_path
+hub2:
+  text: "C'est bien ça.\nTu voulais me parler de quelque chose en particulier ?"
+  choices:
+    - text: "Oh, rien de particulier, juste la causette ah ah."
+      not_condition: path3_done
+      next: path3
+    - text: "..."
+      next: eternal_path
+
+path1:
+  text: "Oui, c'est sympa par ici. Mais je ne sais pas bien ce que je vais noter dans mon carnet de voyage."
+  set_flag: path1_done
+  choices:
+    - text: "Oh, tu voyages alors ?"
       next: voyage
-    - text: "Tu n'as qu'à noter que tu m'a rencontré moi : CookieShay, enchantée"
-      next: rencontre
-
+    - text: "Ça doit être un grand voyage pour avoir un carnet !"
+      next: voyage
 voyage:
-  text: "J'entreprend un tour du monde... enfin aujourd'hui je ne suis plus sûr de rien. Ça fatigue à la longue."
-  set_flag: next_day
+  text: "J'entreprends un tour du monde... Enfin aujourd'hui je ne suis plus sûr de rien. Ça fatigue à la longue."
   choices:
-    - text: "Je ne me rend pas bien compte"
+    - text: "Je ne me rends pas bien compte."
       next: ignorant
     - text: "Ah oui, je vois, toujours être en mouvement, ne jamais arriver à se poser."
       next: compatissant
-
-ignorant:
-  text: "C'est que j'ai du mal à me poser, il y a toujours un coin de la planète que j'ai pas visité et j'ai du mal à l'accepter. Ça peut paraître con."
-  choices:
-    - text: "Non, pas con, je dis pas que je comprend mais je peux au moins imaginer."
-      next: ignorant2
-ignorant2:
-  text: "J'ai de la chance d'avoir vécu tout ça, c'est indéniable, mais peut-être qu'il est temps de souffler un peu."
-  choices:
-    - text: "Faire comme moi, avoir sa petite maison et cutiver son potager, pêcher peut-être..."
-      next: fin1
-fin1:
-  text: "Oui et non, c'est quand même un peu petit ici, pardon mais il me faut plus de compagnie que ça. Je me verrais bien dans un petit village."
-  next: fin1_again
-fin1_again:
-  text: "Re ! C'est toujours moi, le voyageur qui fait une overdose de grand air ! Ah ah ah ! ... Juste un petit coin tranquille..."
-  next: fin1_again
-
 compatissant:
-  text: "Exactement ! Je suis incapable de rester tranquille. C'est usant à la longue. Mais je crois que là je suis prêt."
+  text: "Exactement ! Je suis incapable de rester tranquille. C'est usant à la longue. Mais je crois que là, je suis prêt."
   choices:
     - text: "Prêt ?"
       next: compatissant2
@@ -50,34 +100,73 @@ compatissant:
 compatissant2:
   text: "À 'chiller' comme on dit, à me trouver une baraque, des amis, et juste m'occuper de mon nid, acheter des meubles toussa..."
   choices:
-    - text: "Ah oui je vois. Ici c'est un peu petit, même pour moi."
+    - text: "Ah oui, je vois. Ici, c'est un peu petit, même pour moi."
       next: fin2
 fin2:
-  text: "Je me trouverais bien un petit village, mais pour le moment j'ai rien vu de tel dans les environs."
+  text: "Je me trouverais bien un petit village, mais pour le moment, j'ai rien vu de tel dans les environs."
+  next: generic_end_again
+ignorant:
+  text: "C'est que j'ai du mal à me poser, il y a toujours un coin de la planète que j'ai pas visité et j'ai du mal à l'accepter. Ça peut paraître con."
+  choices:
+    - text: "Non, pas con, je dis pas que je comprends, mais je peux au moins imaginer."
+      next: ignorant2
+ignorant2:
+  text: "J'ai de la chance d'avoir vécu tout ça, c'est indéniable, mais peut-être qu'il est temps de souffler un peu."
+  choices:
+    - text: "Faire comme moi, avoir sa petite maison et cultiver son potager, pêcher peut-être..."
+      next: fin1
+fin1:
+  text: "Oui et non, c'est quand même un peu petit ici, pardon, mais il me faut plus de compagnie que ça. Je me verrais bien dans un petit village."
+  next: fin1_again
+fin1_again:
+  text: "Re ! C'est toujours moi, le voyageur qui fait une overdose de grand air ! Ah ah ah ! ... Juste un petit coin tranquille..."
   next: fin1_again
 
-rencontre:
-  text: "Ah oui, bonne idée. Pardon, j'ai tendance à donner trop d'importance aux lieux. Moi c'est Aurélien."
+path2:
+  text: "Ah oui, c'est vrai tien. Moi c'est Aurélien."
+  set_flag: path2_done
   choices:
     - text: "Aurélien, une chanson !"
       next: blague
-    - text: "Heureuse de t'avoir rencontré (et de me faire une place dans ton carnet)"
-      next: fin3
-    - text: "Et donc comme ça tu voyage ?"
-      next: voyage
+    - text: "Heureuse de t'avoir rencontré."
+      not_condition: know_aurelien_name
+      next: generic_end
     - text: "Ah ! Mais c'est toi Aurélien !?"
       condition: know_aurelien_name
       next: kate
-
-kate:
-  text: "Comment ça c'est moi Aurélien ? Bah oui je viens de te le dire."
+blague:
+  text: "Quoi ?"
   choices:
-    - text: "C'est que j'ai recontré quelqu'un qui m'a parlé de toi."
+    - text: "Non rien, pardon, oublie"
+      next: fin4
+fin4:
+  text: "Ah ok."
+  next: fin4_again
+fin4_again:
+  text: "Ah, encore toi..."
+  choices:
+    - text: "Oui, euh, excuse moi, je voulais pas paraître impolie."
+      next: rattrapage
+    - text: "Bah oui, j'attends toujours un rap..."
+      next: furieux
+furieux:
+  text: "Bon euh t'es bien gentille, mais j'ai des choses à faire moi !"
+  next: fin4_again
+rattrapage:
+  text: "C'est pas grave, j'imagine que j'aurai dû avoir la ref !\nOn se revoie un autre jour ?"
+  choices:
+    - text: "D'acc ! À la prochaine !"
+      trigger: close_dialogue
+      next: generic_end_again
+kate:
+  text: "Comment ça, c'est moi Aurélien ? Bah oui, je viens de te le dire."
+  choices:
+    - text: "C'est que j'ai rencontré quelqu'un qui m'a parlé de toi."
       next: kate2
 kate2:
   text: "Ah oui, ça doit être Kate alors. On a discuté un peu l'autre jour. Elle est plutôt sympa."
   choices:
-    - text: "Elle se demande si tu apprécie les fleurs."
+    - text: "Elle se demande si tu apprécies les fleurs."
       condition: demander_aurelien_fleurs
       set_flag:
         name: ask_aurelien
@@ -91,16 +180,15 @@ kate2:
       next: poser_question
     - text: "C'est vrai qu'elle est sympa."
       next: sympa
-
 poser_question:
   text: "Je t'en prie."
   choices:
-    - text: "Ça a rien à voir mais est-ce que tu aimes les fleurs ?"
+    - text: "Ça n'a rien à voir, mais est-ce que tu aimes les fleurs ?"
       next: evasif
     - text: "J'aimerais savoir si tu aimes les fleurs."
       next: evasif
 evasif:
-  text: "Oh, et bien, je connais pas bien. Je vois pas comment je pourais t'aider sur ce sujet tu sais."
+  text: "Oh, et bien, je connais pas bien. Je vois pas comment je pourrais t'aider sur ce sujet tu sais."
   choices:
     - text: "Mais non mais..."
       next: evasif2
@@ -109,102 +197,171 @@ evasif:
     - text: "En fait..."
       next: evasif2
 evasif2:
-  text: "Et dis, tu trouve pas que"
+  text: "Et dis, tu trouves pas que la luminosité est particulière par ici ?"
   choices:
-
+    - text: "Ah euh non, mais à propos des..."
+      next: evasif_end
+    - text: "La lumière ? Mais... on parlait des fleurs..."
+      next: evasif_end
+evasif_end:
+  text: "C'est magnifique ici, je vais aller profiter un peu de cette vue.\nÀ une prochaine fois !"
+  next: generic_end_again
 sympa:
-
-
-blague:
-  text: "Quoi ?"
+  text: "Et bien passe lui le bonjour de ma part si tu la recroises."
   choices:
-    - text: "Non rien, pardon, oublie"
-      next: fin4
-fin4:
-  text: "Ah ok."
-  next: fin4_again
-fin4_again:
-  text: "Ah, encore toi..."
-  choices:
-    - text: "Oui, euh, excuse moi je voulais pas paraître impolie"
-      next: rattrapage
-    - text: "Bah oui, j'attend toujours un rap..."
-      next: furieux
-rattrapage:
-  text: "C'est pas grave, j'imagine que j'aurai dû avoir la ref !"
-  choices:
-    - text: "Non c'est moi, des fois je m'enflamme. Mais dis moi alors, comme ça tu voyage ?"
-      next: voyage
-furieux:
-  text: "Bon euh t'es bien gentille mais j'ai des choses à faire moi !"
-  set_flag: furieux
-  next: furieux_again
-furieux_again:
-  text: "J'ai plus vraiment envie de te parler. Au revoir."
-  next: furieux_again
+    - text: "Je n'y manquerais pas !"
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "Ça marche !"
+      trigger: close_dialogue
+      next: generic_end_again
 
-fin3:
-  text: "Moi de même, j'espère qu'on se reverra !"
-  next: fin3_again
-fin3_again:
-  text: "Tu ne peux plus te passer de moi ahah, pardon mais j'ai des truc à faire, on se reparle plus tard ?"
-  next: fin3_again
-
+path3:
+  text: "Tu sais où on se trouve ici ?"
+  set_flag: path3_done
+  choices:
+    - text: "Non, pas vraiment."
+      next: indifference
+    - text: "Tu sais, je me contente de ramasser des pommes. Un marchand me les rachète."
+      next: indifference
 indifference:
-  text: "Ah bon ? Ça t'intrigue pas de savoir où tu te trouve ?... et où tu vas ?"
+  text: "Ah bon ? Et ça t'intrigue pas de savoir où tu te trouves ?... Et où tu vas ?"
   choices:
-    - text: "Eh d'où est-ce que tu viens toi déjà ?"
+    - text: "Et d'où est-ce que tu viens toi déjà ?"
       next: provenance
-    - text: "Si bien sûr, mais pour l'instant je ne sais pas, et il faut bien avancer"
+    - text: "Si bien sûr, mais pour l'instant je ne sais pas, et il faut bien avancer."
       next: avancer
-
 provenance:
-  text: "Moi ça fait un bail que je parcours le vaste monde tu sais. Je viens de partout et nulle part à la fois"
+  text: "Moi ça fait un bail que je parcours le vaste monde tu sais. Je viens de partout et nulle part à la fois."
   choices:
-    - text: "Tu voyage beaucoup ?"
-      next: voyage
-
+    - text: "Je vois. Mais, non, ça ne m'intrigue pas trop. Je suis bien ici. Je cultive mes tomates et c'est très bien."
+      next: avancer
 avancer:
-  text: "T'es bizare toi... Moi j'aimerais quand même bien compléter mon journal, il faudrait que j'en sache plus sur cet endroit"
+  text: "T'es bizare toi... Moi, j'aimerais quand même bien compléter mon journal, il faudrait que j'en sache plus sur cet endroit."
   choices:
-    - text: "Franchement je ne peux pas t'aider"
+    - text: "Franchement, je ne peux pas t'aider."
       next: pas_aider
-    - text: "Je vais essayer de me renseigner sur où on se trouve"
-      set_flag: whereabouts_unknown
+    - text: "Je vais essayer de me renseigner sur où on se trouve."
       next: se_renseigner
-
 pas_aider:
-  text: "Dommage. Eh bien je n'ai qu'à continuer à chercher..."
+  text: "Dommage. Eh bien, je n'ai qu'à continuer à chercher..."
   next: pas_aider_again
-pas_aider_again:
-  text: "Hello, on a déjà discuté il me semble ?"
-  choices:
-    - text: "Oui en effet, tu semblais un peu perdu."
-      next: perdu
-    - text: "Non, je ne me souviens pas"
-      next: memoire
-
-perdu:
-  text: "Oui c'est un peu ça... à force de voyager, je me suis peu être un peu égaré..."
-  choices:
-    - text: "Oh ! tu voyage ?"
-      next: voyage
-
-memoire:
-  text: "J'ai l'impression que t'essaye de me faire marcher. Ou alors tu es une espèce de poisson rouge"
-  choices:
-    - text: "Eh oh, tu sais ce qu'il te dit le poisson rouge !"
-      set_flag: furieux
-      next: furieux_again
-
 se_renseigner:
   text: "Cool ! Merci beaucoup !"
-  next: se_renseigner_again
-se_renseigner_again:
-  text: "Je te laisse mener ta petite enquête, moi aussi je vais essayer de comprendre de mon côté"
-  next: se_renseigner_again
+  next: pas_aider_again
+pas_aider_again:
+  text: "Hello, on a déjà discuté, il me semble ?"
+  choices:
+    - text: "Oui, en effet, tu semblais un peu perdu."
+      next: perdu
+    - text: "Non, je ne me souviens pas."
+      next: memoire
+perdu:
+  text: "C'est un peu ça... À force de voyager, je me suis peut-être un peu égaré..."
+  choices:
+    - text: "Des fois, il faut se contenter d'apprécier là où on se trouve. À force de courir après la vie, on en oublie de vivre."
+      next: perdu2
+perdu2:
+  text: "Au fond, je crois qu'une pause sera féconde.\nMerci du conseil, à plus tard."
+  choices:
+    - text: "Salut !"
+      trigger: close_dialogue
+      next: generic_end_again
+memoire:
+  text: "J'ai l'impression que t'essaye de me faire marcher. Ou alors tu es une espèce de poisson rouge."
+  choices:
+    - text: "Eh oh, tu sais ce qu'il te dit le poisson rouge !"
+      trigger: close_dialogue
+      next: pas_aider_again
+
+eternal_path:
+  text: "Bon bon bon... voilà voilà."
+  choices:
+    - text: "Tu sais cultiver des légumes toi ?"
+      next: cultiver
+    - text: "Tu sais pêcher toi ?"
+      next: pecher
+cultiver:
+  text: "Ah les légumes ? Oui, j'ai fait ça une fois. C'est un peu galère, il faut deux outils différents, une houe et un arrosoir."
+  choices:
+    - text: "C'est donc ça !"
+      next: cultiver2
+    - text: "Ah bon ?"
+      next: cultiver2
+cultiver2:
+  text: "D'abord, tu laboures le sol avec la houe, ensuite, tu plantes une graine, ça, C facile. Next tu arroses le sol. (avant ou après planter c'est pas important). Ou alors tu peux toujours attendre qu'il pleuve ahahah."
+  choices:
+    - text: "Et comment on change de type de graines ?"
+      next: faut
+    - text: "Et comment on change d'outil ?"
+      next: euuhhh
+euuhhh:
+  text: "Euuhhh, ça c'est bizarre comme question.\nEuuhhh, je sais pas trop ce que tu entends par là.\nEuuhhh..."
+  choices:
+    - text: "C'est bon, j'ai compris en fait."
+      next: fin_tuto
+    - text: "Et pour changer de type de graines ?"
+      next: faut
+faut:
+  text: "Pour changer de type de graines F-F-faut pas faire de la D, ça c'est sûr !"
+  choices:
+    - text: "Euuhhh d'accord..."
+      next: fin_tuto
+    - text: "Et pour changer d'outil, on fait comment ?"
+      next: euuhhh
+pecher:
+  text: "Oui, c'est facile, faut bien remonter la ligne dès que tu vois les ondulations brillantes dans l'eau.(d'ailleurs j'ai toujours trouvé ça bizarre que ces vaguelettes brillent comme ça. C'est pas normal.)"
+  choices:
+    - text: "Ah ok."
+      next: pecher2
+    - text: "Je vois."
+      next: pecher2
+pecher2:
+  text: "Ah et si tu remontes trop de déchets à ton goût, pense à acheter des vers. Ils se mettent automatiquement au bout de ton hameçon et facilitent grandement la prise de poissons !"
+  choices:
+    - text: "C'est donc ça !"
+      next: fin_tuto
+    - text: "Merci du tuyau !"
+      next: fin_tuto
+fin_tuto:
+  text: "J'espère que j'ai pu t'aider !\nÀ la revoyure !"
+  next: generic_end_again
+
+generic_end:
+  text: "Bon et bien, je vais y aller moi. A+"
+  choices:
+    - text: "Ciao !"
+      trigger: close_dialogue
+      next: generic_end_again
+generic_end_again:
+  text: "Tu ne peux plus te passer de moi ahah, pardon mais j'ai des trucs à faire, on se reparle plus tard ?"
+  next: generic_end_again
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Next day if first is failed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Conclusion : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+deliver_flowers:
+  text: "Bah pas spécialement, mais je cherche toujours à me rattraper à quelque chose.\nC'est quoi ?"
+  set_flag: next_day
+  choices:
+    - text: "C'est un bouquet de fleurs. Elles viennent de Kate.\nJ'espère que tu comprends le message."
+      trigger: give_flowers
+      next: deliver_flowers2
+deliver_flowers2:
+  text: "Oui. Je crois bien. Je vais aller la voir.\nMerci beaucoup !"
+  choices:
+    - text: "Et... euh... Tu vas lui dire quoi ?"
+      next: curieuse
+    - text: "Cool ! Et bien à plus tard !"
+      trigger: close_dialogue
+      next: deliver_flowers_again
+curieuse:
+  text: "Déjà, je vais la remercier pour les fleurs.\nLa suite appartient à l'histoire."
+  choices:
+    - text: "Je vois."
+      trigger: close_dialogue
+      next: deliver_flowers_again
+deliver_flowers_again:
+  text: "Excuse-moi, j'ai pas vraiment la tête à bavarder. On se voit plus tard ?"
+  next: deliver_flowers_again

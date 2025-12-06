@@ -1,20 +1,64 @@
-ignorant2:
-  text: "J'ai de la chance d'avoir vécu tout ça, c'est indéniable, mais peut-être qu'il est temps de souffler un peu."
+SAFE_GUARD:
+  text: "EUHHH PARDON, j'avais la tête ailleurs. Je me suis complètement perdu dans mes pensées.\nOn peut la refaire ?"
+  next: deliver_flowers_ldm
+
+deliver_flowers_ldm:
+  text: "Salut ! Merci encore pour ce que tu as fais pour nous.\nKate est une grande timide !"
   choices:
-    - text: "Faire comme moi, avoir sa petite maison et cutiver son potager, pêcher peut-être..."
-      next: ignorant3
-ignorant3:
-  text: "Oui et non, c'est quand même un peu petit ici, pardon mais il me faut plus de compagnie que ça. Je me verrais bien dans un petit village."
+    - text: "Oui, c'est vrai, j'ai remarqué ça ! De rien !"
+      next: cadeau
+    - text: "Je suis contente de vous voir tous les deux ensemble."
+      next: cadeau
+cadeau:
+  text: "Ah et pour te remercier, j'ai trouvé ça l'autre jour dans un champ pas loin, tiens, prend les."
+  trigger: get_eggplant_seeds
   choices:
-    - text: "Oh je vois, je rêve d'un endroit comme ça moi aussi."
-      next: animal_crossing
-animal_crossing:
-  text: "Je m'imagine déjà : tocquer à la porte de mes voisins pour prendre le thé chez eux, agrandir peu à peu ma maison, trouver des artéfact pour garnir le musée..."
+    - text: "Oh des graines !"
+      next: graines
+    - text: "C'est quoi ?"
+      next: graines
+graines:
+  text: "Tu verras ce que c'est quand tu les planteras ahah ! Aller, à la prochaine !"
   choices:
-    - text: "C'est décidé, je vais me renseigner si une bourgade dans ce genre existe par ici. Tu m'as convaincue"
+    - text: "Merci !"
+      trigger: close_dialogue
+      next: generic_end_again
+    - text: "Salut !"
+      trigger: close_dialogue
+      next: generic_end_again
+generic_end_again:
+  text: "Tu veux autre chose ?"
+  choices:
+    - text: "Oh non, je vais pas abuser de ta générosité.\nOn se revoit un autre jour, salut !"
+      trigger: close_dialogue
+      next: generic_end_again
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Next day : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
-
-
-      condition: rumeurs_de_village_2
+generic_end_ldm:
+  text: "Good morning Miss !"
+  choices:
+    - text: "Ah salut Aurélien !"
+      next: aubergines
+aubergines:
+  text: "Tu veux encore des graines ?"
+  choices:
+    - text: "Je ne dis pas non ! Merci !"
+      trigger: get_eggplant_seeds
+      next: accept
+    - text: "Non, ça ira merci."
+      next: deny
+accept:
+  text: "Voilà pour toi ! Aller, je te laisse."
+  choices:
+    - text: "Salut !"
+      trigger: close_dialogue
+      next: generic_end_again
+deny:
+  text: "Comme tu voudras ! Aller a+."
+  choices:
+    - text: "Au revoir !"
+      trigger: close_dialogue
+      next: generic_end_again

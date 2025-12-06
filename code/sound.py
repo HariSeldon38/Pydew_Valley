@@ -20,7 +20,7 @@ class SoundManager:
             #'pickup': (pygame.mixer.Sound('../audio/sound/success.wav'), 0.4),
         }
 
-        self.global_volume = 0.03  # Default volume
+        self.global_volume = 1  # Default volume
         self.muted = False
 
         # Apply initial volume

@@ -194,10 +194,16 @@ class Dialogue(Menu):
         # Inventory check
         if 'apple' in self.player.item_inventory:
             self.player.flags["pomme"] = True
+        else: self.player.flags["pomme"] = False
         if 'stylised_beanie' in self.player.item_inventory:
             self.player.flags["have_stylised_beanie"] = True
+        else: self.player.flags["have_stylised_beanie"] = False
         if 'salmon' in self.player.item_inventory:
             self.player.flags["have_salmon"] = True
+        else: self.player.flags["have_salmon"] = False
+        if 'flowers' in self.player.item_inventory:
+            self.player.flags["have_flowers"] = True
+        else: self.player.flags["have_flowers"] = False
 
         self.already_triggered = False  # node_level triggers now apply only once and not at each frames
 
@@ -231,6 +237,9 @@ class Dialogue(Menu):
             self.player.receive('pumkin_seed', 5)
             if 'pumkin' not in self.player.seeds:
                 self.player.seeds.append('pumkin')
+        if action == 'give_flowers':
+            self.player.give('flowers')
+            self.player.flags['Kate_with_Aurelien'] = True
 
         #get_something actions : (ie the player receive something from the npc)
         if action == 'get_flowers':
@@ -254,8 +263,11 @@ class Dialogue(Menu):
             special_shop = self.state_manager.states['shop'].shops[2]
             special_shop.inventory['seewing_needle'] = 1
             special_shop.inventory['white_thread'] = 1
-
-        print(action)
+        if action == 'get_eggplant_seeds':
+            self.player.receive('eggplant_seed', 5)
+            if 'eggplant' not in self.player.seeds:
+                self.player.seeds.append('eggplant')
+        #warning: get_pumkin_seed is inside give_salmon
 
     def handle_input(self, events):
         for event in events:

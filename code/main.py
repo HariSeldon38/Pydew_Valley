@@ -76,6 +76,7 @@ nom de la monaie est l'étincelle
 
 # BUGS :
 """
+- low: we can plant multiple time at the same place
 - low :  tester si ça : peut faire crasher si unnset flag does not exist anymore
 			deception_again:
 		  text: "Tu a besoin de quelque chose ?"
@@ -129,6 +130,7 @@ nom de la monaie est l'étincelle
 
 # QUALITY OF LIFE :
 """
+- easier to plant seeds
 - center lines of speech (monologue charracter when tired)
 - shynier salmon with halo effect on it 
 - add obvious cursor in dialogue

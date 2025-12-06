@@ -7,13 +7,13 @@ start:
   choices:
     - text: "Oh, trop mignon, un petit chat !"
       next: mignon
-    - text: "Oh salut chat, comment tu t'appelle ?"
+    - text: "Oh salut chat, comment tu t'appelles ?"
       next: appelle
 
 mignon:
   text: "Miaou !"
   choices:
-    - text: "Comment tu t'appelle ?"
+    - text: "Comment tu t'appelles ?"
       next: appelle
     - text: "Tu veux quelque chose ?"
       next: veux
@@ -21,7 +21,7 @@ mignon:
 appelle:
   text: "Miaou ?"
   choices:
-    - text: "Ah oui, évidement..."
+    - text: "Ah oui, évidemment..."
       next: citrouille
     - text: "Bon... je pense que je connais ton nom."
       next: citrouille
@@ -37,7 +37,7 @@ citrouille:
 ok:
   text: "..."
   choices:
-    - text: "Bon mais qu'est-ce que tu veux ?"
+    - text: "Bon, mais qu'est-ce que tu veux ?"
       next: veux
     - text: "Je te laisse tranquille."
       trigger: close_dialogue
@@ -89,9 +89,9 @@ saumon:
 generic_end_ldm:
   text: "Ronronronron"
   choices:
-    - text: "Oh tu me reconnaît ?"
+    - text: "Oh, tu me reconnaîs ?"
       next: ok
-    - text: "Tu est adorable !"
+    - text: "Tu es adorable !"
       next: ok
 
 generic_end:

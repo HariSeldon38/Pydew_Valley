@@ -74,9 +74,10 @@ APPLE_POS = {
 }
 GROW_SPEED = {
 	'corn': 1,
-	'tomato': 0.7,
-	'pumkin': 0.5,
-	'eggplant': 0.5,
+	'tomato': 0.8,
+	'pumkin': 0.6,
+	'eggplant': 0.6,
+	'starfruit': 0.45
 }
 
 TIRED_SPEECH = [

@@ -30,6 +30,7 @@ SALE_PRICES = {
     'baby_salmon': 20,
     'pumkin': 25,
     'eggplant':25,
+    'starfruit': 100
 }
 PURCHASE_PRICES = {
 	'corn_seed': 4,
@@ -70,6 +71,7 @@ SELL_SHOP_INVENTORY = {
     'baby_salmon': None,
     'pumkin': None,
     'eggplant': None,
+    'starfruit': None
 }
 BUY_SHOP_INVENTORY = {
     'corn_seed': float('inf'),

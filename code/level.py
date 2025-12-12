@@ -29,10 +29,10 @@ class Level:
 		#day event
 		self.day_nb = 0
 		self.queue = [ #the behavior after last
-			('Citrouille', 'salmon garden'),
-			('Citrouille', 'salmon garden'),
-			('Kate', None),
-			('Antoine', 'just_the_two_of_us.wav'),
+			('Aurelien', 'salmon garden'),
+			('Kate', 'salmon garden'),
+			('Aurelien', None),
+			('Kate', 'just_the_two_of_us.wav'),
 		]
 
 		#sound

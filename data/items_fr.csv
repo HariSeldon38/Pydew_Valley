@@ -40,3 +40,5 @@ pumkin,Citrouille,../graphics/token/pumkin.png,Celle-ci ne brwoute pas.\n(ou alo
 pumkin_seed,Grain de Citrouille,../graphics/token/pumkin_seed.png,Offertes par le plus migon des chats !
 eggplant_seed,Grain d'Aubergine,../graphics/token/eggplant_seed.png,Un des cinq légumes poussant dans cette contrée.
 eggplant,Aubergine,../graphics/token/eggplant.png,Idéal pour la moussaka !\n(Allergie founie avec...)
+starfruit_seed,Graine de Starfruit,../graphics/token/starfruit_seed.png,Des graines très rares.
+starfruit,Starfruit,../graphics/token/starfruit.png,La star des fruits.

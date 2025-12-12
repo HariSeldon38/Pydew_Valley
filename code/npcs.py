@@ -267,6 +267,10 @@ class Dialogue(Menu):
             self.player.receive('eggplant_seed', 5)
             if 'eggplant' not in self.player.seeds:
                 self.player.seeds.append('eggplant')
+        if action == 'get_starfruit_seeds':
+            self.player.receive('starfruit_seed', 2)
+            if 'starfruit' not in self.player.seeds:
+                self.player.seeds.append('starfruit')
         #warning: get_pumkin_seed is inside give_salmon
 
     def handle_input(self, events):

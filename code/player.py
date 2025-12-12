@@ -245,43 +245,6 @@ class Player(pygame.sprite.Sprite):
                     self.timers['record'].activate()
                     if not self.record:
                         self.start_record_input()
-                        list_record = [ # -----------------------------------------------------------------------------delete that
-                            r'..\recordings\Aurelien\recording0_200speed_60fps_2025_10_25__18-46-04.txt',
-                            r'..\recordings\Aurelien\recording1_200speed_60fps_2025_10_25__19-40-11.txt',
-                            r'..\recordings\Aurelien\recording2_200speed_60fps_2025_10_25__19-51-58.txt',
-                            r'..\recordings\Kate\recording0_200speed_60fps_2025_11_07__13-53-11.txt',
-                            r'..\recordings\Kate\recording1_200speed_60fps_2025_11_07__14-03-14.txt',
-                        ]
-                        NPC(
-                        	list_record[0],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Aurelien'
-                        ) # -----------------------------------------------------------------------------delete that
-                        NPC(
-                        	list_record[1],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Aurelien'
-                        ) # -----------------------------------------------------------------------------delete that
-                        NPC(
-                        	list_record[2],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Aurelien'
-                        ) # -----------------------------------------------------------------------------delete that
-                        NPC(
-                        	list_record[3],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Kate'
-                        ) # -----------------------------------------------------------------------------delete that
-                        NPC(
-                        	list_record[4],
-                        	[self.all_sprites, self.npc_sprites],
-                        	self.collision_sprites,
-                        	name = 'Kate'
-                        ) # -----------------------------------------------------------------------------delete that
                     else:
                         self.stop_record_input()
 

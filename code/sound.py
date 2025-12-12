@@ -21,7 +21,7 @@ class SoundManager:
         }
 
         self.global_volume = 1  # Default volume
-        self.muted = False
+        self.muted = True
 
         # Apply initial volume
         self._apply_volume()

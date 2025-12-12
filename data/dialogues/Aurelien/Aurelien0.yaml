@@ -62,6 +62,9 @@ hub1:
       next: path1
     - text: "Comment tu t'appelles au fait ? Moi c'est CookieShay."
       not_condition: path2_done
+      set_flag:
+        name: meet_aurelien
+        scope: player
       next: path2
     - text: "..."
       condition: path1_done

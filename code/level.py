@@ -29,8 +29,8 @@ class Level:
 		#day event
 		self.day_nb = 0
 		self.queue = [ #the behavior after last
-			('Aurelien', 'salmon garden'),
 			('Kate', 'salmon garden'),
+			(None, 'salmon garden'),
 			('Aurelien', None),
 			('Kate', 'just_the_two_of_us.wav'),
 		]
@@ -285,31 +285,52 @@ class Level:
 
 	def create_npc(self, save):
 
-		#the next if could easily be generalised for any character if other can be invited
-		if self.player.flags.get('invite_kate', False): #If Kate has been invited she will be there everyday
+		#Special case : Kate invited in the house and not already with Aurelien
+		if self.player.flags.get('invite_kate', False) and not self.player.flags.get('Kate_with_Aurelien'):
 			kate_record_file = f'..\\recordings\\Kate\\special_case\\recordingINVITE_200speed_60fps_2025_11_07__13-59-01.txt'
 			NPC(
-					kate_record_file,
-					[self.all_sprites, self.npc_sprites],
-					self.collision_sprites,
-					name = 'Kate',
-					saved_data=save)
-			# Now we need to replace her in the queue attribute to not have her twice
-			self.queue = [(None if name == 'Kate' else name, song) for name, song in self.queue]
+				kate_record_file,
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				name = 'Kate',
+				saved_data=save)
 
-		if self.name_npc:
-			if self.player.flags.get('invite_kate', False) and self.name_npc == 'Kate':
-				record_dir = f'..\\recordings\\{self.name_npc}\\special_case'
-			else : record_dir = f'..\\recordings\\{self.name_npc}'
-
-			record_files = [f for f in os.listdir(record_dir) if os.path.isfile(os.path.join(record_dir, f))]
+		#Special case: Kate and Aurelien are together
+		if self.player.flags.get('Kate_with_Aurelien', False) and self.name_npc in ['Kate', 'Aurelien']:
+			kate_record_file =  f'..\\recordings\\Kate\\special_case\\recordingWITH_AURELIEN_200speed_60fps_2025_12_13__11-52-38.txt'
+			aurelien_record_file = f'..\\recordings\\Aurelien\\special_case\\recordingWITH_KATE_200speed_60fps_2025_12_13__12-23-41.txt'
+			record_file = [kate_record_file, aurelien_record_file]
+			index = random.randint(0,1)
 			NPC(
+				record_file[index],
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				name='Kate',
+				saved_data=save)
+			NPC(
+				record_file[(index+1)%2],
+				[self.all_sprites, self.npc_sprites],
+				self.collision_sprites,
+				name='Aurelien',
+				saved_data=save)
+
+		#Generic case
+		if self.name_npc:
+			#First we handle the little tweak if a special case is active
+			if self.player.flags.get('invite_kate', False) and self.name_npc == 'Kate':
+				pass #if kate invited and is the planned npc, we already have handled her
+			if self.player.flags.get('Kate_with_Aurelien', False) and self.name_npc in ['Kate', 'Aurelien']:
+				pass
+
+			else :
+				record_dir = f'..\\recordings\\{self.name_npc}'
+				record_files = [f for f in os.listdir(record_dir) if os.path.isfile(os.path.join(record_dir, f))]
+				NPC(
 					os.path.join(record_dir, random.choice(record_files)),
 					[self.all_sprites, self.npc_sprites],
 					self.collision_sprites,
 					name = self.name_npc,
-					saved_data=save
-			)
+					saved_data=save)
 
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)

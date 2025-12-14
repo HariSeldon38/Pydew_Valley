@@ -9,9 +9,12 @@ thunder
 class SoundManager:
     def __init__(self):
         self.sounds = {
-            'just the two of us' : (pygame.mixer.Sound('../audio/music/just_the_two_of_us.wav'), 1),
-            'everybody wants to rule the world': (pygame.mixer.Sound('../audio/music/everybody_UNFINISHED.wav'), 1),
-            'salmon garden': (pygame.mixer.Sound('../audio/music/salmon_garden_UNFINISHED.wav'), 1),
+            'just the two of us' : (pygame.mixer.Sound('../audio/music/Juste Le Blanc_up10bpm_master.wav'), 1),
+            'everybody wants to rule the world': (pygame.mixer.Sound('../audio/music/Tout les corps_master.wav'), 1),
+            'salmon garden': (pygame.mixer.Sound('../audio/music/Salmon_Garden_master.wav'), 0.6),
+            'chat': (pygame.mixer.Sound('../audio/music/Chat.wav'), 1),
+            'si facile': (pygame.mixer.Sound('../audio/music/Easy_master.wav'), 1),
+            'running up': (pygame.mixer.Sound('../audio/music/kate_master.wav'), 1),
             #'music': (pygame.mixer.Sound('../audio/bg.mp3'), 1.0),
             #'axe': (pygame.mixer.Sound('../audio/axe.mp3'), 0.7),     #when retrieve apple, two sound at same time
             #'hoe': (pygame.mixer.Sound('../audio/hoe.wav'), 0.3),
@@ -21,7 +24,7 @@ class SoundManager:
         }
 
         self.global_volume = 1  # Default volume
-        self.muted = True
+        self.muted = False
 
         # Apply initial volume
         self._apply_volume()

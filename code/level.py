@@ -17,7 +17,6 @@ from sky import Rain, Sky
 from sound import SoundManager
 from state_manager import StateManager
 from loader import ItemCSVLoader
-from debug import debug
 
 class Level:
 	def __init__(self):
@@ -29,10 +28,25 @@ class Level:
 		#day event
 		self.day_nb = 0
 		self.queue = [ #the behavior after last
-			('Kate', 'salmon garden'),
 			(None, 'salmon garden'),
+			(None, None),
+			('Kate', 'running up'),
+			(None, 'salmon garden'),
+			('Aurelien', 'si facile'),
+			('Kate', None),
+			(None, None),
+			('Antoine', 'just the two of us'),
+			(None, 'salmon garden'),
+			('Aurelien', 'si facile'),
+			(None, None),
+			('Antoine', None),
+			('Citrouille', 'chat'),
+			(None, 'salmon garden'),
+			('Kate', 'running up'),
 			('Aurelien', None),
-			('Kate', 'just_the_two_of_us.wav'),
+			('Citrouille', 'chat'),
+			('Antoine', 'just the two of us'),
+			('Citrouille', 'chat'),
 		]
 
 		#sound
@@ -360,10 +374,6 @@ class Level:
 		#visual ambiance
 		self.sky.display_daylight()
 		self.sky.display_weather(dt, self.rain.rain_level)
-		debug(self.rain.rain_level)
-		debug(f"Recording = {self.player.record}", y=50, x=10)
-		debug(f"day timer : {self.player.timers['day'].active}", y=70, x=10)
-		debug(f"evening timer : {self.player.timers['evening'].active}", y=90, x=10)
 
 		# manage states
 		for event in events:
@@ -379,7 +389,8 @@ class Level:
 					self.state_manager.open_state(
 						"pause")  # here would need to be able to stack menu but for now I will not implement that
 				elif event.key == pygame.K_k:  # before release change this to ESCAPE
-					self.state_manager.close_state()
+					if self.state_manager.active_state_name:
+						self.state_manager.close_state()
 				elif event.key == pygame.K_ESCAPE:
 					pygame.quit()
 					sys.exit()
@@ -426,17 +437,17 @@ class CameraGroup(pygame.sprite.Group):
 					offseted_rect.center -= self.offset
 					self.display_surface.blit(sprite.image, offseted_rect)
 
-					"""#analytics
-					if sprite in npc_sprites or sprite == player:
-						pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
-						hitbox_rect = sprite.hitbox.copy()
-						hitbox_rect.topleft -= self.offset
-						pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
-						#target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
-						#pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)
-			for sprite in player.collision_sprites.sprites():
-				if hasattr(sprite, 'hitbox'):
-					hitbox_rect = sprite.hitbox.copy()
-					hitbox_rect.topleft -= self.offset
-					pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)"""
+			#		#analytics
+			# 		if sprite in npc_sprites or sprite == player:
+			# 			pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
+			# 			hitbox_rect = sprite.hitbox.copy()
+			# 			hitbox_rect.topleft -= self.offset
+			# 			pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
+			# 			target_pos = offseted_rect.center + PLAYER_TOOL_OFFSET[player.selected_tool][player.status.split("_")[0]]
+			# 			pygame.draw.circle(self.display_surface, 'blue', target_pos, 5)
+			# for sprite in player.collision_sprites.sprites():
+			# 	if hasattr(sprite, 'hitbox'):
+			# 		hitbox_rect = sprite.hitbox.copy()
+			# 		hitbox_rect.topleft -= self.offset
+			# 		pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
 

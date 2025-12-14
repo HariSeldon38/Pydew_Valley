@@ -36,12 +36,12 @@ PURCHASE_PRICES = {
 	'corn_seed': 4,
 	'tomato_seed': 5,
     'worm': 5,
-	'fishing_rod': 500,
+	'fishing_rod': 100,
 	'seewing_needle': 1000,
 	'white_thread': 50,
-    'axe': 500,
-    'hoe': 500,
-    'water': 500,
+    'axe': 200,
+    'hoe': 200,
+    'water': 300,
 }
 SELL_SHOP_INVENTORY = {
     'wood': None,

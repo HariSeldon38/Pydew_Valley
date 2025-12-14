@@ -76,7 +76,6 @@ nom de la monaie est l'étincelle
 
 # BUGS :
 """
-- low: we can plant multiple time at the same place
 - low :  tester si ça : peut faire crasher si unnset flag does not exist anymore
 			deception_again:
 		  text: "Tu a besoin de quelque chose ?"
@@ -105,7 +104,6 @@ nom de la monaie est l'étincelle
 	 	File "C:\work\VsCode\projects\source\Pydew_Valley\code\sky.py", line 43, in display_weather
 		self.full_surf_weather.fill(self.current_weather_color)
 		ValueError: invalid color argument  ---BUG HIDDEN UNDER CARPET WITH TRY/EXCEPT
-- see in the future : "k" wih no menu opened, scrashes
 - When rapidly decreasing rain level : 
 		Traceback (most recent call last):
 		  File "C:gaia3\AppData\Local\Programs\Python\PythonProjects\Pydew_Valley\code\main.py", line 28, in <module>
@@ -130,7 +128,7 @@ nom de la monaie est l'étincelle
 
 # QUALITY OF LIFE :
 """
-- easier to plant seeds
+- easier to plant seeds : pb due to target link to tool in hand.
 - center lines of speech (monologue charracter when tired)
 - shynier salmon with halo effect on it 
 - add obvious cursor in dialogue

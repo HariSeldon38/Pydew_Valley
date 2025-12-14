@@ -45,10 +45,10 @@ class Player(pygame.sprite.Sprite):
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
             'fishing timer': Timer(450),
             'record': Timer(500),
-            'evening': Timer(500000, [self.get_to_sleep, self.bad_sleep_penalty]),
+            'evening': Timer(40000, [self.get_to_sleep, self.bad_sleep_penalty]),
             'slowing': Timer(3000, self.default_speed)
         }
-        self.timers['day'] = Timer(1000, self.timers['evening'].activate) #when day is over, evening starts
+        self.timers['day'] = Timer(180000, self.timers['evening'].activate) #when day is over, evening starts
         self.timers['sleepy'] = Timer(15000, [self.timers['slowing'].activate, self.decrease_speed], loop=True) #every sleepy sec, slowing activate
 
         #tools
@@ -128,8 +128,8 @@ class Player(pygame.sprite.Sprite):
 
     def use_seed(self):
         if self.item_inventory.get(self.selected_seed+"_seed", 0) > 0:
-            self.soil_layer.plant_seed(self.target_position, self.selected_seed)
-            self.item_inventory[self.selected_seed+"_seed"] -= 1
+            sucess = self.soil_layer.plant_seed(self.target_position, self.selected_seed)
+            if sucess: self.item_inventory[self.selected_seed+"_seed"] -= 1
 
     def get_target_position(self):
         self.target_position = self.rect.center + PLAYER_TOOL_OFFSET[self.selected_tool][self.status.split("_")[0]]
@@ -201,14 +201,14 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_r] and not self.timers['rain switch'].active: #------------------------------------------------------------------to delete before release
-            self.timers['rain switch'].activate()
-            self.rain.rain_level += 1
-            self.rain.update_rain_color(self.rain.rain_level)
-        if keys[pygame.K_t] and not self.timers['rain switch'].active:
-            self.timers['rain switch'].activate()
-            self.rain.rain_level -= 1
-            self.rain.update_rain_color(self.rain.rain_level)
+        # if keys[pygame.K_r] and not self.timers['rain switch'].active:
+        #     self.timers['rain switch'].activate()
+        #     self.rain.rain_level += 1
+        #     self.rain.update_rain_color(self.rain.rain_level)
+        # if keys[pygame.K_t] and not self.timers['rain switch'].active:
+        #     self.timers['rain switch'].activate()
+        #     self.rain.rain_level -= 1
+        #     self.rain.update_rain_color(self.rain.rain_level)
 
         if keys[pygame.K_LSHIFT]:
             self.speed = PLAYER_LOW_SPEED
@@ -239,14 +239,14 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.x = 0
 
-            #toggle record feature
-            if not self.timers['record'].active and not self.sleep:
-                if keys[pygame.K_o]:
-                    self.timers['record'].activate()
-                    if not self.record:
-                        self.start_record_input()
-                    else:
-                        self.stop_record_input()
+            # #toggle record feature
+            # if not self.timers['record'].active and not self.sleep:
+            #     if keys[pygame.K_o]:
+            #         self.timers['record'].activate()
+            #         if not self.record:
+            #             self.start_record_input()
+            #         else:
+            #             self.stop_record_input()
 
             #tools
             if keys[pygame.K_SPACE]:

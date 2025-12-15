@@ -240,6 +240,7 @@ class Level:
 		# same for sleep_deprived feature, player will not remember he did not get to sleep naturally
 		for shop in self.state_manager.states['shop'].shops:
 			env_entry[shop.__class__.__name__] = shop.inventory
+		env_entry['count_to_unlock_seeds'] = self.state_manager.states['shop'].shops[0].count_to_unlock_seeds
 
 		# save the file
 		with open('../save/save.json', "w") as saving_file:
@@ -282,6 +283,7 @@ class Level:
 		env_entry = data.get('Environment', {})
 		for shop in self.state_manager.states['shop'].shops:
 			shop.inventory = env_entry.get(shop.__class__.__name__, {})
+		self.state_manager.states['shop'].shops[0].count_to_unlock_seeds = env_entry.get('count_to_unlock_seeds', 0)
 
 	def play_day_music(self, save):
 		music_handled = False

@@ -16,29 +16,45 @@ fishing_rod,canne à pêche,../graphics/token/placeholder.png,"Sert à pêcher d
 seewing_needle,Aiguille de couture,../graphics/token/seewing_needle.png,Donne accès à un univers de créativité infini
 white_thread,Fil blanc,../graphics/token/white_thread.png,Saura se rendre utile...
 stylised_beanie,Bonnet stylisé,../graphics/token/stylised_beanie.png,Pour un look de rockstar !
-anchovy,Anchois,../graphics/token/anchovy.png,Appelle les des engraulidés si tu veux... (eau salée)
-angelfish,Poisson-Ange,../graphics/token/angelfish.png,Nouveau concept : les anges aquatiques (eau douce)
-bass,Bar,../graphics/token/bass.png,Bonjour je voudrais un monaco siouplait (eau douce)
-catfish,Poisson-Chat,../graphics/token/catfish.png,"Est-ce qu'un poisson, un chat et un gros légume pourraient aller ensemble ? (eau douce)"
-crab,Crabe,../graphics/token/crab.png,Attention aux pinces (eau salée)
-goldfish,Poisson-rouge,../graphics/token/goldfish.png,Celui-là vaut de l'or (eau douce)
-clownfish,Poisson-clown,../graphics/token/clownfish.png,Némo ! (eau salée)
-pufferfish,Poisson-globe,../graphics/token/pufferfish.png,Pourait peut-être servir à s'envoler... non impossible (eau salée)
-rainbow_trout,Truite arc-en-ciel,../graphics/token/rainbow_trout.png,Une espèce de saumon avec un peu d'imagination (eau douce)
-surgeonfish,Poisson-chirurgien,../graphics/token/surgeonfish.png,Un poisson qui gagne bien sa vie (eau salée)
+anchovy,Anchois,../graphics/token/anchovy.png,Appelle les des engraulidés si tu veux...\n(eau salée)
+angelfish,Poisson-Ange,../graphics/token/angelfish.png,Nouveau concept : les anges aquatiques\n(eau douce)
+bass,Bar,../graphics/token/bass.png,Bonjour je voudrais un monaco siouplait\n(eau douce)
+catfish,Poisson-Chat,../graphics/token/catfish.png,"Est-ce qu'un poisson, un chat et un gros légume pourraient aller ensemble ?\n(eau douce)"
+crab,Crabe,../graphics/token/crab.png,Attention aux pinces\n(eau salée)
+goldfish,Poisson-rouge,../graphics/token/goldfish.png,Celui-là vaut de l'or\n(eau douce)
+clownfish,Poisson-clown,../graphics/token/clownfish.png,Némo !\n(eau salée)
+pufferfish,Poisson-globe,../graphics/token/pufferfish.png,Pourait peut-être servir à s'envoler... non impossible\n(eau salée)
+rainbow_trout,Truite arc-en-ciel,../graphics/token/rainbow_trout.png,Une espèce de saumon avec un peu d'imagination\n(eau douce)
+surgeonfish,Poisson-chirurgien,../graphics/token/surgeonfish.png,Un poisson qui gagne bien sa vie\n(eau salée)
 can,Canette vide,../graphics/token/can.png,Un bout d'aluminium
 rock,Pierre,../graphics/token/rock.png,Un bout de granite
 worm,Ver à pêche,../graphics/token/worm.png,Un ver qui se dandine au bout de votre fil
-salmon,Saumon,../graphics/token/salmon.png,Le poisson légendaire (eau salée)
-baby_salmon,Jeune saumon,../graphics/token/baby_salmon.png,Un poisson prêt à suivre le cours de sa vie (eau douce)
+salmon,Saumon,../graphics/token/salmon.png,Le poisson légendaire\n(eau salée)
+baby_salmon,Jeune saumon,../graphics/token/baby_salmon.png,Un poisson prêt à suivre le cours de sa vie\n(eau douce)
 axe,Hâche,../graphics/token/axe.png,Not used for now
 hoe,Houe,../graphics/token/hoe.png,Not used for now
 water,Arrosoir,../graphics/token/water.png,Not used for now
 white_thread_needle,Aiguille préparée,../graphics/token/white_thread_needle.png,Une aiguille prête à être utilisée pour coudre.\n(contient: fil blanc)
 flowers,Bouquet,../graphics/token/flowers.png,Un bouquet de fleurs à offrir... ou pas.
 pumkin,Citrouille,../graphics/token/pumkin.png,Celle-ci ne brwoute pas.\n(ou alors faut consulter)
-pumkin_seed,Grain de Citrouille,../graphics/token/pumkin_seed.png,Offertes par le plus migon des chats !
-eggplant_seed,Grain d'Aubergine,../graphics/token/eggplant_seed.png,Un des cinq légumes poussant dans cette contrée.
+pumkin_seed,Grain de citrouille,../graphics/token/pumkin_seed.png,Offertes par le plus migon des chats !
+eggplant_seed,Grain d'aubergine,../graphics/token/eggplant_seed.png,Un des cinq légumes poussant dans cette contrée.
 eggplant,Aubergine,../graphics/token/eggplant.png,Idéal pour la moussaka !\n(Allergie founie avec...)
-starfruit_seed,Graine de Starfruit,../graphics/token/starfruit_seed.png,Des graines très rares.
+starfruit_seed,Grain de starfruit,../graphics/token/starfruit_seed.png,Des graines très rares.
 starfruit,Starfruit,../graphics/token/starfruit.png,La star des fruits.
+blueflower,Fleur bleue,../graphics/token/blueflower.png,Littéralement une fleur bleue.
+blueflower_seed,Graine de fleur,../graphics/token/blueflower_seed.png,Les graines ultimes du magasin.
+cabbage,Choux rouge,../graphics/token/cabbage.png,"Le choux... le choux. Bah voilà quoi, c'est un choux."
+cabbage_seed,Grain de choux,../graphics/token/cabbage_seed.png,À planter à la mode de son choix.
+carrot,Carotte,../graphics/token/carrot.png,"À donner aux lapins.\n(yen a pas, pas la peine de chercher)"
+carrot_seed,Grain de carotte,../graphics/token/carrot_seed.png,Sert à faire pousser des carottes. Si si j'te jure !
+onion,Oignon,../graphics/token/onion.png,Masque de ski obligatoire. (mieux vaut les vendre que les éplucher)
+onion_seed,Grain d'oignon,../graphics/token/onion_seed.png,Qu'est-ce que ça donnerait si on les faisait frire avant de les planter ?
+pickle,Cornichon,../graphics/token/pickle.png,Un bon gros cornichon de grand parents ça. Pas ces merdes de supermarché !
+pickle_seed,Grain cornichon,../graphics/token/pickle_seed.png,À planter.\n(J'ai plus d'inspi)
+radish,Radis,../graphics/token/radish.png,Idéal avec un peu de beurre. Après faut aimer hein...
+radish_seed,Graine de radis,../graphics/token/radish_seed.png,Personne n'utilise le verbe 'se radiner' ?
+salad,Salade,../graphics/token/salad.png,"Je prépare la vinaigrette (avec du balsamique, oui)."
+salad_seed,Graine de salade,../graphics/token/salad_seed.png,"À quoi ça ressemble au juste ?\nFranchement, je saurais pas dire."
+turnip,Navet,../graphics/token/turnip.png,"C'est pas hyper bon, mais c'est tout de même mieux qu'au cinéma..."
+turnip_seed,Graine de navet,../graphics/token/turnip_seed.png,De la mauvaise graine !

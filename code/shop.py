@@ -11,8 +11,6 @@ SALE_PRICES = {
     'pear': 8,
     'grapes': 8,
     'blueberry': 8,
-    'corn': 10,
-    'tomato': 10,
     'anchovy': 7,
     'angelfish': 20,
     'bass': 10,
@@ -30,11 +28,20 @@ SALE_PRICES = {
     'baby_salmon': 20,
     'pumkin': 25,
     'eggplant':25,
-    'starfruit': 100
+    'starfruit': 100,
+    'corn': 2,
+    'tomato': 4,
+    'turnip': 5,
+    'cabbage': 6,
+    'salad': 7,
+    'onion': 8,
+    'pickle': 10,
+    'carrot': 12,
+    'radish': 15,
+    'blueflower': 0,
+
 }
 PURCHASE_PRICES = {
-	'corn_seed': 4,
-	'tomato_seed': 5,
     'worm': 5,
 	'fishing_rod': 100,
 	'seewing_needle': 1000,
@@ -42,6 +49,16 @@ PURCHASE_PRICES = {
     'axe': 200,
     'hoe': 200,
     'water': 300,
+    'corn_seed': 1,
+    'tomato_seed': 2,
+    'turnip_seed': 2,
+    'cabbage_seed': 3,
+    'salad_seed': 3,
+    'onion_seed': 4,
+    'pickle_seed': 5,
+    'carrot_seed': 6,
+    'radish_seed': 8,
+    'blueflower_seed': 10,
 }
 SELL_SHOP_INVENTORY = {
     'wood': None,
@@ -71,11 +88,27 @@ SELL_SHOP_INVENTORY = {
     'baby_salmon': None,
     'pumkin': None,
     'eggplant': None,
-    'starfruit': None
+    'starfruit': None,
+    'blueflower': None,
+    'cabbage': None,
+    'carrot': None,
+    'onion': None,
+    'pickle': None,
+    'radish': None,
+    'salad': None,
+    'turnip': None,
 }
 BUY_SHOP_INVENTORY = {
     'corn_seed': float('inf'),
-    'tomato_seed': float('inf'),
+    'tomato_seed': 0,
+    'blueflower_seed': 0,
+    'cabbage_seed': 0,
+    'carrot_seed': 0,
+    'onion_seed': 0,
+    'pickle_seed': 0,
+    'radish_seed': 0,
+    'salad_seed': 0,
+    'turnip_seed': 0,
 }
 SPECIAL_SHOP_INVENTORY = {
     'axe': 1,
@@ -201,6 +234,85 @@ class ShopLogic(ABC):
                     self.player.tools.append('fishing')
                 elif self.current_item in ['hoe', 'water', 'axe']:
                     self.player.tools.append(self.current_item)
+
+                #Handling seed separatedly
+                elif self.current_item =='corn_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['corn_seed']
+                    if  10 <= self.count_to_unlock_seeds <= 50:
+                        self.inventory['tomato_seed'] = float('inf')
+                        if 'tomato' not in self.player.seeds:
+                            self.player.seeds.append('tomato')
+                elif self.current_item =='tomato_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['tomato_seed']
+                    if 30 <= self.count_to_unlock_seeds <= 60:
+                        self.inventory['turnip_seed'] = float('inf')
+                        if 'turnip' not in self.player.seeds:
+                            self.player.seeds.append('turnip')
+                elif self.current_item =='turnip_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['turnip_seed']
+                    if 50 <= self.count_to_unlock_seeds <= 100:
+                        self.inventory['cabbage_seed'] = float('inf')
+                        if 'cabbage' not in self.player.seeds:
+                            self.player.seeds.append('cabbage')
+                elif self.current_item =='cabbage_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['cabbage_seed']
+                    if 80 <= self.count_to_unlock_seeds <= 150:
+                        self.inventory['salad_seed'] = float('inf')
+                        if 'salad' not in self.player.seeds:
+                            self.player.seeds.append('salad')
+                elif self.current_item =='salad_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['salad_seed']
+                    if 110 <= self.count_to_unlock_seeds <= 200:
+                        self.inventory['onion_seed'] = float('inf')
+                        if 'onion' not in self.player.seeds:
+                            self.player.seeds.append('onion')
+                elif self.current_item =='onion_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['onion_seed']
+                    if 150 <= self.count_to_unlock_seeds <= 250:
+                        self.inventory['pickle_seed'] = float('inf')
+                        if 'pickle' not in self.player.seeds:
+                            self.player.seeds.append('pickle')
+                elif self.current_item =='pickle_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['pickle_seed']
+                    if 200 <= self.count_to_unlock_seeds <= 300:
+                        self.inventory['carrot_seed'] = float('inf')
+                        if 'carrot' not in self.player.seeds:
+                            self.player.seeds.append('carrot')
+                elif self.current_item =='carrot_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['carrot_seed']
+                    if 260 <= self.count_to_unlock_seeds <= 350:
+                        self.inventory['radish_seed'] = float('inf')
+                        if 'radish' not in self.player.seeds:
+                            self.player.seeds.append('radish')
+                elif self.current_item =='radish_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['radish_seed']
+                    if 340 <= self.count_to_unlock_seeds <= 400:
+                        self.inventory['blueflower_seed'] = float('inf')
+                        if 'blueflower' not in self.player.seeds:
+                            self.player.seeds.append('blueflower')
+                elif self.current_item =='blueflower_seed':
+                    self.player.item_inventory.setdefault(self.current_item, 0)
+                    self.player.item_inventory[self.current_item] += 1
+                    self.count_to_unlock_seeds += PURCHASE_PRICES['blueflower_seed']
+
                 else: #Regular items
                     self.player.item_inventory.setdefault(self.current_item, 0)
                     self.player.item_inventory[self.current_item] += 1 #why not use player add ?
@@ -321,6 +433,7 @@ class BuyShop(ShopLogic):
         super().__init__(player, item_loader)
         if self.options:
             self.current_item = self.options[self.index]
+        self.count_to_unlock_seeds = 0
     @property
     def action_text(self):
         return self.font.render(f"prix d'achat: {PURCHASE_PRICES[self.current_item]}*", False,'black')

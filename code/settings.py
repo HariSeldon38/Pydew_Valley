@@ -77,7 +77,15 @@ GROW_SPEED = {
 	'tomato': 0.8,
 	'pumkin': 0.6,
 	'eggplant': 0.6,
-	'starfruit': 0.45
+	'starfruit': 0.45,
+	'blueflower': 1,
+	'cabbage': 1,
+	'carrot': 1,
+	'onion': 1,
+	'pickle': 1,
+	'radish': 1,
+	'salad': 1,
+	'turnip': 1,
 }
 
 TIRED_SPEECH = [

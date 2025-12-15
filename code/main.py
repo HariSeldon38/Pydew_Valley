@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
 
 """
+add blé
 having to save the sell shop inventory should be easy to overcome, will do that later
 if time change cat color to fit better with env (use pumkin colors ?)
 could add price to item in the csv file
@@ -52,8 +53,6 @@ un jeu n'arrative d'une heure, première choise a faire assez basique histoire �
 better animation for destroying trees or no anim to exacerber feeling of hand made
 
 change watering sprite generation, need to keep randomness but create more png with different levels of water
-
-idée de craft bébé saumon + vers + mettre des dialogue qui vont dans ce sens (genre le caht mange des vers ça le fait grandir)
 """
 
 # IDEE DE BASE
@@ -71,11 +70,15 @@ idée de craft bébé saumon + vers + mettre des dialogue qui vont dans ce sens 
 2ème partie, on a le doirt de choisir entre 3 différents maisons:
 	on se retrouve dans un monde plus vaste avec tout les pnj du jeux. des magasins plus de sortes de fruit, de graines etc etc
 
+make it possible to craft 2 piece of nothing to create super nothing
+
+
 nom de la monaie est l'étincelle
 """
 
 # BUGS :
 """
+- low : worm disapear faster than fish caught
 - low :  tester si ça : peut faire crasher si unnset flag does not exist anymore
 			deception_again:
 		  text: "Tu a besoin de quelque chose ?"

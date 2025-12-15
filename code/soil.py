@@ -131,9 +131,8 @@ class SoilLayer:
                 if 'F' in self.grid[y][x] and not 'X' in self.grid[y][x]:
                     self.grid[y][x].append('X')
                     self.create_soil_tiles()
-                #if self.raining:
-                    #self.get_watered(point)
-        self.sound_manager.play('hoe')
+                    return True
+        return False
 
     def get_watered(self, target_pos):
         """for now it is possible to water crops thrice but the sprite added is random each time

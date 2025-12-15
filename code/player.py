@@ -10,6 +10,7 @@ from npcs import NPC # remove that ---------------------------------------------
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, collision_sprites, npc, tree_sprites, water_sprites, interaction, soil_layer, rain, sound_manager, item_loader, player_add, all_sprites, npc_sprites): #--------maybe delete rain here , only need control rain from game when dev DELETE ALSO ALLSPRITES
         super().__init__(group)
+        self.sound_manager = sound_manager
 
         self.all_sprites = all_sprites # delete if not in record mode
         self.npc_sprites = npc_sprites #same here
@@ -48,7 +49,7 @@ class Player(pygame.sprite.Sprite):
             'evening': Timer(40000, [self.get_to_sleep, self.bad_sleep_penalty]),
             'slowing': Timer(3000, self.default_speed)
         }
-        self.timers['day'] = Timer(180000, self.timers['evening'].activate) #when day is over, evening starts
+        self.timers['day'] = Timer(180000, [self.timers['evening'].activate, lambda: self.sound_manager.play("evening_start")]) #when day is over, evening starts
         self.timers['sleepy'] = Timer(15000, [self.timers['slowing'].activate, self.decrease_speed], loop=True) #every sleepy sec, slowing activate
 
         #tools
@@ -80,7 +81,6 @@ class Player(pygame.sprite.Sprite):
         self.talking = False
         self.flags = {} #will contain a dict 'flag_name': boolean to track keypoints in the stories of the npcs, NEED TO BE INSTANCIATE THOUGH LOAD_SAVE
 
-        self.sound_manager = sound_manager
         self.item_loader = item_loader
 
     def import_assets(self):
@@ -103,15 +103,17 @@ class Player(pygame.sprite.Sprite):
                 if tree.rect.collidepoint(self.target_position):
                     tree.take_apple()
         elif self.selected_tool == 'hoe':
-            self.soil_layer.get_hit(self.target_position)
+            success = self.soil_layer.get_hit(self.target_position)
+            if success: self.sound_manager.play(random.choice(['hoe1', 'hoe2', 'hoe3', 'hoe4', 'hoe5']))
         elif self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_position):
                     tree.take_apple()
                     tree.damage()
+                    self.sound_manager.play(random.choice(['axe1', 'axe2', 'axe3', 'axe4']))
         elif self.selected_tool == 'water':
             self.soil_layer.get_watered(self.target_position)
-            self.sound_manager.play('watering')
+            self.sound_manager.play(random.choice(['water1','water2','water3','water4']))
         elif self.selected_tool == 'fishing':
             for water in self.water_sprites:
                 if water.rect.collidepoint(self.target_position):
@@ -125,6 +127,7 @@ class Player(pygame.sprite.Sprite):
                         worm = True
                     else: worm = False
                     self.fishing.fishing_start((x,y), water_type, worm)
+                    self.sound_manager.play(random.choice(['fishing1', 'fishing2']))
 
     def use_seed(self):
         if self.item_inventory.get(self.selected_seed+"_seed", 0) > 0:

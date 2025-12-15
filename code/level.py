@@ -31,17 +31,16 @@ class Level:
 			(None, 'salmon garden'),
 			(None, None),
 			('Kate', 'running up'),
-			(None, 'salmon garden'),
 			('Aurelien', 'si facile'),
 			('Kate', None),
 			(None, None),
 			('Antoine', 'just the two of us'),
-			(None, 'salmon garden'),
+			('Antoine', 'salmon garden'),
 			('Aurelien', 'si facile'),
 			(None, None),
 			('Antoine', None),
 			('Citrouille', 'chat'),
-			(None, 'salmon garden'),
+			('Antoine', 'salmon garden'),
 			('Kate', 'running up'),
 			('Aurelien', None),
 			('Citrouille', 'chat'),
@@ -297,7 +296,6 @@ class Level:
 		if not music_handled:
 			if self.queue[self.day_nb][1]: #if None no music except if condition reached above
 				self.sound_manager.play(self.queue[self.day_nb][1])
-				print("Planed music should play")
 
 	def create_npc(self, save):
 
@@ -351,7 +349,7 @@ class Level:
 	def player_add(self, item):
 		self.player.item_inventory.setdefault(item, 0)
 		self.player.item_inventory[item] += 1
-		self.sound_manager.play("pickup")
+		self.sound_manager.play(random.choice(['add1','add2','add3']))
 
 	def display_player_speech(self, text):
 		for idx, line in enumerate(text.split('\n')):

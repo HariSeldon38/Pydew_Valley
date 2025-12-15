@@ -41,7 +41,15 @@
             "baby_salmon": null,
             "pumkin": null,
             "eggplant": null,
-            "starfruit": null
+            "starfruit": null,
+            "blueflower": null,
+            "cabbage": null,
+            "carrot": null,
+            "onion": null,
+            "pickle": null,
+            "radish": null,
+            "salad": null,
+            "turnip": null
         },
         "SpecialShop": {
             "axe": 1,

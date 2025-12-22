@@ -5,13 +5,15 @@
         "tool_inventory": [
             "hand"
         ],
-        "money": 0
+        "money": 0,
+        "seeds": [
+            "corn"
+        ]
     },
     "Environment": {
         "nb_days": 0,
         "BuyShop": {
-            "corn_seed": Infinity,
-            "tomato_seed": Infinity
+            "corn_seed": Infinity
         },
         "SellShop": {
             "wood": null,

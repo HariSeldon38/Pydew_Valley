@@ -5,11 +5,22 @@ from settings import *
 from support import *
 
 class SoilTile(pygame.sprite.Sprite):
+
+    tile_dict = {}
+
     def __init__(self, pos, surf, groups):
         super().__init__(groups)
         self.image = surf
-        self.rect = self.image.get_rect(topleft = pos)
+        pixel_position = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE)
+        self.rect = self.image.get_rect(topleft = pixel_position)
         self.z = LAYERS['soil']
+        SoilTile.tile_dict[pos] = self
+
+    @staticmethod
+    def kill_tile(pos):
+        # remove from map before killing so other code won't find a dead sprite
+        tile = SoilTile.tile_dict.pop(pos, None)
+        tile.kill()
 
 class WaterTile(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -78,10 +89,16 @@ class SoilLayer:
         for x,y, _ in load_pygame('../data/map.tmx').get_layer_by_name('Farmable').tiles():
             self.grid[y][x].append("F")
 
-    def create_soil_tiles(self):
+    def create_soil_tiles(self, pos):
+        """Go through all the grid each time a new soil is labored, cause other neighboor cells need to adjust"""
+        target_col = pos[0]
+        target_row = pos[1]
         self.soil_sprites.empty()
-        for index_row, row in enumerate(self.grid):
-            for index_col, cell in enumerate(row):
+        for index_row in range(target_row - 1, target_row + 2):
+            for index_col in range(target_col - 1, target_col + 2):
+
+                row = self.grid[index_row]
+                cell = row[index_col]
                 if 'X' in cell:
 
                     t = 'X' in self.grid[index_row - 1][index_col]
@@ -106,17 +123,19 @@ class SoilLayer:
                     if all((l,r,t)) and not b: tile_type = 'lrb'
                     if all((l,b,r)) and not t: tile_type = 'lrt'
 
-
+                    if SoilTile.tile_dict.get((index_col,index_row), False):
+                        SoilTile.kill_tile((index_col,index_row))
                     SoilTile(
-                        pos = (index_col*TILE_SIZE,index_row*TILE_SIZE),
+                        pos = (index_col,index_row),
                         surf = self.soil_surfs[tile_type],
                         groups = [self.all_sprites, self.soil_sprites])
 
     def create_hit_rects(self):
+        """Create an invisible rect for each farmable cell (cell containing "F")"""
         self.hit_rects = []
         for index_row, row in enumerate(self.grid):
             for index_col, cell in enumerate(row):
-                if 'F' in cell:
+                if 'F' in cell and not 'X' in cell:
                     x = index_col * TILE_SIZE
                     y = index_row * TILE_SIZE
                     rect = pygame.Rect(x,y,TILE_SIZE,TILE_SIZE)
@@ -128,10 +147,16 @@ class SoilLayer:
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
 
-                if 'F' in self.grid[y][x] and not 'X' in self.grid[y][x]:
-                    self.grid[y][x].append('X')
-                    self.create_soil_tiles()
-                    return True
+                if 'F' in self.grid[y][x]:
+                    if  not 'X' in self.grid[y][x]:
+                        self.grid[y][x].append('X')
+                        self.create_soil_tiles((x,y))
+                        return True
+                    else:
+                        self.grid[y][x].remove('X')
+                        SoilTile.kill_tile((x,y))
+                        self.create_soil_tiles((x,y))
+                        return True
         return False
 
     def get_watered(self, target_pos):
@@ -185,13 +210,3 @@ class SoilLayer:
     def update_plants(self):
         for plant in self.plant_sprites.sprites():
             plant.grow()
-
-
-
-
-
-
-
-"""there is a lot of thing I'm not really sure of in this file of the tutorial : first we are checking twice if farmable with "F"
-we convert px to tiles then tiles to px...
-"""

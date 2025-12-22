@@ -3,15 +3,19 @@
         "flags": {},
         "item_inventory": {},
         "tool_inventory": [
-            "hand"
+            "hand",
+            "hoe",
+            "water"
         ],
-        "money": 0
+        "money": 1000,
+        "seeds": [
+            "corn"
+        ]
     },
     "Environment": {
         "nb_days": 0,
         "BuyShop": {
-            "corn_seed": Infinity,
-            "tomato_seed": Infinity
+            "corn_seed": Infinity
         },
         "SellShop": {
             "wood": null,

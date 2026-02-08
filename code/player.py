@@ -46,10 +46,10 @@ class Player(pygame.sprite.Sprite):
             'rain switch': Timer(350), #----------------------------------------------------to delete before release
             'fishing timer': Timer(450),
             'record': Timer(500),
-            'evening': Timer(40000, [self.get_to_sleep, self.bad_sleep_penalty]),
+            'evening': Timer(400000, [self.get_to_sleep, self.bad_sleep_penalty]),
             'slowing': Timer(3000, self.default_speed)
         }
-        self.timers['day'] = Timer(180000, [self.timers['evening'].activate, lambda: self.sound_manager.play("evening_start")]) #when day is over, evening starts
+        self.timers['day'] = Timer(1000, [self.timers['evening'].activate, lambda: self.sound_manager.play("evening_start")]) #when day is over, evening starts
         self.timers['sleepy'] = Timer(15000, [self.timers['slowing'].activate, self.decrease_speed], loop=True) #every sleepy sec, slowing activate
 
         #tools

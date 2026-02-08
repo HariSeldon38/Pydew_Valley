@@ -1,4 +1,30 @@
-import pygame
+"""
+Key system of the soil is the grid.
+it is create in SoilLayer.create_soil_grid
+it is a grid representing the whole map
+
+Access a specific cell from a rect :
+    x = rect.x // TILE_SIZE
+    y = rect.y // TILE_SIZE
+    SoilLayer.grid[y][x]
+
+A cell is a list, can have the following states :
+    Empty if not farmable
+    F append if farmable (cannot change OK)
+    X append if labored
+    W if watered (can have more that one 'W') (CANNOT APPEAR ON SAVE NORMAL CAUSE RESET EACH DAY)
+    P_{seed}_{age} if a seed is planted (for instance P_corn_1)
+
+SoilLayer.create_hit_rects : create a invisible rect for each cell containing "F" but not "X"
+SoilLayer.soil_sprites are all the sprites for labored cells
+To access a soil_sprite based on grid position :
+    SoilLayer.soil_sprites_map[(index_col, index_row)]
+
+WARNING:
+    All the soil system is not based on the grid as it was implemented after the fact.
+    The collisions with target position of the player are checked against the sprites themselves, not the cell
+"""
+
 from pytmx.util_pygame import load_pygame
 from random import choice, randint
 from settings import *
@@ -30,15 +56,17 @@ class WaterTile(pygame.sprite.Sprite):
         self.z = LAYERS['soil water']
 
 class Plant(pygame.sprite.Sprite):
-    def __init__(self, plant_type, groups, soil, check_watered):
+    def __init__(self, plant_type, groups, soil, check_watered, grid_pos, age=0):
         super().__init__(groups)
         self.plant_type = plant_type
+        self.row_index = grid_pos[0]
+        self.col_index = grid_pos[1]
         self.frames = import_folder(f'../graphics/fruit/{plant_type}')
         self.soil = soil
         self.check_watered = check_watered
 
         #plant growing
-        self.age = 0
+        self.age = age
         self.max_age = len(self.frames) - 1
         self.grow_speed = GROW_SPEED[plant_type]
         self.harvestable = False
@@ -48,6 +76,9 @@ class Plant(pygame.sprite.Sprite):
         self.y_offset = pygame.math.Vector2(0, -10) if plant_type == 'corn' else pygame.math.Vector2(0, -5)
         self.rect = self.image.get_rect(midbottom = self.soil.rect.midbottom + self.y_offset)
         self.z = LAYERS['ground plant']
+        if int(self.age) > 0:
+            self.z = LAYERS['main']
+            self.hitbox = self.rect.copy().inflate(-26, -self.rect.height * 0.4)
 
     def grow(self):
         if self.check_watered(self.rect.center):
@@ -69,6 +100,7 @@ class SoilLayer:
         self.all_sprites = all_sprites
         self.collision_sprites = collision_sprites
         self.soil_sprites = pygame.sprite.Group()
+        self.soil_sprites_map = dict() #this is use to map grid coordinate to sprites
         self.water_sprites = pygame.sprite.Group()
         self.plant_sprites = pygame.sprite.Group()
 
@@ -76,12 +108,12 @@ class SoilLayer:
         self.soil_surfs = import_folder_with_names('../graphics/soil')
         self.soil_water = import_folder('../graphics/soil_water')
 
-        self.create_soil_grid()
+        self.init_soil_grid()
         self.create_hit_rects()
 
         self.sound_manager = sound_manager
 
-    def create_soil_grid(self):
+    def init_soil_grid(self):
         ground = pygame.image.load('../graphics/world/ground.png')
         h_tiles, v_tiles = ground.get_width() // TILE_SIZE, ground.get_height() //TILE_SIZE #need to be hardcoded when dev is over and get rid of the ground load
 
@@ -89,13 +121,23 @@ class SoilLayer:
         for x,y, _ in load_pygame('../data/map.tmx').get_layer_by_name('Farmable').tiles():
             self.grid[y][x].append("F")
 
-    def create_soil_tiles(self, pos):
-        """Go through all the grid each time a new soil is labored, cause other neighboor cells need to adjust"""
-        target_col = pos[0]
-        target_row = pos[1]
-        self.soil_sprites.empty()
-        for index_row in range(target_row - 1, target_row + 2):
-            for index_col in range(target_col - 1, target_col + 2):
+    def create_soil_tiles(self, pos=None):
+        """
+        TILING SYSTEM
+        If arg position is not None : go through the 8 neighboors of the corresponding cell to adjust the soil tiles
+        Else, recreate ALL the soil_tiles
+        """
+        if pos:
+            target_col = pos[0]
+            target_row = pos[1]
+            vertical_range = range(target_row - 1, target_row + 2)
+            horizontal_range = range(target_col - 1, target_col + 2)
+        else:
+            vertical_range = range(0, len(self.grid))
+            horizontal_range = range(0, len(self.grid[0]))
+
+        for index_row in vertical_range:
+            for index_col in horizontal_range:
 
                 row = self.grid[index_row]
                 cell = row[index_col]
@@ -125,7 +167,8 @@ class SoilLayer:
 
                     if SoilTile.tile_dict.get((index_col,index_row), False):
                         SoilTile.kill_tile((index_col,index_row))
-                    SoilTile(
+
+                    self.soil_sprites_map[(index_col,index_row)] = SoilTile(
                         pos = (index_col,index_row),
                         surf = self.soil_surfs[tile_type],
                         groups = [self.all_sprites, self.soil_sprites])
@@ -148,7 +191,7 @@ class SoilLayer:
                 y = rect.y // TILE_SIZE
 
                 if 'F' in self.grid[y][x]:
-                    if  not 'X' in self.grid[y][x]:
+                    if not 'X' in self.grid[y][x]:
                         self.grid[y][x].append('X')
                         self.create_soil_tiles((x,y))
                         return True
@@ -198,15 +241,32 @@ class SoilLayer:
     def plant_seed(self, target, seed):
         for soil_sprite in self.soil_sprites.sprites():
             if soil_sprite.rect.collidepoint(target):
-                x = soil_sprite.rect.x // TILE_SIZE
-                y = soil_sprite.rect.y // TILE_SIZE
-                if 'P' not in self.grid[y][x]:
-                    self.grid[y][x].append('P')
-                    Plant(seed, [self.all_sprites, self.plant_sprites, self.collision_sprites], soil_sprite, self.check_watered)
+                col_index = soil_sprite.rect.x // TILE_SIZE
+                row_index = soil_sprite.rect.y // TILE_SIZE
+                if 'P' not in [symbol.split("_")[0] for symbol in self.grid[row_index][col_index]]:
+                    self.grid[row_index][col_index].append(f'P_{seed}_0')
+                    Plant(seed, [self.all_sprites, self.plant_sprites, self.collision_sprites], soil_sprite, self.check_watered, (row_index, col_index))
                     self.sound_manager.play('plant')
                     return True
         return False
 
+    def load_plants(self):
+        for index_row in range(0, len(self.grid)):
+            for index_col in range(0, len(self.grid[0])):
+                row = self.grid[index_row]
+                cell = [symbol for symbol in row[index_col] if symbol.startswith("P_")]
+                if len(cell) == 1:
+                    _, seed, age = cell[0].split("_")
+                    Plant(seed, [self.all_sprites, self.plant_sprites, self.collision_sprites], self.soil_sprites_map[(index_col, index_row)],
+                          self.check_watered, (index_row, index_col), age=int(age))
+                elif len(cell) > 1:
+                    print("A cell contains more than one P (plant)")
+
     def update_plants(self):
+        for row in self.grid:
+            for cell in row:
+                cell = [symbol for symbol in cell if not symbol.startswith("P_")]
         for plant in self.plant_sprites.sprites():
             plant.grow()
+            self.grid[plant.row_index][plant.col_index] = [symbol for symbol in self.grid[plant.row_index][plant.col_index] if not symbol.startswith("P_")]
+            self.grid[plant.row_index][plant.col_index].append(f"P_{plant.plant_type}_{plant.age}")

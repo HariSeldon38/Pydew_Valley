@@ -1,21 +1,51 @@
 {
     "PLAYER": {
         "flags": {},
-        "item_inventory": {},
+        "item_inventory": {
+            "corn": 6,
+            "tomato": 2,
+            "turnip": 2,
+            "cabbage": 2,
+            "salad": 2,
+            "onion": 2,
+            "pickle": 1,
+            "carrot": 2,
+            "radish": 1,
+            "blueflower": 5,
+            "corn_seed": 1
+        },
         "tool_inventory": [
             "hand",
             "hoe",
             "water"
         ],
-        "money": 1000,
+        "money": 9540,
         "seeds": [
-            "corn"
+            "corn",
+            "tomato",
+            "turnip",
+            "cabbage",
+            "salad",
+            "onion",
+            "pickle",
+            "carrot",
+            "radish",
+            "blueflower"
         ]
     },
     "Environment": {
-        "nb_days": 0,
+        "nb_days": 7,
         "BuyShop": {
-            "corn_seed": Infinity
+            "corn_seed": Infinity,
+            "tomato_seed": Infinity,
+            "turnip_seed": Infinity,
+            "cabbage_seed": Infinity,
+            "salad_seed": Infinity,
+            "onion_seed": Infinity,
+            "pickle_seed": Infinity,
+            "carrot_seed": Infinity,
+            "radish_seed": Infinity,
+            "blueflower_seed": Infinity
         },
         "SellShop": {
             "wood": null,
@@ -63,6 +93,27 @@
             "worm": 0,
             "seewing_needle": 0,
             "white_thread": 0
-        }
+        },
+        "count_to_unlock_seeds": 467
+    },
+    "Kate": {
+        "next": "start",
+        "encounter": 0,
+        "flags": {}
+    },
+    "Aurelien": {
+        "next": "start",
+        "encounter": 0,
+        "flags": {}
+    },
+    "Antoine": {
+        "next": "start",
+        "encounter": 0,
+        "flags": {}
+    },
+    "Citrouille": {
+        "next": "start",
+        "encounter": 0,
+        "flags": {}
     }
 }

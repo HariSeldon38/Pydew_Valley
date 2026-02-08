@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
 
 """
+parameterize amount to unlock plants and increase it
 add blé
 having to save the sell shop inventory should be easy to overcome, will do that later
 if time change cat color to fit better with env (use pumkin colors ?)
@@ -36,9 +37,6 @@ could add price to item in the csv file
 we could do something much better with cat animations but would need a tool to create that impossible like this too cumbersome
 NEED TO REDO the save system (when handling multiple saves and create new save
 could have been better to create the player with save_data argument so that it initialise its attribute upon create and not during load_save
-
-just song : too much R and not lound enough : also delete useless intro
-corection orthographe not done yet ! Done for Antoine
 
 chercher comment faire des voix yahourt comme ds celeste
 ACHIEVEMENT: trouver tout les meme dans les conv
@@ -71,8 +69,7 @@ change watering sprite generation, need to keep randomness but create more png w
 	on se retrouve dans un monde plus vaste avec tout les pnj du jeux. des magasins plus de sortes de fruit, de graines etc etc
 
 make it possible to craft 2 piece of nothing to create super nothing
-
-
+ss
 nom de la monaie est l'étincelle
 """
 

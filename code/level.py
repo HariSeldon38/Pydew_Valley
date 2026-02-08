@@ -104,7 +104,7 @@ class Level:
 
 		#trees
 		for obj in tmx_data.get_layer_by_name('Trees'):
-			tree = Tree(
+			Tree(
 				pos = (obj.x,obj.y),
 				surf = obj.image,
 				groups = [self.all_sprites, self.collision_sprites, self.tree_sprites],
@@ -179,14 +179,14 @@ class Level:
 					apple.kill()
 				tree.create_fruit()
 
-		#soil
-		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
-
 		#sky
 		self.rain.rain_level = 0 #for now just make it impossible to rain in the beginning of the day
 		self.rain.update_rain_color(0)
 		self.sky.current_color = self.sky.day_color.copy() #maybe will put it in setting idk or now
 		self.player.timers['day'].activate()
+
+		#soil
+		self.soil_layer.remove_water()          #find a way to not call that funct if it rain before night as well as after night
 
 		saved_data = self.write_save()
 
@@ -241,9 +241,20 @@ class Level:
 			env_entry[shop.__class__.__name__] = shop.inventory
 		env_entry['count_to_unlock_seeds'] = self.state_manager.states['shop'].shops[0].count_to_unlock_seeds
 
-		# save the file
+		# Soil state : overriden each day
+		soil_data = self.soil_layer.grid
+
+		# save the files
 		with open('../save/save.json', "w") as saving_file:
 			json.dump(data, saving_file, indent=4)
+		with open('../save/save_soil.json', "w") as f:
+			f.write("[\n")
+			for row in soil_data[:-1]:
+				json.dump(row, f)
+				f.write(",\n")
+			json.dump(soil_data[-1], f)
+			f.write("\n")
+			f.write("]\n")
 
 		return data
 
@@ -253,7 +264,7 @@ class Level:
 		Except for Shops inventories handled in load_shop_inventory
 		"""
 
-		# Open the save file
+		# Open the general save file
 		try:
 			with open('../save/save.json', "r") as saving_file:
 				data = json.load(saving_file)
@@ -275,6 +286,22 @@ class Level:
 		self.player.seeds = player_entry.get('seeds', ['corn', 'tomato'])
 		env_entry = data.get('Environment', {})
 		self.day_nb = env_entry.get('nb_days', 0)
+
+		# Open the soil save file
+		try:
+			with open('../save/save_soil.json', "r") as saving_soil_file:
+				soil_data = json.load(saving_soil_file)
+		except FileNotFoundError:
+			print("Warning: save_soil.json is not found. Starting fresh.")
+			soil_data = {}
+		except json.JSONDecodeError:
+			print("ERROR ! : save_soil.json is invalid, make sure to fix it.")
+			soil_data = {}
+
+		if soil_data:
+			self.soil_layer.grid = list(soil_data)
+			self.soil_layer.create_soil_tiles()
+			self.soil_layer.load_plants()
 
 		return data
 
@@ -363,7 +390,9 @@ class Level:
 					self.player_add(plant.plant_type)
 					plant.kill()
 					Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
-					self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove('P')
+					for symbol in self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE]:
+						if symbol.startswith('P'):
+							self.soil_layer.grid[plant.rect.centery//TILE_SIZE][plant.rect.centerx//TILE_SIZE].remove(symbol)
 
 	def run(self, events, dt):
 
@@ -437,7 +466,7 @@ class CameraGroup(pygame.sprite.Group):
 					offseted_rect.center -= self.offset
 					self.display_surface.blit(sprite.image, offseted_rect)
 
-			#		#analytics
+					#analytics
 			# 		if sprite in npc_sprites or sprite == player:
 			# 			pygame.draw.rect(self.display_surface, 'red', offseted_rect, 5)
 			# 			hitbox_rect = sprite.hitbox.copy()
@@ -450,4 +479,3 @@ class CameraGroup(pygame.sprite.Group):
 			# 		hitbox_rect = sprite.hitbox.copy()
 			# 		hitbox_rect.topleft -= self.offset
 			# 		pygame.draw.rect(self.display_surface, 'green', hitbox_rect, 2)
-

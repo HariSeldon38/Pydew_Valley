@@ -3,7 +3,7 @@ SAFE_GUARD:
   next: fin_ldm
 
 fin_ldm:
-  text: "Ma comédienne préférée ! Comment tu vas ?"
+  text: "Salut  ! Comment tu vas ?"
   choices:
     - text: "Ça va bien !"
       next: bon

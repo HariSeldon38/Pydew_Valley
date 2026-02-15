@@ -39,27 +39,27 @@ brice_foutage:
 ahah:
   text: "Ah ah ah. Je te fais marcher, pardon... C'est quoi ton nom au fait ?"
   choices:
-    - text: "CookieShay, et toi ?"
-      next: cookie
-    - text: "Mathilde, et toi ?"
-      next: mathilde
+    - text: "Ah euh, je sais pas, et toi ?"
+      next: antoine
+    - text: "Moi c'est *insérer prénom*\n et toi ?"
+      next: inserer
 bien:
   text: "Moi ça va super ! C'est quoi ton nom au fait ?"
   choices:
-    - text: "CookieShay, et toi ?"
-      next: cookie
-    - text: "Mathilde, et toi ?"
-      next: mathilde
-cookie:
-  text: "C'est original. Moi c'est... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+    - text: "Ah euh, je sais pas, et toi ?"
+      next: antoine
+    - text: "Moi c'est *insérer prénom*\n et toi ?"
+      next: inserer
+antoine:
+  text: "Ah bon, bizare. Moi c'est Antoine. \nTiens j'ai un cadeau pour toi !"
   trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
       next: fruits
     - text: "Un amateur de fruit, j'imagine..."
       next: fruits
-mathilde:
-  text: "Oh ! C'est un beau prénom. Moi c'est... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+inserer:
+  text: "Insérer prénom ?! Hyper chelou.\n Moi c'est Antoine. \nTiens j'ai un cadeau pour toi !"
   trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
@@ -67,7 +67,7 @@ mathilde:
     - text: "Un amateur de fruit, j'imagine..."
       next: fruits
 rencontre:
-  text: "Je m'appelle... C'est pas important en vrai. Dis-toi juste que je suis ton allié.\nTiens d'ailleurs j'ai un cadeau pour toi !"
+  text: "Je m'appelle Antoine. \nTiens j'ai un cadeau pour toi !"
   trigger: get_apples
   choices:
     - text: "Oh merci, des pommes !"
@@ -86,7 +86,7 @@ fruits:
 compte:
   text: "C'est pas grave ça, ça compte pas les fruits, ça fait 'glisser' après un bon repas."
   choices:
-    - text: "Pfff, j'ai l'impression d'avoir déjà entendu ça quelque part..."
+    - text: "Oui, complètement d'accord !"
       next: generic_end
     - text: "Mais bien sûr..."
       next: generic_end
@@ -165,9 +165,6 @@ hub1:
     - text: "Déjà, merci pour les pommes de l'autre jour !"
       not_condition: path1_done
       next: path1
-    - text: "Je me prépare pour jouer une pièce de théâtre."
-      not_condition: path2_done
-      next: path2
     - text: "La routine. Je cultive mon petit monde quoi."
       condition: path1_done
       next: eternal_path1
@@ -247,90 +244,6 @@ hasty_end:
   text: "Excuse-moi, je viens de penser à un truc. Il faut que je m'en aille, j'ai du travail, désolé,\non se capte plus tard."
   next: generic_end_again
 
-path2: #Mme Jeulin p24,
-  text: "Oh ! Trop bien ça ! J'adore le théâtre ! Tu as besoin d'aide pour réviser ?"
-  set_flag: path2_done
-  choices:
-    - text: "Sérieusement ?! Tu pourrais faire ça ?"
-      next: theatre
-    - text: "Arf, non, c'est bon, je veux me détendre."
-      next: pas_theatre
-theatre:
-  text: "Ça ne me fait pas peur !"
-  choices:
-    - text: "Bon et bien, je te donne le texte alors ?"
-      next: theatre2
-theatre2:
-  text: "Eh oui, c'est mieux ahahah !"
-  choices:
-    - text: "Voilà."
-      next: replique1
-replique1:
-  text: "'Ah ben tu es encore là maman. Mais que fais-tu encore devant cette porte d'entrée ?'"
-  choices:
-    - text: "J'aime bien être là. Je vois les gens qui entrent et qui sortent. J'aime bien."
-      next: replique1_ok
-    - text: "Je suis bien là. Je regarde les gens entrer et sortir. J'aime bien."
-      next: replique1_not_ok
-replique1_ok:
-  text: "'Quand même, tu ne devrais pas rester devant la porte d'entrée comme ça, tu vas attraper froid.'" #replique2
-  choices:
-    - text: "Ça ne te regarde pas. Fiche moi la paix !"
-      next: replique2_not_ok
-    - text: "Mais de quoi je me mêle. Vas-tu donc me fiche la paix ?"
-      next: replique2_ok
-replique1_not_ok:
-  text: "Ah non, c'était :\nJ'aime bien être là. Je vois les gens qui entrent et qui sortent. J'aime bien."
-  choices:
-    - text: "Mince."
-      next: replique1_ok
-replique2_ok:
-  text: "'C'est pour toi que je dis ça ...'" #replique3
-  choices:
-    - text: "Gnagnagna... On ne peut donc pas faire ce qu'on veut !"
-      next: replique3_not_ok
-    - text: "Gnagnagna... On peut donc jamais être tranquille."
-      next: replique3_ok
-replique2_not_ok:
-  text: "Ah non, c'était :\nMais de quoi je me mêle. Vas-tu donc me fiche la paix ?"
-  choices:
-    - text: "Mince."
-      next: replique2_ok
-replique3_ok:
-  text: "*L'animatrice bénévole se met à pleurer et sort.*" #replique4
-  choices:
-    - text: "Eh bien c'est ça, chiale, tu pisseras moins."
-      next: theatre_fin
-    - text: "Eh voilà qu'elle se met à pleurer..."
-      next: replique4_not_ok
-replique3_not_ok:
-  text: "Ah non, c'était :\nGnagnagna... On peut donc jamais être tranquille."
-  choices:
-    - text: "Mince"
-      next: replique3_ok
-replique4_not_ok:
-  text: "Ah non, c'était :\nEh bien c'est ça, chiale, tu pisseras moins."
-  choices:
-    - text: "Mince."
-      next: theatre_fin
-theatre_fin:
-  text: "En-tout-cas, bravo, je sais pas comment tu fais pour apprendre tout ça !\nLa prochaine fois, on révisera autre chose..."
-  choices:
-    - text: "Euh... Quelle autre chose ?"
-      next: rigole
-    - text: "Non, surtout pas !"
-      next: rigole
-rigole:
-  text: "C'était une blague. On est là pour s'amuser, t'inquiète pas."
-  choices:
-    - text: "Ouf..."
-      next: generic_end
-pas_theatre:
-  text: "Ok, pas de soucis alors. Je t'embêterais plus avec ça !"
-  choices:
-    - text: "Merci."
-      next: generic_end
-
 path3:
   text: "Jamais ! Tu connais Python ? Moi, j'adore Python !"
   set_flag: path3_done
@@ -401,12 +314,12 @@ ailleurs:
     - text: "Bah super..."
       next: generic_end
 monsieur_fruit:
-  text: "Ahahah, j'aime bien, madame fromages."
+  text: "Ahahah, j'aime bien !"
   choices:
-    - text: "Mais ! Comment tu sais ?"
+    - text: "Héhé"
       next: escape_end
 escape_end:
-  text: "Euh... Une intuition, c'est tout.\nJe dois y aller moi, à la prochaine. Ciao !"
+  text: "Je dois y aller moi, à la prochaine. Ciao !"
   choices:
     - text: "Au revoir."
       trigger: close_dialogue
@@ -543,7 +456,7 @@ fil:
     - text: "Faisons comme ça !"
       next: parfait
 parfait:
-  text: "T'es vraiment trop cool.\nMerci beaucoup de faire ça pour moi.\nJ'espère un jour pouvoir fabriquer quelque chose pour toi."
+  text: "T'es vraiment trop cool.\nMerci beaucoup de faire ça pour moi."
   next: generic_end_again
 
 eternal_path1:
@@ -664,13 +577,13 @@ cadeau3:
     - text: "Au poil !"
       next: final_end
 final_end:
-  text: "Et bah encore merci, c'est génial !\nAu fait, prépare toi à une surprise demain matin. Ce sera ma façon à moi de te remercier."
+  text: "Et bah encore merci, c'est génial !"
   set_flag: next_day
   choices:
-    - text: "J'ai hâte ! Encore derien, à bientôt !"
+    - text: "Encore derien, à bientôt !"
       trigger: close_dialogue
       next: final_end_again
-    - text: "J'ai hâte ! A+ !"
+    - text: "A+ !"
       trigger: close_dialogue
       next: final_end_again
 final_end_again:

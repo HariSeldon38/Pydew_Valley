@@ -3,19 +3,7 @@ SAFE_GUARD:
   next: renseignement_ldm
 
 merci_ldm:
-  condition: cookieshay
-  fallback: merci_ldm_alt
-  text: "Oh, mais c'est mon amie CookieShay !"
-  choices:
-    - text: "Hello ! Alors ça se passe bien ?"
-      condition: Kate_with_Aurelien
-      next: happy_end
-    - text: "Salut ! J'ai pas encore croisé Aurélien."
-      not_condition: Kate_with_Aurelien
-      next: not_happy_end
-
-merci_ldm_alt:
-  text: "Oh, mais c'est mon amie Mathilde !"
+  text: "Oh, mais c'est ma nouvelle amie !"
   choices:
     - text: "Hello ! Alors ça se passe bien ?"
       condition: Kate_with_Aurelien

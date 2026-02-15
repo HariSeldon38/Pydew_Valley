@@ -50,9 +50,13 @@ fin4_ldm:
       next: hub1
     - text: "Je suis désolé."
       next: hub2
-    - text: "Tu tombes bien, j'ai quelque chose pour toi !"
+    - text: "Oh, tu tombes bien, j'ai quelque chose pour toi !"
       condition: have_flowers
       next: deliver_flowers
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# HUBS : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 hub1:
   text: "Nickel !"
@@ -60,7 +64,7 @@ hub1:
     - text: "Tu profites du grand air toi aussi ?"
       not_condition: path1_done
       next: path1
-    - text: "Comment tu t'appelles au fait ? Moi c'est CookieShay."
+    - text: "Comment tu t'appelles au fait ?"
       not_condition: path2_done
       set_flag:
         name: meet_aurelien
@@ -77,6 +81,10 @@ hub2:
       next: path3
     - text: "..."
       next: eternal_path
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# PATHS : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 path1:
   text: "Oui, c'est sympa par ici. Mais je ne sais pas bien ce que je vais noter dans mon carnet de voyage."
@@ -126,7 +134,7 @@ fin1_again:
   next: fin1_again
 
 path2:
-  text: "Ah oui, c'est vrai tien. Moi c'est Aurélien."
+  text: "Aurélien."
   set_flag: path2_done
   choices:
     - text: "Aurélien, une chanson !"

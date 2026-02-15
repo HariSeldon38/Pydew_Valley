@@ -17,7 +17,7 @@ chat_parle:
     - text: "Parler, c'est un bien grand mot, disons que je sélectionne des options."
       next: calme
 calme:
-  text: "Il faut juste que je m'y habitue. Je viens d'un ... Endroit, ou les chats se contentent de miauler."
+  text: "Il faut juste que je m'y habitue. Je viens d'un ... endroit, ou les chats se contentent de miauler."
   choices:
     - text: "Miaou ?"
       next: blague
@@ -95,7 +95,7 @@ fin_meditation_ldm:
     - text: "Trop bien ! Contente d'avoir pu t'aider !"
       next: hub1
       trigger: close_dialogue
-    - text: "Derien. Je suis expert en angoisse..."
+    - text: "Derien. Je suis experte en angoisse..."
       trigger: close_dialogue
       next: hub1
 fin_meditation_ldm_alt:
@@ -104,7 +104,7 @@ fin_meditation_ldm_alt:
     - text: "Trop bien ! Contente d'avoir pu t'aider !"
       next: hub1
       trigger: close_dialogue
-    - text: "Derien. Je suis expert en angoisse..."
+    - text: "Derien. Je suis experte en angoisse..."
       trigger: close_dialogue
       next: hub1
 
@@ -170,7 +170,6 @@ meditation2:
     - text: "Tu vas laisser 5 secondes à l'angoisse pour t'envahir..."
       set_flag: compter5
       next: compte
-    # - text: je vais te mettre une chanson de Népal, je connais rien de plus efficace pour me détendre
 plume:
   text: "..."
   choices:
@@ -189,7 +188,7 @@ compte2:
 fin_meditation:
   text: "Ah, ça va beaucoup mieux, merci pour cette technique, ça marche bien !"
   choices:
-    - text: "Derien, n'hésite pas, j'ai vla les techniques pour ce genre de problème."
+    - text: "Derien, n'hésite pas, j'ai vla les astuces pour ce genre de problème."
       next: fin_meditation2
 fin_meditation2:
   text: "Super ! À une prochaine alors !"
@@ -289,7 +288,7 @@ detente:
       trigger: close_dialogue
       next: generic_end_again
 
-#PATH2 META, séparer en deux jeu_video et consequence, un path 2 annexe=eternal_path qui s'ouvre qd le premier est fait
+#PATH2 META
 path2:
   text: "Ah genre... Comme dans un jeu vidéo, tu veux dire ?"
   set_flag: path2_done
@@ -317,7 +316,7 @@ marrant:
   choices:
     - text: "Pardon, je ne voulais pas me moquer."
       next: moquer
-    - text: "Et qu'est-ce qui t'es arrivée pour atterrir ici au final ?"
+    - text: "Et qu'est-ce qui t'es arrivé pour atterrir ici au final ?"
       next: enfuie
 moquer:
   text: "T'en fais pas, c'est derrière moi maintenant."
@@ -375,7 +374,7 @@ eternal_path1:
     - text: "J'arrive pas à bien me rendre compte."
       next: fouiller_tiroirs
 consequences2:
-  text: "C'est ça. Mais c'est grâce à ça que je me sens vivante. Tous ces embranchements que tu n'emprunteras pas. Tous ces non-dits me créent de la cohérence et plus il y en a, plus j'existe d'une certaine manière."
+  text: "Oui. Mais c'est grâce à ça que je me sens vivante. Tous ces embranchements que tu n'emprunteras pas. Tous ces non-dits me créent de la cohérence et plus il y en a, plus j'existe d'une certaine manière."
   choices:
     - text: "C'est beau."
       not_condition: invite_kate
@@ -465,12 +464,12 @@ path3:
   text: "Ah... je t'ai parlé de ça... Désolé de t'embêter avec mes histoires."
   set_flag: path3_done
   choices:
-    - text: "Aller maintenant qu'on y est, crache le morceau !"
+    - text: "Aller, maintenant qu'on y est, crache le morceau !"
       next: question
     - text: "Mais non, tu ne m'embêtes pas."
       next: question
 question:
-  text: "Bon, alors, tout le monde aime recevoir des fleurs, à ton avis ?"
+  text: "Bon, alors. Tout le monde aime recevoir des fleurs, à ton avis ?"
   choices:
     - text: "Oui, tout le monde."
       next: garcon
@@ -573,45 +572,14 @@ renseignement_again:
 
 #Path4: After talking to Aurelien (or not)
 path4:
-  text: "Ah oui, Aurelien !\nMais d'abord je me rends compte que je ne connais même pas ton nom à toi."
+  text: "Ah oui, Aurelien !\nMais au fait, moi je m'appelle Kate !"
   choices:
-    - text: "Je m'appelle CookieShay."
-      set_flag: cookieshay
-      next: cookieshay
-    - text: "Je m'appelle Mathilde."
-      setflag: mathilde
-      next: mathilde
-cookieshay:
-  text: "Moi c'est Kate ! Enchantée CookieShay. J'avais jamais entendu ce prénom avant ahahah."
-  choices:
-    - text: "C'est vrai que c'est pas commun."
-      next: pas_commun
-    - text: "J'ai essayé de demander à Aurélien pour les fleurs..."
-      condition: ask_aurelien
-      next: distrait
-    - text: "J'ai pas encore pu demander à Aurélien pour les fleurs..."
-      not_condition: ask_aurelien
-      next: pas_grave
-mathilde:
-  text: "Moi c'est Kate ! Enchantée Mathilde. C'est un très joli prénom !"
-  choices:
-    - text: "Merci Kate."
-      next: math
-    - text: "J'ai essayé de demander à Aurélien pour les fleurs..."
-      condition: ask_aurelien
-      next: distrait
-    - text: "J'ai pas encore pu demander à Aurélien pour les fleurs..."
-      not_condition: ask_aurelien
-      next: pas_grave
-math:
+    - text: "Enchantée !"
+      next: suite
+    - text: "Ravi de te connaître !"
+      next: suite
+suite:
   text: "Tu as pu demander à Aurelien au sujet des fleurs ?"
-  choices:
-    - text: "Oui."
-      next: oui
-    - text: "Non."
-      next: pas_grave
-pas_commun:
-  text: "J'aime bien en tout cas !\nTu as pu demander à Aurelien au sujet des fleurs ?"
   choices:
     - text: "Oui."
       next: oui

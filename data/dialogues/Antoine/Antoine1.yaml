@@ -3,7 +3,7 @@ SAFE_GUARD:
   next: final_end_ldm
 
 final_end_ldm:
-  text: "Salut mon alliée ! Comment tu vas aujourd'hui ?"
+  text: "Hello ! Comment tu vas aujourd'hui ?"
   choices:
     - text: "Ça va bien !"
       next: musique
@@ -14,18 +14,11 @@ quitte:
   text: "Non, jamais, à part pour me laver !\nC'est mon bonnet fétiche à partir de maintenant."
   choices:
     - text: "Contente qu'il te plaise tant !"
-      next: musique
-    - text: "C'est flatteur !"
-      next: musique
-musique:
-  text: "La musique te plaît ? C'est pour te remercier de ton aide.\nOn m'a dit que t'aimais particulièrement cette chanson, alors je te l'aie joué !"
-  choices:
-    - text: "C'est adorable !"
       next: fruits
-    - text: "Ouiiii, j'adore cette chanson !"
+    - text: "C'est flatteur !"
       next: fruits
 fruits:
-  text: "Génial ! Mais ça ne s'arrête pas là !\nMaintenant tu peux me demander le fruit que tu veux à chaque fois qu'on se rencontre !"
+  text: "Génial ! Pour te remercier tu peux me demander le fruit que tu veux maintenant !"
   choices:
     - text: "Sérieux ?"
       next: liste_fruits

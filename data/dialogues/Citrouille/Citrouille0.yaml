@@ -23,7 +23,7 @@ appelle:
   choices:
     - text: "Ah oui, évidemment..."
       next: citrouille
-    - text: "Bon... je pense que je connais ton nom."
+    - text: "Bon... disons que tu t'appelle Citrouille !"
       next: citrouille
 
 citrouille:
